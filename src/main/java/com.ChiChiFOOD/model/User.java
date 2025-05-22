@@ -21,6 +21,10 @@ public class User {
     private String phone;
     private String address;
 
+    public User(String name, String lastName, String phoneNumber, String email, String password, String profileImageBase64) {
+
+    }
+
     public int getId() {
         return id;
     }
