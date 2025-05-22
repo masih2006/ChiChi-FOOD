@@ -12,7 +12,7 @@ public class App {
         User newUser = new User();
         newUser.setName("علی");
         newUser.setPassword("123456");
-        newUser.setEmail("ali@example.com");
+        newUser.setEmail("ae.com");
         newUser.setPhone("0912xxxxxxx");
         newUser.setAddress("تهران");
 
