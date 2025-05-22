@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea091f45-cdaa-4f68-95ab-9898c0188e81" name="Changes" comment="bankkkkkkk">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/User.java" afterDir="false" />
-    </list>
+    <list default="true" id="ea091f45-cdaa-4f68-95ab-9898c0188e81" name="Changes" comment="daei mamad is here" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -100,7 +97,7 @@
       <workItem from="1747900348424" duration="1904000" />
       <workItem from="1747919691736" duration="2352000" />
       <workItem from="1747936268242" duration="52000" />
-      <workItem from="1747936339688" duration="1406000" />
+      <workItem from="1747936339688" duration="1732000" />
     </task>
     <task id="LOCAL-00001" summary="bankkkkkkk">
       <option name="closed" value="true" />
@@ -110,7 +107,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747937264449</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="daei mamad is here">
+      <option name="closed" value="true" />
+      <created>1747937793210</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1747937793210</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -118,7 +123,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="bankkkkkkk" />
-    <option name="LAST_COMMIT_MESSAGE" value="bankkkkkkk" />
+    <MESSAGE value="daei mamad is here" />
+    <option name="LAST_COMMIT_MESSAGE" value="daei mamad is here" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
