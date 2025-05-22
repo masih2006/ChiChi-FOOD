@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "users") // نام جدولی که اطلاعات کاربران در آن ذخیره می‌شود
-public class User {
+public abstract class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -18,13 +18,13 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
 
+    @Column(unique = true, nullable = false)
     private String phone;
+
+    @Column(nullable = false)
     private String address;
 
-    public User(String name, String lastName, String phoneNumber, String email, String password, String profileImageBase64) {
-
-    }
-
+    public User() {}
     public int getId() {
         return id;
     }

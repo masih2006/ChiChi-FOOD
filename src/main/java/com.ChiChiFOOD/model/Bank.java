@@ -6,7 +6,6 @@ public class Bank {
     private String bankName;
     private String accountNumber;
 
-    // Getterها و Setterها
     public String getBankName() {
         return bankName;
     }
