@@ -15,7 +15,6 @@ public class App {
         newUser.setEmail("ae.com");
         newUser.setPhone("0912xxxxxxx");
         newUser.setAddress("تهران");
-
         // ذخیره کاربر در پایگاه داده
         userDao.save(newUser);
         System.out.println("کاربر با ID: " + newUser.getId() + " ذخیره شد.");
