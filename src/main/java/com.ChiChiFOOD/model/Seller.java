@@ -7,9 +7,6 @@ import jakarta.persistence.Table;
 @Table(name = "sellers")
 public class Seller extends User {
     private String address;
-
-
-
     public Seller() {
         super();
     }

@@ -10,10 +10,10 @@ public class App {
     public static void main(String[] args) {
         UserDao userDao = new UserDaoImpl();
 
-        User newUser = new Seller();
+        User newUser = new Buyer();
         newUser.setName("jkhghfd");
         newUser.setPassword("123456");
-        newUser.setEmail("seller.com");
+        newUser.setEmail("seller1.com");
         newUser.setPhone("0912xxxxxxx");
         newUser.setAddress("jhk");
         // ذخیره کاربر در پایگاه داده
