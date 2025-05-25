@@ -1,10 +1,14 @@
 package com.ChiChiFOOD.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "couriers")
+@DiscriminatorValue("Courier")
 public class Courier extends User {
-    public Courier() {}
+public Courier() {
+    super();
+}
 }

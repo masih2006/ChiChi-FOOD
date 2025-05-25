@@ -1,22 +1,25 @@
 package com.ChiChiFOOD.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "sellers")
+@DiscriminatorValue("Seller")
 public class Seller extends User {
-    private String address;
+    @Column(unique=false, nullable=true)
+    private String ResturantName;
+
+
     public Seller() {
         super();
     }
-
-
-    public String getAddress() {
-        return address;
+    public String getResturantName() {
+        return ResturantName;
     }
-
-    public void setAddress(String address) {
-        this.address = address;
+    public void setResturantName(String resturantName) {
+        ResturantName = resturantName;
     }
 }
+// resturant , food , cart ,
