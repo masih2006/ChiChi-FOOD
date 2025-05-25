@@ -1,31 +1,32 @@
 package com.ChiChiFOOD;
 
-import com.ChiChiFOOD.dao.UserDao;
-import com.ChiChiFOOD.dao.impl.UserDaoImpl;
-import com.ChiChiFOOD.model.Buyer;
-import com.ChiChiFOOD.model.Seller;
-import com.ChiChiFOOD.model.User;
+import com.ChiChiFOOD.model.MenuService;
+import com.ChiChiFOOD.utils.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 public class App {
     public static void main(String[] args) {
-        UserDao userDao = new UserDaoImpl();
+        Session session = HibernateUtil.getSessionFactory().openSession();
 
-        User newUser = new Seller();
-        newUser.setName("jkhghfd");
-        newUser.setPassword("123456");
-        newUser.setEmail("seller.com");
-        newUser.setPhone("0912xxxxxxx");
-        newUser.setAddress("jhk");
-        // ذخیره کاربر در پایگاه داده
-        userDao.save(newUser);
-        System.out.println("کاربر با ID: " + newUser.getId() + " ذخیره شد.");
-        // بازیابی کاربر بر اساس ID
-        User retrievedUser = userDao.findById(newUser.getId());
-        if (retrievedUser != null) {
-            System.out.println("کاربر بازیابی شده: " + retrievedUser.getName() + " - " + retrievedUser.getEmail());
+        try {
+            MenuService menuService = new MenuService(session);
+
+            boolean running = true;
+            while (running) {
+                Transaction tx = session.beginTransaction();
+                try {
+                    running = menuService.start(); // فرض می‌کنیم start() حالا boolean برمی‌گرداند که مشخص می‌کند ادامه بده یا نه
+                    tx.commit();
+                } catch (Exception e) {
+                    tx.rollback();
+                    e.printStackTrace();
+                }
+            }
+
+        } finally {
+            session.close();
+            HibernateUtil.shutdown();
         }
-
-        // بستن EntityManagerFactory (توصیه می‌شود یک کلاس utility برای مدیریت آن ایجاد کنید)
-        // برای سادگی در اینجا نادیده گرفته شده است.
     }
 }

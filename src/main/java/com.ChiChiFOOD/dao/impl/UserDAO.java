@@ -9,4 +9,5 @@ public interface UserDAO {
     List<User> findAll();
     void update(User user);
     void delete(User user);
+    User findByPhoneAndPassword(String phone, String password);
 }

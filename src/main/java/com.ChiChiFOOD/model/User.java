@@ -1,6 +1,7 @@
 package com.ChiChiFOOD.model;
 
 import jakarta.persistence.*;
+
 @Entity
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -19,12 +20,32 @@ public abstract class User {
 
     @Column(unique = true, nullable = false)
     private String email;
-    @Column(unique = true , nullable = false)
+    @Column(unique = true, nullable = false)
     private String phone;
     @Column(nullable = true)
     private String address;
+    @Embedded
+    private Bank bank;
 
-    public User() {}
+    public User() {
+        this.bank = new Bank();
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        bank.setAccountNumber(accountNumber);
+    }
+
+    public String getAccountNumber() {
+        return bank.getAccountNumber();
+    }
+
+    public void setBankName(String bankName) {
+        bank.setBankName(bankName);
+    }
+
+    public String getBankName() {
+        return bank.getBankName();
+    }
 
     public int getId() {
         return id;

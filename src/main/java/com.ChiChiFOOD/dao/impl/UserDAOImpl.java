@@ -1,9 +1,8 @@
 package com.ChiChiFOOD.dao.impl;
 
-import com.ChiChiFOOD.dao.impl.*;
+import com.ChiChiFOOD.dao.impl.UserDAO;
 import com.ChiChiFOOD.model.User;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import java.util.List;
 
@@ -16,9 +15,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void save(User user) {
-        Transaction tx = session.beginTransaction();
         session.persist(user);
-        tx.commit();
     }
 
     @Override
@@ -28,20 +25,25 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public List<User> findAll() {
-        return session.createQuery("from User", User.class).list();
+        return session.createQuery("FROM User", User.class).list();
     }
 
     @Override
     public void update(User user) {
-        Transaction tx = session.beginTransaction();
         session.merge(user);
-        tx.commit();
     }
 
     @Override
     public void delete(User user) {
-        Transaction tx = session.beginTransaction();
         session.remove(user);
-        tx.commit();
+    }
+
+    @Override
+    public User findByPhoneAndPassword(String phone, String password) {
+        return session.createQuery(
+                        "FROM User u WHERE u.phone = :phone AND u.password = :password", User.class)
+                .setParameter("phone", phone)
+                .setParameter("password", password)
+                .uniqueResult();
     }
 }
