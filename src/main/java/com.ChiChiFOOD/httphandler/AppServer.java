@@ -13,7 +13,7 @@ public class AppServer {
 
         // Register API endpoints
         server.createContext("/auth/register", new RegisterHandler());
-//        server.createContext("/login", new LoginHandler());
+        server.createContext("/auth/login", new LoginHandler());
 
         server.setExecutor(null); // use default executor
         server.start();
