@@ -1,4 +1,4 @@
-POST http://localhost:8569/api/register
+POST http://localhost:8569/auth/register
 Content-Type: application/json
 
 {

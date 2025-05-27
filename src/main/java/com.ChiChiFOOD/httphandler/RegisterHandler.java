@@ -24,8 +24,14 @@ public class RegisterHandler implements HttpHandler {
         }
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8));
-        JsonObject jsonRequest = gson.fromJson(reader, JsonObject.class);
-
+        JsonObject jsonRequest;
+        try {
+            jsonRequest = gson.fromJson(reader, JsonObject.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            sendResponse(exchange, 400, "Invalid JSON");
+            return;
+        }
         String name = getString(jsonRequest, "name");
         String phone = getString(jsonRequest, "phone");
         String email = getString(jsonRequest, "email");

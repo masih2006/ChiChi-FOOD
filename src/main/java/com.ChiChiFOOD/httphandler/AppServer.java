@@ -12,7 +12,7 @@ public class AppServer {
         server = HttpServer.create(new InetSocketAddress(port), 0);
 
         // Register API endpoints
-//        server.createContext("/register", new RegisterHandler());
+        server.createContext("/auth/register", new RegisterHandler());
 //        server.createContext("/login", new LoginHandler());
 
         server.setExecutor(null); // use default executor

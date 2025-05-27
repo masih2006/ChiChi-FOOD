@@ -2,7 +2,6 @@ package com.ChiChiFOOD.httphandler;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,12 +12,9 @@ public class ApiDispatcherHandler implements HttpHandler {
 
     public ApiDispatcherHandler() {
         // ثبت مسیرها
-        routes.put("/api/register", new RegisterHandler());
+        routes.put("/auth/register", new RegisterHandler());
 
 //        routes.put("/login", new LoginHandler());
-        // اینجا می‌تونی هندلرهای دیگه هم اضافه کنی مثل:
-        // routes.put("/restaurants", new RestaurantHandler());
-        // routes.put("/orders", new OrderHandler());
     }
 
     @Override
@@ -29,7 +25,6 @@ public class ApiDispatcherHandler implements HttpHandler {
         if (handler != null) {
             handler.handle(exchange);
         } else {
-            // اگر مسیر وجود نداشت
             String response = "404 Not Found";
             exchange.sendResponseHeaders(404, response.length());
             exchange.getResponseBody().write(response.getBytes());
