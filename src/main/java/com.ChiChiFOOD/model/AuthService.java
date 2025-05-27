@@ -46,12 +46,12 @@ public class AuthService {
         user.setPhone(phone);
         user.setPassword(password);
         user.setAddress(address);
-
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = session.beginTransaction();
+        // inja ro nabaiad mizadi
+        //Session session = HibernateUtil.getSessionFactory().openSession();
+        //Transaction tx = session.beginTransaction();
         session.persist(user);
-        tx.commit();
-        session.close();
+        //tx.commit();
+        //session.close();
 
         System.out.println("Register success.");
         return true;
