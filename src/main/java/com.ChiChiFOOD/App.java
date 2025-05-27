@@ -1,32 +1,32 @@
 package com.ChiChiFOOD;
-
-import com.ChiChiFOOD.model.MenuService;
 import com.ChiChiFOOD.utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+
+
+import com.ChiChiFOOD.httphandler.AppServer;
+
 public class App {
     public static void main(String[] args) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        AppServer server = new AppServer();
+        int port = 8569;  // پورت دلخواه خودت
 
         try {
-            MenuService menuService = new MenuService(session);
+            server.start(port);
+            System.out.println("Server is running. Press Ctrl+C to stop.");
 
-            boolean running = true;
-            while (running) {
-                Transaction tx = session.beginTransaction();
-                try {
-                    running = menuService.start(); // فرض می‌کنیم start() حالا boolean برمی‌گرداند که مشخص می‌کند ادامه بده یا نه
-                    tx.commit();
-                } catch (Exception e) {
-                    tx.rollback();
-                    e.printStackTrace();
-                }
-            }
+            // اینجا می‌تونی کدی بذاری که برنامه تا زمان بسته شدن سرور اجرا بمونه.
+            // مثلا منتظر ورودی کاربر یا کارهای دیگه باشه.
+            // یا فقط اجازه بده برنامه اجرا بمونه تا Ctrl+C بزنن.
 
+            Thread.currentThread().join(); // نگه داشتن برنامه فعال (تا زمانی که با Ctrl+C بسته شود)
+
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
-            session.close();
-            HibernateUtil.shutdown();
+            server.stop();
+            System.out.println("Server stopped.");
         }
     }
 }
