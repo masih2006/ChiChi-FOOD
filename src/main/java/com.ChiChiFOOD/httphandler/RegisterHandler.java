@@ -39,7 +39,7 @@ public class RegisterHandler implements HttpHandler {
         String roleStr = getString(jsonRequest, "role");
         String address = getString(jsonRequest, "address");
 
-        if (name == null || phone == null || email == null || password == null || roleStr == null || address == null) {
+        if (name == null || phone == null || password == null || roleStr == null || address == null) {
             sendResponse(exchange, 400, "Missing required fields");
             return;
         }

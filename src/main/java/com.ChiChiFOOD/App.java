@@ -8,12 +8,14 @@ import org.hibernate.Transaction;
 import com.ChiChiFOOD.httphandler.AppServer;
 
 public class App {
+    private final static int PORT = 8569;  // پورت دلخواه خودت
+
     public static void main(String[] args) {
+
         AppServer server = new AppServer();
-        int port = 8569;  // پورت دلخواه خودت
 
         try {
-            server.start(port);
+            server.start(PORT);
             System.out.println("Server is running. Press Ctrl+C to stop.");
 
             // اینجا می‌تونی کدی بذاری که برنامه تا زمان بسته شدن سرور اجرا بمونه.

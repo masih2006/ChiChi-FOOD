@@ -2,5 +2,5 @@ package com.ChiChiFOOD.model;
 
 
 public enum Role {
-    BUYER, SELLER, COURIER
+    BUYER, SELLER, COURIER, ADMIN
 }
