@@ -1,13 +1,16 @@
 package com.ChiChiFOOD.model;
 
 import jakarta.persistence.*;
+import com.ChiChiFOOD.model.Resturant.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "restaurant")
 public class Restaurant {
-
-    @Column(nullable = false)
-    private Seller seller;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Column(nullable = false)
     private String name;
@@ -27,14 +30,17 @@ public class Restaurant {
     @Column(nullable = true)
     private int addtionalFee;
 
+    private boolean isResturantConfirmed = false;
+
+    @OneToMany (mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
+    private List <Menu> menus = new ArrayList<>();
+
     public Restaurant() {}
 
-    public Seller getSeller() {
-        return seller;
-    }
 
-    public void setSeller(Seller seller) {
-        this.seller = seller;
+    public void setResturantConfirmed (){
+        isResturantConfirmed = true;
     }
 
     public String getName() {
@@ -83,5 +89,13 @@ public class Restaurant {
 
     public void setAddtionalFee(int addtionalFee) {
         this.addtionalFee = addtionalFee;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 }

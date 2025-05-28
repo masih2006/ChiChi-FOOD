@@ -8,7 +8,6 @@ import com.google.gson.JsonObject;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.hibernate.Session;
-
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -18,7 +17,6 @@ import java.util.UUID;
 public class LoginHandler implements HttpHandler {
     private final Gson gson = new Gson();
 
-    // نگهداری توکن‌ها (تست ساده، نه برای تولید واقعی!)
     private static final Map<String, String> tokenToUserIdMap = new HashMap<>();
 
     @Override
