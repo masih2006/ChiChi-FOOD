@@ -15,7 +15,7 @@ public class AppServer {
         server.createContext("/auth/register", new RegisterHandler());
         server.createContext("/auth/login", new LoginHandler());
         server.createContext("/auth/logout", new AuthFilterHandler(new LogoutHandler()));
-
+        server.createContext("/restaurants", new RestaurantHandler());
         server.setExecutor(null); // use default executor
         server.start();
         System.out.println("HTTP server started on port " + port);

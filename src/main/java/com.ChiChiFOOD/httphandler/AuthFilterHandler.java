@@ -1,6 +1,7 @@
 package com.ChiChiFOOD.httphandler;
 
 import com.ChiChiFOOD.utils.JwtUtil;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -27,8 +28,9 @@ public class AuthFilterHandler implements HttpHandler {
 
 
         try {
-            String userId = JwtUtil.verifyToken(token);
-            exchange.setAttribute("userId", userId);  // ذخیره userId برای هندلر بعدی
+            DecodedJWT jwt = JwtUtil.verifyToken(token);
+            exchange.setAttribute("userId", jwt.getSubject());  // ذخیره userId برای هندلر بعدی
+            exchange.setAttribute("role", jwt.getClaim("role").asString());
             next.handle(exchange);
         } catch (Exception e) {
             sendResponse(exchange, 401, "Unauthorized: Invalid or expired token");

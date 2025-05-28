@@ -23,7 +23,7 @@ public abstract class User {
     @Column(unique = true, nullable = false)
     private String phone;
     @Column(nullable = true)
-    private String address;
+    private String address;;
     @Embedded
     private Bank bank;
 

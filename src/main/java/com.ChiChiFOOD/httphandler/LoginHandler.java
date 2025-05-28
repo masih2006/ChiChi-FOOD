@@ -1,6 +1,7 @@
 package com.ChiChiFOOD.httphandler;
 
 import com.ChiChiFOOD.model.AuthService;
+import com.ChiChiFOOD.model.Seller;
 import com.ChiChiFOOD.model.User;
 import com.ChiChiFOOD.utils.HibernateUtil;
 import com.ChiChiFOOD.utils.JwtUtil;
@@ -44,7 +45,7 @@ public class LoginHandler implements HttpHandler {
             User user = authService.loginUser(phone, password);
 
             if (user != null) {
-                String token = JwtUtil.generateToken(String.valueOf(user.getId()));
+                String token = JwtUtil.generateToken(user);
                 JsonObject responseJson = new JsonObject();
                 responseJson.addProperty("token", token);
                 responseJson.addProperty("message", "Login successful");
