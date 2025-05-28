@@ -3,21 +3,18 @@ package com.ChiChiFOOD.httphandler;
 import com.ChiChiFOOD.model.AuthService;
 import com.ChiChiFOOD.model.User;
 import com.ChiChiFOOD.utils.HibernateUtil;
+import com.ChiChiFOOD.utils.JwtUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.hibernate.Session;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 public class LoginHandler implements HttpHandler {
     private final Gson gson = new Gson();
-
-    private static final Map<String, String> tokenToUserIdMap = new HashMap<>();
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -47,9 +44,7 @@ public class LoginHandler implements HttpHandler {
             User user = authService.loginUser(phone, password);
 
             if (user != null) {
-                String token = UUID.randomUUID().toString();
-                tokenToUserIdMap.put(token, String.valueOf(user.getId()).toString());
-
+                String token = JwtUtil.generateToken(String.valueOf(user.getId()));
                 JsonObject responseJson = new JsonObject();
                 responseJson.addProperty("token", token);
                 responseJson.addProperty("message", "Login successful");
@@ -81,14 +76,5 @@ public class LoginHandler implements HttpHandler {
         try (OutputStream os = exchange.getResponseBody()) {
             os.write(responseBytes);
         }
-    }
-
-    // متد برای اعتبارسنجی توکن در آینده:
-    public static boolean isValidToken(String token) {
-        return tokenToUserIdMap.containsKey(token);
-    }
-
-    public static String getUserIdFromToken(String token) {
-        return tokenToUserIdMap.get(token);
     }
 }

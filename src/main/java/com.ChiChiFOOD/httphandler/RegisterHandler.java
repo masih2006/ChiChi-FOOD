@@ -1,6 +1,7 @@
 package com.ChiChiFOOD.httphandler;
 
 import com.ChiChiFOOD.model.AuthService;
+import com.ChiChiFOOD.model.Bank;
 import com.ChiChiFOOD.model.Role;
 import com.ChiChiFOOD.utils.HibernateUtil;
 import com.google.gson.Gson;
@@ -32,14 +33,15 @@ public class RegisterHandler implements HttpHandler {
             sendResponse(exchange, 400, "Invalid JSON");
             return;
         }
-        String name = getString(jsonRequest, "name");
+        String name = getString(jsonRequest, "full_name");
         String phone = getString(jsonRequest, "phone");
         String email = getString(jsonRequest, "email");
         String password = getString(jsonRequest, "password");
         String roleStr = getString(jsonRequest, "role");
         String address = getString(jsonRequest, "address");
+        String profileImageBase64 = getString(jsonRequest, "profileImageBase64");
 
-        if (name == null || phone == null || password == null || roleStr == null ) {
+        if (name == null || phone == null || password == null || roleStr == null || address == null) {
             sendResponse(exchange, 400, "Missing required fields");
             return;
         }
