@@ -10,7 +10,6 @@ import org.json.JSONObject;
 import org.json.JSONException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
