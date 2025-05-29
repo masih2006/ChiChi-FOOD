@@ -16,11 +16,8 @@ public class App {
 
         try {
             server.start(PORT);
-            System.out.println("Server is running. Press Ctrl+C to stop.");
+            System.out.println("Server is running. ");
 
-            // اینجا می‌تونی کدی بذاری که برنامه تا زمان بسته شدن سرور اجرا بمونه.
-            // مثلا منتظر ورودی کاربر یا کارهای دیگه باشه.
-            // یا فقط اجازه بده برنامه اجرا بمونه تا Ctrl+C بزنن.
 
             Thread.currentThread().join(); // نگه داشتن برنامه فعال (تا زمانی که با Ctrl+C بسته شود)
 

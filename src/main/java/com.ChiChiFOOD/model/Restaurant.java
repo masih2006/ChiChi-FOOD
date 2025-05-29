@@ -12,13 +12,13 @@ public class Restaurant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(nullable = false)
     private String address;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String phone;
 
     @Column(nullable = true)
@@ -28,15 +28,34 @@ public class Restaurant {
     private int taxFee;
 
     @Column(nullable = true)
-    private int addtionalFee;
+    private int additionalFee;
 
     private boolean isResturantConfirmed = false;
 
-    @OneToMany (mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    @OneToMany (mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//
+//    private List <Menu> menus = new ArrayList<>();
 
-    private List <Menu> menus = new ArrayList<>();
+    public Restaurant() {
+        // سازنده پیش‌فرض
+    }
 
-    public Restaurant() {}
+    public Restaurant(String name, String phone, String address) {
+        this.name = name;
+        this.phone = phone;
+        this.address = address;
+    }
+
+    public Restaurant(String name, String phone, String address, String logoBase64) {
+        this(name, phone, address); // فراخوانی سازنده قبلی
+        this.logoBase64 = logoBase64;
+    }
+
+    public Restaurant(String name, String phone, String address, String logoBase64, int taxFee, int additionalFee) {
+        this(name, phone, address, logoBase64); // فراخوانی سازنده قبلی
+        this.taxFee = taxFee;
+        this.additionalFee = additionalFee;
+    }
 
 
     public void setResturantConfirmed (){
@@ -84,11 +103,11 @@ public class Restaurant {
     }
 
     public int getAddtionalFee() {
-        return addtionalFee;
+        return additionalFee;
     }
 
     public void setAddtionalFee(int addtionalFee) {
-        this.addtionalFee = addtionalFee;
+        this.additionalFee = addtionalFee;
     }
 
     public void setId(int id) {
