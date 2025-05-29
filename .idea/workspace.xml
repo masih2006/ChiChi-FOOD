@@ -4,20 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea091f45-cdaa-4f68-95ab-9898c0188e81" name="Changes" comment="building resturan ...">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/ProfileHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/AppServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/AppServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/RegisterHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/RegisterHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/AuthService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/Bank.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/Bank.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/Buyer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/Buyer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/Courier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/Courier.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/Seller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/Seller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/utils/JwtUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/utils/JwtUtil.java" afterDir="false" />
-    </list>
+    <list default="true" id="ea091f45-cdaa-4f68-95ab-9898c0188e81" name="Changes" comment="profile done :))" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -192,7 +179,23 @@
       <option name="project" value="LOCAL" />
       <updated>1748456386837</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="profile done &#10;:)">
+      <option name="closed" value="true" />
+      <created>1748538888357</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1748538888357</updated>
+    </task>
+    <task id="LOCAL-00008" summary="profile done :))">
+      <option name="closed" value="true" />
+      <created>1748539082823</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1748539082823</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -215,7 +218,9 @@
     <MESSAGE value="fixed register bug" />
     <MESSAGE value="im making resturan bat first we should build admin" />
     <MESSAGE value="building resturan ..." />
-    <option name="LAST_COMMIT_MESSAGE" value="building resturan ..." />
+    <MESSAGE value="profile done &#10;:)" />
+    <MESSAGE value="profile done :))" />
+    <option name="LAST_COMMIT_MESSAGE" value="profile done :))" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
