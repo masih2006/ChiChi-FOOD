@@ -15,6 +15,8 @@ import com.sun.net.httpserver.HttpHandler;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class ProfileHandler implements HttpHandler {
 
@@ -23,11 +25,11 @@ public class ProfileHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String method = exchange.getRequestMethod();
-
-        if (!exchange.getRequestHeaders().containsKey("Authorization")) {
-            sendResponse(exchange, 401, "Authorization header missing");
-            return;
-        }
+    // niaz nist
+//        if (!exchange.getRequestHeaders().containsKey("Authorization")) {
+//            sendResponse(exchange, 401, "Authorization header missing");
+//            return;
+//        }
 
         String token = exchange.getRequestHeaders().getFirst("Authorization").replace("Bearer ", "");
         DecodedJWT decodedJWT;
@@ -49,10 +51,20 @@ public class ProfileHandler implements HttpHandler {
 
         switch (method) {
             case "GET":
-                String json = gson.toJson(user);
+                Map <String, Object> userResponse = new LinkedHashMap<>();
+                userResponse.put("id", user.getId());
+                userResponse.put("name", user.getName());
+                userResponse.put("phone", user.getPhone());
+                userResponse.put("email", user.getEmail());
+                userResponse.put("role", decodedJWT.getClaim("role").asString());
+                userResponse.put("address", user.getAddress());
+                userResponse.put("profileImageBase64", user.getProfileImageBase64());
+                userResponse.put("bankName",user.getBankName());
+                userResponse.put("AccountNumber",user.getAccountNumber());
+                String json = gson.toJson(userResponse);
                 sendJsonResponse(exchange, 200, json);
+                session.close();
                 break;
-
             case "PUT":
                 String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
                 try {
