@@ -31,7 +31,7 @@ public class Restaurant {
     private int additionalFee;
 
     private boolean isResturantConfirmed = false;
-
+ // dardast sakht kargaran mashgool karand....
 //    @OneToMany (mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //
 //    private List <Menu> menus = new ArrayList<>();
