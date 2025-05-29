@@ -127,6 +127,7 @@ public class RestaurantHandler implements HttpHandler {
             sendTextResponse(exchange, 403, "Forbidden request");
             return;
     }
+        // in baiad dorost she
 //        if (restaurantExistsByNameOrPhone(name, phone)) {
 //            sendTextResponse(exchange, 409, "conflict occurred.");
 //            return;
