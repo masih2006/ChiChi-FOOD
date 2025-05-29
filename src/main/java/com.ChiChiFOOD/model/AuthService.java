@@ -16,7 +16,7 @@ public class AuthService {
         this.userDAO = new UserDAOImpl(session);
     }
 
-    public boolean registerUser(String name, String phone, String email, String password, Role role, String address) {
+    public boolean registerUser(String name, String phone, String email, String password, Role role, String address, String profileImageBase64, Bank bank) {
         if (isEmailExists(email)) {
             System.out.println("Email already exists.");
             return false;
@@ -46,6 +46,8 @@ public class AuthService {
         user.setPhone(phone);
         user.setPassword(password);
         user.setAddress(address);
+        user.setProfileImageBase64(profileImageBase64);
+        user.setBank(bank);
         // inja ro nabaiad mizadi
         //Session session = HibernateUtil.getSessionFactory().openSession();
         //Transaction tx = session.beginTransaction();

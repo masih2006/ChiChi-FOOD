@@ -15,6 +15,7 @@ public class AppServer {
         server.createContext("/auth/register", new RegisterHandler());
         server.createContext("/auth/login", new LoginHandler());
         server.createContext("/auth/logout", new AuthFilterHandler(new LogoutHandler()));
+        server.createContext("/auth/profile", new AuthFilterHandler(new ProfileHandler()));
         server.createContext("/restaurants", new AuthFilterHandler(new RestaurantHandler()));
         server.setExecutor(null); // use default executor
         server.start();

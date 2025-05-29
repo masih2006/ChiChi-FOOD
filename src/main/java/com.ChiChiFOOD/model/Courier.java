@@ -8,7 +8,8 @@ import jakarta.persistence.Table;
 @Entity
 @DiscriminatorValue("Courier")
 public class Courier extends User {
-public Courier() {
-    super();
-}
+    public Courier() {
+        super();
+    }
+
 }

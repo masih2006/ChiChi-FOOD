@@ -40,4 +40,13 @@ public class JwtUtil {
 
 
     }
+    public static int getUserIdFromToken(String token) {
+        DecodedJWT decodedJWT = verifyToken(token);
+        return Integer.parseInt(decodedJWT.getSubject());
+    }
+
+    public static String getRoleFromToken(String token) {
+        DecodedJWT decodedJWT = verifyToken(token);
+        return decodedJWT.getClaim("role").asString();
+    }
 }

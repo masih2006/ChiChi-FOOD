@@ -6,4 +6,5 @@ import jakarta.persistence.*;
 @DiscriminatorValue("Buyer")
 public class Buyer extends User {
     public Buyer() { super(); }
+
 }

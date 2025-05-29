@@ -1,10 +1,13 @@
 package com.ChiChiFOOD.model;
 
+import com.google.gson.annotations.Expose;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
 public class Bank {
+    @Expose
     private String bankName;
+    @Expose
     private String accountNumber;
 
     public String getAccountNumber() {

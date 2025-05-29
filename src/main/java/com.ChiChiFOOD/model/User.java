@@ -1,5 +1,7 @@
 package com.ChiChiFOOD.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import jakarta.persistence.*;
 
 @Entity
@@ -7,28 +9,71 @@ import jakarta.persistence.*;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "Role") // این می‌سازه ستون DTYPE و مقدارش رو از نام کلاس مشخص می‌کنه
 public abstract class User {
-
+    @Expose
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
+    @Expose
     @Column(nullable = false)
+    @SerializedName("full_name")
     private String name;
+    @Expose
+    @Column(unique = true, nullable = false)
+    private String phone;
+    @Expose
+    @Column(unique = true, nullable = false)
+    private String email;
 
+
+    //    @Transient
+//    private String role;
+    @Expose
+    @Column(nullable = true)
+    private String address;
+    ;
     @Column(nullable = false)
     private String password;
 
-    @Column(unique = true, nullable = false)
-    private String email;
-    @Column(unique = true, nullable = false)
-    private String phone;
-    @Column(nullable = true)
-    private String address;;
+    @SerializedName("role")
+    public String getRole() {
+        return this.getClass().getSimpleName();
+    }
+
+//    public void setRole(String role) {
+//        this.role = role;
+//    }
+
+
+    @Expose
+    @Column
+    private String profileImageBase64;
+
+
+    public Bank getBank() {
+        return bank;
+    }
+
+    public void setBank(Bank bank) {
+        this.bank = bank;
+    }
+
+    @Expose
     @Embedded
     private Bank bank;
 
+
     public User() {
         this.bank = new Bank();
+
+    }
+
+
+    public String getProfileImageBase64() {
+        return profileImageBase64;
+    }
+
+    public void setProfileImageBase64(String profileImageBase64) {
+        this.profileImageBase64 = profileImageBase64;
     }
 
     public void setAccountNumber(String accountNumber) {
