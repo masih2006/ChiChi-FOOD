@@ -1,7 +1,6 @@
 package com.ChiChiFOOD.httphandler;
 
-import com.ChiChiFOOD.model.AuthService;
-import com.ChiChiFOOD.model.Seller;
+import com.ChiChiFOOD.Services.AuthService;
 import com.ChiChiFOOD.model.User;
 import com.ChiChiFOOD.utils.HibernateUtil;
 import com.ChiChiFOOD.utils.JwtUtil;

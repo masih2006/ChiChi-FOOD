@@ -1,9 +1,8 @@
-package com.ChiChiFOOD.model;
+package com.ChiChiFOOD.Services;
 
-import com.ChiChiFOOD.model.Role;
+import com.ChiChiFOOD.model.*;
 import com.ChiChiFOOD.utils.HibernateUtil;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import com.ChiChiFOOD.dao.impl.UserDAOImpl;
 import com.ChiChiFOOD.dao.impl.UserDAO;
 
@@ -48,19 +47,10 @@ public class AuthService {
         user.setAddress(address);
         user.setProfileImageBase64(profileImageBase64);
         user.setBank(bank);
-        // inja ro nabaiad mizadi
-        //Session session = HibernateUtil.getSessionFactory().openSession();
-        //Transaction tx = session.beginTransaction();
         session.persist(user);
-        //tx.commit();
-        //session.close();
-
         System.out.println("Register success.");
         return true;
     }
-
-
-
     public User loginUser(String phone, String password) {
         return userDAO.findByPhoneAndPassword(phone, password);
     }

@@ -1,6 +1,6 @@
 package com.ChiChiFOOD.httphandler;
 
-import com.ChiChiFOOD.model.AuthService;
+import com.ChiChiFOOD.Services.AuthService;
 import com.ChiChiFOOD.model.Bank;
 import com.ChiChiFOOD.model.Role;
 import com.ChiChiFOOD.model.User;

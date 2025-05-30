@@ -14,9 +14,7 @@ public class RestaurantDao {
     }
 
     public void save(Restaurant restaurant) {
-        session.beginTransaction();
         session.save(restaurant);
-        session.getTransaction().commit();
     }
 
     public void update(Restaurant restaurant) {
