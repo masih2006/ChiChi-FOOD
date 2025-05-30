@@ -3,6 +3,7 @@ package com.ChiChiFOOD.Services;
 import com.ChiChiFOOD.dao.impl.RestaurantDao;
 import com.ChiChiFOOD.model.Restaurant;
 import com.ChiChiFOOD.utils.HibernateUtil;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.sun.net.httpserver.HttpExchange;
 import org.hibernate.Session;
@@ -11,8 +12,12 @@ import org.hibernate.Transaction;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
+import static com.ChiChiFOOD.httphandler.Sender.sendJsonResponse;
 import static com.ChiChiFOOD.httphandler.Sender.sendTextResponse;
 
 public class RestaurantService {
@@ -54,7 +59,7 @@ public class RestaurantService {
             Transaction tx = session.beginTransaction();
             try{
                 RestaurantDao restaurantDao = new RestaurantDao(session);
-                Restaurant restaurant = new Restaurant(name, phone, address, logoBase64, fee, additionalFee);
+                Restaurant restaurant = new Restaurant(exchange.getAttribute("userId").toString(),name, phone, address, logoBase64, fee, additionalFee);
                 restaurantDao.save(restaurant);
                 sendTextResponse(exchange, 200, "User registered successfully");
                 return;
@@ -64,6 +69,35 @@ public class RestaurantService {
                 sendTextResponse(exchange, 500, "Internal server error");
             }
         }
+    }
+
+    public static void getRestaurants(HttpExchange exchange) throws IOException {
+        String SellerId  = exchange.getAttribute("userId").toString();
+        if (!exchange.getAttribute("role").equals("seller")) {
+            sendTextResponse(exchange, 403, "Forbidden request");
+        }
+        if (!restaurantExistsBySellerId(SellerId)){
+            sendTextResponse(exchange, 404, "Resource not found");
+        }
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            RestaurantDao restaurantDao = new RestaurantDao(session);
+            List<Restaurant> restaurants = restaurantDao.getRestaurantsBySellerId(SellerId);
+            List<Map<String, Object>> responseList = new ArrayList<>();
+            for (Restaurant restaurant : restaurants) {
+                Map<String, Object> restaurantResponse = new LinkedHashMap<>();
+                restaurantResponse.put("id", restaurant.getId());
+                restaurantResponse.put("name", restaurant.getName());
+                restaurantResponse.put("address", restaurant.getAddress());
+                restaurantResponse.put("phone", restaurant.getPhone());
+                restaurantResponse.put("logoBase64", restaurant.getLogoBase64());
+                restaurantResponse.put("tax_fee", restaurant.getTaxFee());
+                restaurantResponse.put("additional_fee", restaurant.getAdditionalFee());
+                responseList.add(restaurantResponse);
+            }
+            String responseJson = new Gson().toJson(responseList);
+            sendJsonResponse(exchange, 200, responseJson);
+        }
+
     }
 
     public static boolean restaurantExistsByName(String name) {
@@ -84,7 +118,14 @@ public class RestaurantService {
         return count != null && count > 0;
     }
 
-
+    public static boolean restaurantExistsBySellerId (String SellerId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Long count = session.createQuery("SELECT COUNT(r) FROM Restaurant r WHERE r.SellerId = :SellerId", Long.class)
+                .setParameter("SellerId", SellerId)
+                .uniqueResult();
+        session.close();
+        return count != null && count > 0;
+    }
 
 
 

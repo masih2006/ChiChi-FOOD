@@ -18,6 +18,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static com.ChiChiFOOD.httphandler.Sender.sendJsonResponse;
+import static com.ChiChiFOOD.httphandler.Sender.sendResponse;
+
 public class ProfileHandler implements HttpHandler {
 
     private final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().serializeNulls().create();
@@ -99,19 +102,5 @@ public class ProfileHandler implements HttpHandler {
         }
     }
 
-    private void sendResponse(HttpExchange exchange, int statusCode, String message) throws IOException {
-        exchange.sendResponseHeaders(statusCode, message.length());
-        OutputStream os = exchange.getResponseBody();
-        os.write(message.getBytes(StandardCharsets.UTF_8));
-        os.close();
-    }
 
-    private void sendJsonResponse(HttpExchange exchange, int statusCode, String json) throws IOException {
-        exchange.getResponseHeaders().add("Content-Type", "application/json");
-        byte[] bytes = json.getBytes(StandardCharsets.UTF_8);
-        exchange.sendResponseHeaders(statusCode, bytes.length);
-        OutputStream os = exchange.getResponseBody();
-        os.write(bytes);
-        os.close();
-    }
 }

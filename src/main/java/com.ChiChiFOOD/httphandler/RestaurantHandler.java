@@ -9,10 +9,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+
 public class RestaurantHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         String path = exchange.getRequestURI().getPath();
-        String [] params = path.split("/");
+        String[] params = Arrays.stream(path.split("/"))
+                .filter(s -> !s.isEmpty())
+                .toArray(String[]::new);
         String method = exchange.getRequestMethod();
         Gson gson = new Gson();
         BufferedReader reader = new BufferedReader(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8));
@@ -41,8 +45,9 @@ public class RestaurantHandler implements HttpHandler {
 
     }
     private void getHandler(HttpExchange exchange, String [] params) throws IOException {
+        System.out.println(Arrays.toString(params));
         if (params.length == 2 && params[1].equals("mine")) {
-
+            RestaurantService.getRestaurants(exchange);
         }else if (params.length == 3 && params[2].equals("orders")) {
 
         }else {

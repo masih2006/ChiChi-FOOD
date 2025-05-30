@@ -29,30 +29,29 @@ public class Restaurant {
 
     @Column(nullable = true)
     private int additionalFee;
+    @Column(nullable = false)
+    private String SellerId;
 
     private boolean isResturantConfirmed = false;
- // dardast sakht kargaran mashgool karand....
-//    @OneToMany (mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//
-//    private List <Menu> menus = new ArrayList<>();
 
     public Restaurant() {
         // سازنده پیش‌فرض
     }
 
-    public Restaurant(String name, String phone, String address) {
+    public Restaurant(String SellerId, String name, String phone, String address) {
+        this.SellerId = SellerId;
         this.name = name;
         this.phone = phone;
         this.address = address;
     }
 
-    public Restaurant(String name, String phone, String address, String logoBase64) {
-        this(name, phone, address); // فراخوانی سازنده قبلی
+    public Restaurant(String SellerId, String name, String phone, String address, String logoBase64) {
+        this(SellerId, name, phone, address); // فراخوانی سازنده قبلی
         this.logoBase64 = logoBase64;
     }
 
-    public Restaurant(String name, String phone, String address, String logoBase64, int taxFee, int additionalFee) {
-        this(name, phone, address, logoBase64); // فراخوانی سازنده قبلی
+    public Restaurant(String SellerId,String name, String phone, String address, String logoBase64, int taxFee, int additionalFee) {
+        this(SellerId, name, phone, address, logoBase64); // فراخوانی سازنده قبلی
         this.taxFee = taxFee;
         this.additionalFee = additionalFee;
     }
@@ -116,5 +115,21 @@ public class Restaurant {
 
     public int getId() {
         return id;
+    }
+
+    public String getSellerId() {
+        return SellerId;
+    }
+
+    public void setSellerId(String sellerId) {
+        SellerId = sellerId;
+    }
+
+    public int getAdditionalFee() {
+        return additionalFee;
+    }
+
+    public void setAdditionalFee(int additionalFee) {
+        this.additionalFee = additionalFee;
     }
 }

@@ -33,8 +33,10 @@ public class RestaurantDao {
         return session.get(Restaurant.class, id);
     }
 
-    public List<Restaurant> findAll() {
-        return session.createQuery("from Restaurant", Restaurant.class).list();
+    public List<Restaurant> getRestaurantsBySellerId(String sellerId) {
+        return session.createQuery("FROM Restaurant WHERE SellerId = :sellerId", Restaurant.class)
+                .setParameter("sellerId", sellerId)
+                .getResultList();
     }
 
     public boolean existsByNameOrPhone(String name, String phone) {
