@@ -13,13 +13,13 @@ public class LogoutHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         if (!exchange.getRequestMethod().equalsIgnoreCase("POST")) {
-            sendResponse(exchange, 405, "Method Not Allowed");
+            Sender.sendResponse(exchange, 405, "Method Not Allowed");
             return;
         }
 
         String authHeader = exchange.getRequestHeaders().getFirst("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            sendResponse(exchange, 400, "Missing or invalid Authorization header");
+            Sender.sendResponse(exchange, 400, "Missing or invalid Authorization header");
             return;
         }
 
@@ -27,15 +27,15 @@ public class LogoutHandler implements HttpHandler {
 
         TokenBlacklist.blacklist(token); // اضافه به لیست سیاه
 
-        sendResponse(exchange, 200, "Logged out successfully");
+        Sender.sendResponse(exchange, 200, "Logged out successfully");
     }
 
-    private void sendResponse(HttpExchange exchange, int statusCode, String message) throws IOException {
-        byte[] bytes = message.getBytes(StandardCharsets.UTF_8);
-        exchange.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
-        exchange.sendResponseHeaders(statusCode, bytes.length);
-        try (OutputStream os = exchange.getResponseBody()) {
-            os.write(bytes);
-        }
-    }
+//    private void sendResponse(HttpExchange exchange, int statusCode, String message) throws IOException {
+//        byte[] bytes = message.getBytes(StandardCharsets.UTF_8);
+//        exchange.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
+//        exchange.sendResponseHeaders(statusCode, bytes.length);
+//        try (OutputStream os = exchange.getResponseBody()) {
+//            os.write(bytes);
+//        }
+//    }
 }

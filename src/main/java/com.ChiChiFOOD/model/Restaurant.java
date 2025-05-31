@@ -1,7 +1,7 @@
 package com.ChiChiFOOD.model;
 
+import com.ChiChiFOOD.model.restaurant.FoodItem;
 import jakarta.persistence.*;
-import com.ChiChiFOOD.model.Resturant.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,40 +25,52 @@ public class Restaurant {
     private String logoBase64;
 
     @Column(nullable = true)
-    private int taxFee;
+    private Integer taxFee;
 
     @Column(nullable = true)
-    private int additionalFee;
-    @Column(nullable = false)
-    private String SellerId;
+    private Integer additionalFee;
 
-    private boolean isResturantConfirmed = false;
+    @Column(nullable = false)
+    private String sellerId;
+
+    private boolean isRestaurantConfirmed = false;
+
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<FoodItem> foodItems = new ArrayList<>();
 
     public Restaurant() {
-        // سازنده پیش‌فرض
     }
 
-    public Restaurant(String SellerId, String name, String phone, String address) {
-        this.SellerId = SellerId;
+    public Restaurant(String sellerId, String name, String phone, String address) {
+        this.sellerId = sellerId;
         this.name = name;
         this.phone = phone;
         this.address = address;
     }
 
-    public Restaurant(String SellerId, String name, String phone, String address, String logoBase64) {
-        this(SellerId, name, phone, address); // فراخوانی سازنده قبلی
+    public Restaurant(String sellerId, String name, String phone, String address, String logoBase64) {
+        this(sellerId, name, phone, address);
         this.logoBase64 = logoBase64;
     }
 
-    public Restaurant(String SellerId,String name, String phone, String address, String logoBase64, int taxFee, int additionalFee) {
-        this(SellerId, name, phone, address, logoBase64); // فراخوانی سازنده قبلی
+    public Restaurant(String sellerId, String name, String phone, String address, String logoBase64, Integer taxFee, Integer additionalFee) {
+        this(sellerId, name, phone, address, logoBase64);
         this.taxFee = taxFee;
         this.additionalFee = additionalFee;
     }
 
+    public void setRestaurantConfirmed() {
+        this.isRestaurantConfirmed = true;
+    }
 
-    public void setResturantConfirmed (){
-        isResturantConfirmed = true;
+    // getter و setter ها
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -93,43 +105,53 @@ public class Restaurant {
         this.logoBase64 = logoBase64;
     }
 
-    public int getTaxFee() {
+    public Integer getTaxFee() {
         return taxFee;
     }
 
-    public void setTaxFee(int taxFee) {
+    public void setTaxFee(Integer taxFee) {
         this.taxFee = taxFee;
     }
 
-    public int getAddtionalFee() {
+    public Integer getAdditionalFee() {
         return additionalFee;
     }
 
-    public void setAddtionalFee(int addtionalFee) {
-        this.additionalFee = addtionalFee;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
-        return id;
+    public void setAdditionalFee(Integer additionalFee) {
+        this.additionalFee = additionalFee;
     }
 
     public String getSellerId() {
-        return SellerId;
+        return sellerId;
     }
 
     public void setSellerId(String sellerId) {
-        SellerId = sellerId;
+        this.sellerId = sellerId;
     }
 
-    public int getAdditionalFee() {
-        return additionalFee;
+    public boolean isRestaurantConfirmed() {
+        return isRestaurantConfirmed;
     }
 
-    public void setAdditionalFee(int additionalFee) {
-        this.additionalFee = additionalFee;
+    public void setRestaurantConfirmed(boolean restaurantConfirmed) {
+        isRestaurantConfirmed = restaurantConfirmed;
+    }
+
+    public List<FoodItem> getFoodItems() {
+        return foodItems;
+    }
+
+    public void setFoodItems(List<FoodItem> foodItems) {
+        this.foodItems = foodItems;
+    }
+
+    public void addFoodItem(FoodItem foodItem) {
+        foodItems.add(foodItem);
+        foodItem.setRestaurant(this);
+    }
+
+    public void removeFoodItem(FoodItem foodItem) {
+        foodItems.remove(foodItem);
+        foodItem.setRestaurant(null);
     }
 }

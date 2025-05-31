@@ -19,7 +19,7 @@ public class LoginHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         if (!exchange.getRequestMethod().equalsIgnoreCase("POST")) {
-            sendTextResponse(exchange, 405, "Method Not Allowed");
+            Sender.sendTextResponse(exchange, 405, "Method Not Allowed");
             return;
         }
 
@@ -27,7 +27,7 @@ public class LoginHandler implements HttpHandler {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8))) {
             jsonRequest = gson.fromJson(reader, JsonObject.class);
         } catch (Exception e) {
-            sendTextResponse(exchange, 400, "Invalid JSON");
+            Sender.sendTextResponse(exchange, 400, "Invalid JSON");
             return;
         }
 
@@ -35,7 +35,7 @@ public class LoginHandler implements HttpHandler {
         String password = getString(jsonRequest, "password");
 
         if (phone == null || password == null) {
-            sendTextResponse(exchange, 400, "Missing credentials");
+            Sender.sendTextResponse(exchange, 400, "Missing credentials");
             return;
         }
 
@@ -49,9 +49,9 @@ public class LoginHandler implements HttpHandler {
                 responseJson.addProperty("token", token);
                 responseJson.addProperty("message", "Login successful");
 
-                sendJsonResponse(exchange, 200, responseJson.toString());
+                Sender.sendJsonResponse(exchange, 200, responseJson.toString());
             } else {
-                sendTextResponse(exchange, 401, "Invalid email/phone or password");
+                Sender.sendTextResponse(exchange, 401, "Invalid email/phone or password");
             }
         }
     }
@@ -60,21 +60,21 @@ public class LoginHandler implements HttpHandler {
         return obj.has(key) && !obj.get(key).isJsonNull() ? obj.get(key).getAsString() : null;
     }
 
-    private void sendTextResponse(HttpExchange exchange, int statusCode, String message) throws IOException {
-        byte[] responseBytes = message.getBytes(StandardCharsets.UTF_8);
-        exchange.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
-        exchange.sendResponseHeaders(statusCode, responseBytes.length);
-        try (OutputStream os = exchange.getResponseBody()) {
-            os.write(responseBytes);
-        }
-    }
-
-    private void sendJsonResponse(HttpExchange exchange, int statusCode, String json) throws IOException {
-        byte[] responseBytes = json.getBytes(StandardCharsets.UTF_8);
-        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-        exchange.sendResponseHeaders(statusCode, responseBytes.length);
-        try (OutputStream os = exchange.getResponseBody()) {
-            os.write(responseBytes);
-        }
-    }
+//    private void sendTextResponse(HttpExchange exchange, int statusCode, String message) throws IOException {
+//        byte[] responseBytes = message.getBytes(StandardCharsets.UTF_8);
+//        exchange.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
+//        exchange.sendResponseHeaders(statusCode, responseBytes.length);
+//        try (OutputStream os = exchange.getResponseBody()) {
+//            os.write(responseBytes);
+//        }
+//    }
+//
+//    private void sendJsonResponse(HttpExchange exchange, int statusCode, String json) throws IOException {
+//        byte[] responseBytes = json.getBytes(StandardCharsets.UTF_8);
+//        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
+//        exchange.sendResponseHeaders(statusCode, responseBytes.length);
+//        try (OutputStream os = exchange.getResponseBody()) {
+//            os.write(responseBytes);
+//        }
+//    }
 }

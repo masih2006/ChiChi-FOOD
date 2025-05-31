@@ -1,6 +1,6 @@
 package com.ChiChiFOOD.Services;
 
-import com.ChiChiFOOD.dao.impl.RestaurantDao;
+import com.ChiChiFOOD.dao.impl.RestaurantDAOImpl;
 import com.ChiChiFOOD.model.Restaurant;
 import com.ChiChiFOOD.utils.HibernateUtil;
 import com.google.gson.Gson;
@@ -10,8 +10,6 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -58,10 +56,10 @@ public class RestaurantService {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction tx = session.beginTransaction();
             try{
-                RestaurantDao restaurantDao = new RestaurantDao(session);
+                RestaurantDAOImpl restaurantDaoImpl = new RestaurantDAOImpl(session);
                 Restaurant restaurant = new Restaurant(exchange.getAttribute("userId").toString(),name, phone, address, logoBase64, fee, additionalFee);
-                restaurantDao.save(restaurant);
-                sendTextResponse(exchange, 200, "User registered successfully");
+                restaurantDaoImpl.save(restaurant);
+                sendTextResponse(exchange, 200, "Restaurant registered successfully");
                 return;
             }catch (Exception e) {
                 e.printStackTrace();
@@ -80,8 +78,8 @@ public class RestaurantService {
             sendTextResponse(exchange, 404, "Resource not found");
         }
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            RestaurantDao restaurantDao = new RestaurantDao(session);
-            List<Restaurant> restaurants = restaurantDao.getRestaurantsBySellerId(SellerId);
+            RestaurantDAOImpl restaurantDaoImpl = new RestaurantDAOImpl(session);
+            List<Restaurant> restaurants = restaurantDaoImpl.getRestaurantsBySellerId(SellerId);
             List<Map<String, Object>> responseList = new ArrayList<>();
             for (Restaurant restaurant : restaurants) {
                 Map<String, Object> restaurantResponse = new LinkedHashMap<>();
@@ -120,7 +118,7 @@ public class RestaurantService {
 
     public static boolean restaurantExistsBySellerId (String SellerId) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Long count = session.createQuery("SELECT COUNT(r) FROM Restaurant r WHERE r.SellerId = :SellerId", Long.class)
+        Long count = session.createQuery("SELECT COUNT(r) FROM Restaurant r WHERE r.sellerId = :SellerId", Long.class)
                 .setParameter("SellerId", SellerId)
                 .uniqueResult();
         session.close();

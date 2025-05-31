@@ -6,10 +6,10 @@ import org.hibernate.query.Query;
 
 import java.util.List;
 
-public class RestaurantDao {
+public class RestaurantDAOImpl implements RestaurantDAO {
     private final Session session;
 
-    public RestaurantDao(Session session) {
+    public RestaurantDAOImpl(Session session) {
         this.session = session;
     }
 
@@ -34,7 +34,7 @@ public class RestaurantDao {
     }
 
     public List<Restaurant> getRestaurantsBySellerId(String sellerId) {
-        return session.createQuery("FROM Restaurant WHERE SellerId = :sellerId", Restaurant.class)
+        return session.createQuery("FROM Restaurant WHERE sellerId = :sellerId", Restaurant.class)
                 .setParameter("sellerId", sellerId)
                 .getResultList();
     }

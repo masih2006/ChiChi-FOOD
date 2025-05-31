@@ -22,7 +22,7 @@ public class RegisterHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         if (!exchange.getRequestMethod().equalsIgnoreCase("POST")) {
-            sendResponse(exchange, 405, "Method Not Allowed");
+            Sender.sendResponse(exchange, 405, "Method Not Allowed");
             return;
         }
 
@@ -32,7 +32,7 @@ public class RegisterHandler implements HttpHandler {
             jsonRequest = gson.fromJson(reader, JsonObject.class);
         } catch (Exception e) {
             e.printStackTrace();
-            sendResponse(exchange, 400, "Invalid JSON");
+            Sender.sendResponse(exchange, 400, "Invalid JSON");
             return;
         }
         String name = getString(jsonRequest, "full_name");
@@ -75,7 +75,7 @@ public class RegisterHandler implements HttpHandler {
 
 // فقط name و password الزامی هستن
         if (name == null || phone == null || password == null || roleStr == null || address == null) {
-            sendResponse(exchange, 400, "Missing required fields: full_name and password are required.");
+            Sender.sendResponse(exchange, 400, "Missing required fields: full_name and password are required.");
             return;
         }
 
@@ -83,7 +83,7 @@ public class RegisterHandler implements HttpHandler {
         try {
             role = Role.valueOf(roleStr.toUpperCase());
         } catch (IllegalArgumentException e) {
-            sendResponse(exchange, 400, "Invalid role");
+            Sender.sendResponse(exchange, 400, "Invalid role");
             return;
         }
 
@@ -105,16 +105,16 @@ public class RegisterHandler implements HttpHandler {
                     responseJson.addProperty("token", token);
                     responseJson.addProperty("message", "Registration and login successful");
 
-                    sendResponse(exchange, 200, responseJson.toString());
+                    Sender.sendResponse(exchange, 200, responseJson.toString());
                 } else {
-                    sendResponse(exchange, 500, "Login after registration failed");
+                    Sender.sendResponse(exchange, 500, "Login after registration failed");
                 }
             } else {
                 tx.rollback();
-                sendResponse(exchange, 409, "User with this phone already exists");
+                Sender.sendResponse(exchange, 409, "User with this phone already exists");
             }
         } catch (Exception e) {
-            sendResponse(exchange, 500, "Internal server error");
+            Sender.sendResponse(exchange, 500, "Internal server error");
             e.printStackTrace();
         }
     }
@@ -123,13 +123,13 @@ public class RegisterHandler implements HttpHandler {
         return obj.has(key) && !obj.get(key).isJsonNull() ? obj.get(key).getAsString() : null;
     }
 
-    private void sendResponse(HttpExchange exchange, int statusCode, String message) throws IOException {
-        byte[] responseBytes = message.getBytes(StandardCharsets.UTF_8);
-        exchange.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
-        exchange.sendResponseHeaders(statusCode, responseBytes.length);
-        try (OutputStream os = exchange.getResponseBody()) {
-            os.write(responseBytes);
-        }
-    }
+//    private void sendResponse(HttpExchange exchange, int statusCode, String message) throws IOException {
+//        byte[] responseBytes = message.getBytes(StandardCharsets.UTF_8);
+//        exchange.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
+//        exchange.sendResponseHeaders(statusCode, responseBytes.length);
+//        try (OutputStream os = exchange.getResponseBody()) {
+//            os.write(responseBytes);
+//        }
+//    }
 
 }

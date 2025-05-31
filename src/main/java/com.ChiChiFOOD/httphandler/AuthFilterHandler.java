@@ -33,6 +33,7 @@ public class AuthFilterHandler implements HttpHandler {
             exchange.setAttribute("role", jwt.getClaim("role").asString());
             next.handle(exchange);
         } catch (Exception e) {
+            e.printStackTrace();
             sendResponse(exchange, 401, "Unauthorized: Invalid or expired token");
         }
     }

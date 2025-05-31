@@ -8,10 +8,10 @@ import com.ChiChiFOOD.dao.impl.UserDAO;
 
 public class AuthService {
     private final UserDAO userDAO;
-    private final Session session;
+    private final Session SESSION;
 
     public AuthService(Session session) {
-        this.session = session;
+        this.SESSION = session;
         this.userDAO = new UserDAOImpl(session);
     }
 
@@ -47,7 +47,7 @@ public class AuthService {
         user.setAddress(address);
         user.setProfileImageBase64(profileImageBase64);
         user.setBank(bank);
-        session.persist(user);
+        SESSION.persist(user);
         System.out.println("Register success.");
         return true;
     }

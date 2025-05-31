@@ -1,4 +1,4 @@
-package com.ChiChiFOOD.model.Resturant;
+package com.ChiChiFOOD.model.restaurant;
 
 import com.ChiChiFOOD.model.Restaurant;
 import jakarta.persistence.*;
