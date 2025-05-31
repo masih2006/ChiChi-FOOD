@@ -1,5 +1,6 @@
 package com.ChiChiFOOD.Services;
 
+import com.ChiChiFOOD.dao.impl.RestaurantDAO;
 import com.ChiChiFOOD.dao.impl.RestaurantDAOImpl;
 import com.ChiChiFOOD.model.Restaurant;
 import com.ChiChiFOOD.utils.HibernateUtil;
@@ -98,6 +99,36 @@ public class RestaurantService {
 
     }
 
+    public static void updateRestaurant(HttpExchange exchange, JsonObject jsonRequest, String restaurantId) throws IOException {
+        String SellerId  = exchange.getAttribute("userId").toString();
+        if (!exchange.getAttribute("role").equals("seller")) {
+            sendTextResponse(exchange, 403, "Forbidden request");
+        }
+        if (!restaurantExistsById(restaurantId)) {
+            sendTextResponse(exchange, 404, "Resource not found");
+            return;
+        }try  (Session session = HibernateUtil.getSessionFactory().openSession()){
+            Transaction tx = session.beginTransaction();
+            try {
+                RestaurantDAO restaurantDao = new RestaurantDAOImpl(session);
+                Restaurant restaurant = restaurantDao.findById(Long.parseLong(restaurantId));
+                if (jsonRequest.has("name")) restaurant.setName(jsonRequest.get("name").getAsString());
+                if (jsonRequest.has("tax_fee")) restaurant.setTaxFee(jsonRequest.get("tax_fee").getAsInt());
+                if (jsonRequest.has("phone")) restaurant.setPhone(jsonRequest.get("phone").getAsString());
+                if (jsonRequest.has("address")) restaurant.setAddress(jsonRequest.get("address").getAsString());
+                if (jsonRequest.has("logoBase64")) restaurant.setLogoBase64(jsonRequest.get("logoBase64").getAsString());
+                if (jsonRequest.has("additional_fee")) restaurant.setAdditionalFee(jsonRequest.get("additional_fee").getAsInt());
+                restaurantDao.update(restaurant);
+                sendTextResponse(exchange, 200, "Restaurant updated successfully");
+                tx.commit();
+            }catch (Exception e) {
+                tx.rollback();
+                e.printStackTrace();
+                sendTextResponse(exchange, 500, "Internal server error");
+            }
+        }
+    }
+
     public static boolean restaurantExistsByName(String name) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Long count = session.createQuery("SELECT COUNT(r) FROM Restaurant r WHERE r.name = :name", Long.class)
@@ -125,6 +156,13 @@ public class RestaurantService {
         return count != null && count > 0;
     }
 
-
+    public static boolean restaurantExistsById(String id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Long count = session.createQuery("SELECT COUNT(r) FROM Restaurant r WHERE r.id = :id", Long.class)
+                .setParameter("id", id)
+                .uniqueResult();
+        session.close();
+        return count != null && count > 0;
+    }
 
 }

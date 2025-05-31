@@ -31,13 +31,13 @@ public class RestaurantHandler implements HttpHandler {
         if (method.equalsIgnoreCase("GET")) {
             getHandler(exchange,params);
         }else if (method.equalsIgnoreCase("post")){
-            postHandler(exchange,params, jsonRequest, path);
+            postHandler(exchange, params, jsonRequest, path);
         }else if (method.equalsIgnoreCase("put")){
-            putHandler(exchange,params);
+            putHandler(exchange, params, jsonRequest);
         }else if (method.equalsIgnoreCase("delete")){
-            deleteHandler(exchange,params);
+            deleteHandler(exchange, params);
         }else if (method.equalsIgnoreCase("patch")){
-            patchHandler(exchange,params);
+            patchHandler(exchange, params);
         }else{
             Sender.sendTextResponse(exchange, 405, "Method Not Allowed");
             return;
@@ -63,9 +63,10 @@ public class RestaurantHandler implements HttpHandler {
             return;
         }
     }
-    private void putHandler(HttpExchange exchange, String [] params) throws IOException {
+    private void putHandler(HttpExchange exchange, String [] params, JsonObject jsonRequest) throws IOException {
         if (params.length == 2 && params[1].matches("\\d+")) {
-
+            // param [1] is the restaurant id
+            RestaurantService.updateRestaurant(exchange,jsonRequest, params[1]);
         }else if (params.length == 3 ) {
             if (params[2].equals("item")) {
 

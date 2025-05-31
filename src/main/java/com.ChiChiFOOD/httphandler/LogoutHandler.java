@@ -30,12 +30,4 @@ public class LogoutHandler implements HttpHandler {
         Sender.sendResponse(exchange, 200, "Logged out successfully");
     }
 
-//    private void sendResponse(HttpExchange exchange, int statusCode, String message) throws IOException {
-//        byte[] bytes = message.getBytes(StandardCharsets.UTF_8);
-//        exchange.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
-//        exchange.sendResponseHeaders(statusCode, bytes.length);
-//        try (OutputStream os = exchange.getResponseBody()) {
-//            os.write(bytes);
-//        }
-//    }
 }

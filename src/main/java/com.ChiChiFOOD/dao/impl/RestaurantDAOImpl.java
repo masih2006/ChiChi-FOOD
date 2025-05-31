@@ -18,9 +18,7 @@ public class RestaurantDAOImpl implements RestaurantDAO {
     }
 
     public void update(Restaurant restaurant) {
-        session.beginTransaction();
         session.update(restaurant);
-        session.getTransaction().commit();
     }
 
     public void delete(Restaurant restaurant) {

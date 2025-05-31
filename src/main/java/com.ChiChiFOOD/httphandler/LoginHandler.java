@@ -59,22 +59,4 @@ public class LoginHandler implements HttpHandler {
     private String getString(JsonObject obj, String key) {
         return obj.has(key) && !obj.get(key).isJsonNull() ? obj.get(key).getAsString() : null;
     }
-
-//    private void sendTextResponse(HttpExchange exchange, int statusCode, String message) throws IOException {
-//        byte[] responseBytes = message.getBytes(StandardCharsets.UTF_8);
-//        exchange.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
-//        exchange.sendResponseHeaders(statusCode, responseBytes.length);
-//        try (OutputStream os = exchange.getResponseBody()) {
-//            os.write(responseBytes);
-//        }
-//    }
-//
-//    private void sendJsonResponse(HttpExchange exchange, int statusCode, String json) throws IOException {
-//        byte[] responseBytes = json.getBytes(StandardCharsets.UTF_8);
-//        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-//        exchange.sendResponseHeaders(statusCode, responseBytes.length);
-//        try (OutputStream os = exchange.getResponseBody()) {
-//            os.write(responseBytes);
-//        }
-//    }
 }

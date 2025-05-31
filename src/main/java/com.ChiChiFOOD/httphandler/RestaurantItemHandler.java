@@ -31,7 +31,7 @@ public class RestaurantItemHandler implements HttpHandler {
         String[] params = Arrays.stream(path.split("/"))
                 .filter(s -> !s.isEmpty())
                 .toArray(String[]::new);
-
+        System.out.println("ajls;dfk");
         JsonObject jsonRequest = null;
         // فقط برای متدهایی که معمولاً body دارند json بخوان
         if (method.equalsIgnoreCase("POST") || method.equalsIgnoreCase("PUT") || method.equalsIgnoreCase("PATCH")) {
