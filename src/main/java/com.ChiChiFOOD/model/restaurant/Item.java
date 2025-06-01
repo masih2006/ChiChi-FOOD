@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class FoodItem {
+public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -28,6 +28,16 @@ public class FoodItem {
 
     @ElementCollection
     private List<String> keywords = new ArrayList<>();
+
+//    public String getRestaurantId() {
+//        return restaurantId;
+//    }
+//
+//    public void setRestaurantId(String restaurantId) {
+//        this.restaurantId = restaurantId;
+//    }
+//
+//    private String restaurantId;
 
     // ارتباط به رستوران (ManyToOne)
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,6 +1,6 @@
 package com.ChiChiFOOD.model;
 
-import com.ChiChiFOOD.model.restaurant.FoodItem;
+import com.ChiChiFOOD.model.restaurant.Item;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public class Restaurant {
     private boolean isRestaurantConfirmed = false;
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<FoodItem> foodItems = new ArrayList<>();
+    private List<Item> items = new ArrayList<>();
 
     public Restaurant() {
     }
@@ -137,21 +137,21 @@ public class Restaurant {
         isRestaurantConfirmed = restaurantConfirmed;
     }
 
-    public List<FoodItem> getFoodItems() {
-        return foodItems;
+    public List<Item> getFoodItems() {
+        return items;
     }
 
-    public void setFoodItems(List<FoodItem> foodItems) {
-        this.foodItems = foodItems;
+    public void setFoodItems(List<Item> items) {
+        this.items = items;
     }
 
-    public void addFoodItem(FoodItem foodItem) {
-        foodItems.add(foodItem);
-        foodItem.setRestaurant(this);
+    public void addFoodItem(Item item) {
+        items.add(item);
+        item.setRestaurant(this);
     }
 
-    public void removeFoodItem(FoodItem foodItem) {
-        foodItems.remove(foodItem);
-        foodItem.setRestaurant(null);
+    public void removeFoodItem(Item item) {
+        items.remove(item);
+        item.setRestaurant(null);
     }
 }

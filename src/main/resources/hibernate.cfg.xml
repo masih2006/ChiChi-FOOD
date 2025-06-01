@@ -26,7 +26,7 @@
         <mapping class="com.ChiChiFOOD.model.Seller"/>
         <mapping class="com.ChiChiFOOD.model.Courier"/>
         <mapping class="com.ChiChiFOOD.model.Restaurant"/>
-        <mapping class="com.ChiChiFOOD.model.restaurant.FoodItem"/>
+        <mapping class="com.ChiChiFOOD.model.restaurant.Item"/>
 
         <!-- ادامهٔ کلاس‌ها در صورت نیاز -->
 
