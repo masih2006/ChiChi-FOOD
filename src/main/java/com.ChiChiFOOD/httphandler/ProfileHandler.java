@@ -28,12 +28,6 @@ public class ProfileHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String method = exchange.getRequestMethod();
-    // niaz nist
-//        if (!exchange.getRequestHeaders().containsKey("Authorization")) {
-//            sendResponse(exchange, 401, "Authorization header missing");
-//            return;
-//        }
-
         String token = exchange.getRequestHeaders().getFirst("Authorization").replace("Bearer ", "");
         DecodedJWT decodedJWT;
         try {

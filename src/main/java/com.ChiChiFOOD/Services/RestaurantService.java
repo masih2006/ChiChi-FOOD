@@ -60,6 +60,7 @@ public class RestaurantService {
                 RestaurantDAOImpl restaurantDaoImpl = new RestaurantDAOImpl(session);
                 Restaurant restaurant = new Restaurant(exchange.getAttribute("userId").toString(),name, phone, address, logoBase64, fee, additionalFee);
                 restaurantDaoImpl.save(restaurant);
+                tx.commit();
                 sendTextResponse(exchange, 200, "Restaurant registered successfully");
                 return;
             }catch (Exception e) {

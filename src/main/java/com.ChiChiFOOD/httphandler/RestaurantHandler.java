@@ -1,6 +1,7 @@
 package com.ChiChiFOOD.httphandler;
 
 import com.ChiChiFOOD.Services.ItemService;
+import com.ChiChiFOOD.Services.MenuService;
 import com.ChiChiFOOD.Services.RestaurantService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -105,8 +106,8 @@ public class RestaurantHandler implements HttpHandler {
         }else if (params.length == 3){
             if (params[1].matches("\\d+") && params[2].equals("item")) {
                 ItemService.addItem(exchange,jsonRequest, params[1]);
-            }else if (params[1].equals("menu")) {
-
+            }else if (params[2].equals("menu")) {
+                MenuService.createMenu(exchange, jsonRequest,params[1]);
             }
         } else if (params.length == 4) {
 
