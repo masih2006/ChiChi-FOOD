@@ -43,7 +43,6 @@ public class RestaurantHandler implements HttpHandler {
             Sender.sendTextResponse(exchange, 405, "Method Not Allowed");
             return;
         }
-
     }
     private void getHandler(HttpExchange exchange, String [] params) throws IOException {
         System.out.println(Arrays.toString(params));
