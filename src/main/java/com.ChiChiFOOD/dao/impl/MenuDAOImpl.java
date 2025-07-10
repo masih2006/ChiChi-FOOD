@@ -31,9 +31,17 @@ public class MenuDAOImpl implements MenuDAO {
         session.update(item);
     }
 
-    public void delete(Menu item) {
-        session.remove(item);
+    @Override
+    public void delete(Menu menu) {
+        Menu persistentMenu = session.get(Menu.class, menu.getId());
+        if (persistentMenu != null) {
+            persistentMenu.getItems().clear();
+            session.flush();
+            session.delete(persistentMenu);
+        }
     }
+
+
     /// may have problem
     public List<Menu> findByMenuId(Long menuId) {
         return session.createQuery("FROM Menu WHERE Menu.id = :menuId", Menu.class)

@@ -95,6 +95,10 @@ public class MenuService {
         }
         Session RestaurantSession = HibernateUtil.getSessionFactory().openSession();
         RestaurantDAO restaurantDAO = new RestaurantDAOImpl(RestaurantSession);
+        if (!restaurantDAO.restaurantExistsById(RestaurantId)) {
+            sendTextResponse(exchange, 404, "resource not found");
+            return;
+        }
         if (restaurantDAO.getMyRestaurantId(exchange.getAttribute("userId").toString()) != Integer.parseInt(RestaurantId) ) {
             sendTextResponse(exchange, 403, "Forbidden request");
             return;
@@ -134,5 +138,48 @@ public class MenuService {
         }
 
 
+    }
+
+    public static void deleteMenu (HttpExchange exchange, String RestaurantId, String title) throws IOException {
+        try {
+            Long.parseLong(RestaurantId);
+        }catch (Exception e) {
+            sendTextResponse(exchange,400, "invalid input");
+            return;
+        }
+        if (!exchange.getAttribute("role").equals("seller")) {
+            sendTextResponse(exchange, 403, "Forbidden request");
+            return;
+        }
+        Session RestaurantSession = HibernateUtil.getSessionFactory().openSession();
+        RestaurantDAO restaurantDAO = new RestaurantDAOImpl(RestaurantSession);
+        if (!restaurantDAO.restaurantExistsById(RestaurantId)) {
+            sendTextResponse(exchange, 404, "resource not found");
+            return;
+        }
+        if (restaurantDAO.getMyRestaurantId(exchange.getAttribute("userId").toString()) != Integer.parseInt(RestaurantId) ) {
+            sendTextResponse(exchange, 403, "Forbidden request");
+            return;
+        }
+        RestaurantSession.close();
+        Session MenuSession = HibernateUtil.getSessionFactory().openSession();
+        MenuDAO menuDAO = new MenuDAOImpl(MenuSession);
+        if (!menuDAO.menuExistByTitle(title, Integer.parseInt(RestaurantId))) {
+            sendTextResponse(exchange, 404, "resource not found");
+            return;
+        }
+        Transaction tx = MenuSession.beginTransaction();
+        try {
+            Menu menu = menuDAO.findByTitle(title, Integer.parseInt(RestaurantId));
+            menuDAO.delete(menu);
+            tx.commit();
+            sendTextResponse(exchange, 200, "Menu deleted successfully");
+        } catch (Exception e) {
+            tx.rollback();
+            e.printStackTrace();
+            sendTextResponse(exchange, 500, "Internal server error");
+        } finally {
+            MenuSession.close();
+        }
     }
 }

@@ -1,11 +1,9 @@
 package com.ChiChiFOOD.Services;
 
-import com.ChiChiFOOD.dao.impl.ItemDAO;
-import com.ChiChiFOOD.dao.impl.ItemDAOImpl;
-import com.ChiChiFOOD.dao.impl.RestaurantDAO;
-import com.ChiChiFOOD.dao.impl.RestaurantDAOImpl;
+import com.ChiChiFOOD.dao.impl.*;
 import com.ChiChiFOOD.model.Restaurant;
 import com.ChiChiFOOD.model.restaurant.Item;
+import com.ChiChiFOOD.model.restaurant.Menu;
 import com.ChiChiFOOD.utils.HibernateUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -98,6 +96,7 @@ public class ItemService {
             }
         }
     }
+
     public static void updateItem(HttpExchange exchange, JsonObject jsonRequest, String restaurantId, String itemId) throws IOException {
         if (!exchange.getAttribute("role").equals("seller")) {
             sendTextResponse(exchange, 403, "Forbidden request");
@@ -144,12 +143,19 @@ public class ItemService {
             return;
         }
 
+        Session RestaurantSession = HibernateUtil.getSessionFactory().openSession();
+        RestaurantDAO restaurantDAO = new RestaurantDAOImpl(RestaurantSession);
+        if (restaurantDAO.getMyRestaurantId(exchange.getAttribute("userId").toString()) != Integer.parseInt(restaurantId) ) {
+            sendTextResponse(exchange, 403, "Forbidden request");
+            return;
+        }
+        RestaurantSession.close();
+
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction tx = session.beginTransaction();
             try {
                 ItemDAO itemDao = new ItemDAOImpl(session);
                 Item item = itemDao.findById(Long.parseLong(itemId));
-
                 int restId = Integer.parseInt(restaurantId);
                 System.out.println(item.getRestaurant().getId());
                 System.out.println(restId);
@@ -157,7 +163,6 @@ public class ItemService {
                     sendTextResponse(exchange, 403, "Item does not belong to the specified restaurant");
                     return;
                 }
-
                 itemDao.delete(item);
                 tx.commit();
                 sendTextResponse(exchange, 200, "Item deleted successfully");
@@ -168,6 +173,73 @@ public class ItemService {
             }
         }
     }
+
+    public static void deleteItemFromMenu(HttpExchange exchange, String restaurantId, String title, String itemId) throws IOException {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+        MenuDAO menuDAO = new MenuDAOImpl(session);
+        ItemDAO itemDAO = new ItemDAOImpl(session);
+        RestaurantDAO restaurantDAO = new RestaurantDAOImpl(session);
+
+        try {
+            Long.parseLong(restaurantId);
+            Long.parseLong(itemId);
+        } catch (Exception e) {
+            sendTextResponse(exchange, 400, "invalid input");
+            return;
+        }
+
+        if (!exchange.getAttribute("role").equals("seller")) {
+            sendTextResponse(exchange, 403, "Forbidden request");
+            return;
+        }
+
+        if (!restaurantDAO.restaurantExistsById(restaurantId)) {
+            sendTextResponse(exchange, 404, "resource not found");
+            return;
+        }
+
+        if (restaurantDAO.getMyRestaurantId(exchange.getAttribute("userId").toString()) != Integer.parseInt(restaurantId)) {
+            sendTextResponse(exchange, 403, "Forbidden request");
+            return;
+        }
+
+        if (!menuDAO.menuExistByTitle(title, Integer.parseInt(restaurantId))) {
+            sendTextResponse(exchange, 404, "resource not found");
+            return;
+        }
+
+        if (!itemDAO.itemExistsInMenu(title, Long.parseLong(itemId), Integer.parseInt(restaurantId))) {
+            sendTextResponse(exchange, 404, "resource not found");
+            return;
+        }
+
+        Transaction tx = session.beginTransaction();
+        try {
+            // همه چی با یک session لود میشه
+            Menu menu = menuDAO.findByTitle(title, Integer.parseInt(restaurantId));
+            Item item = itemDAO.findById(Long.parseLong(itemId));
+
+            // حذف آیتم از منو
+            menu.getItems().removeIf(i -> i.getId() == item.getId());
+            item.getMenus().removeIf(m -> m.getId().equals(menu.getId()));
+
+            // نیازی به update نیست چون session دنبال می‌کنه
+            session.merge(menu);
+            session.merge(item);
+
+            tx.commit();
+            sendTextResponse(exchange, 200, "Item removed from menu successfully");
+        } catch (Exception e) {
+            tx.rollback();
+            e.printStackTrace();
+            sendTextResponse(exchange, 500, "Internal server error");
+        } finally {
+            session.close();
+        }
+    }
+
+
 
     public static boolean isItemExists(String id) {
         Session session = HibernateUtil.getSessionFactory().openSession();

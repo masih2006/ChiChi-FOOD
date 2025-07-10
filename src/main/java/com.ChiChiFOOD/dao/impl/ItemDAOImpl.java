@@ -23,9 +23,14 @@ public class ItemDAOImpl implements ItemDAO {
         session.update(item);
     }
 
+    @Override
     public void delete(Item item) {
-        session.delete(item);
+        item.getMenus().forEach(menu -> menu.getItems().remove(item));
+        item.getMenus().clear();
+        session.merge(item);
+        session.remove(item);
     }
+
 
     public Item findById(Long id) {
         return session.get(Item.class, id);
@@ -62,6 +67,17 @@ public class ItemDAOImpl implements ItemDAO {
         return count != null && count > 0;
     }
 
+    public boolean itemExistsInMenu(String menuTitle, Long itemId, int restaurantId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Long count = session.createQuery(
+                        "SELECT COUNT(mi) FROM Menu m JOIN m.items mi WHERE m.title = :title AND m.restaurant.id = :restaurantId AND mi.id = :itemId", Long.class)
+                .setParameter("title", menuTitle)
+                .setParameter("restaurantId", restaurantId)
+                .setParameter("itemId", itemId)
+                .uniqueResult();
+        session.close();
+        return count != null && count > 0;
+    }
 
 
 

@@ -86,12 +86,15 @@ public class RestaurantHandler implements HttpHandler {
         }
     }
     private void deleteHandler(HttpExchange exchange, String [] params) throws IOException {
-        if (params.length == 5 && params [2].equals("item")) {
-
+        if (params.length == 5 && params [2].equals("menu")) {
+            ItemService.deleteItemFromMenu(exchange, params[1], params[3], params[4]);
         }else if (params.length == 4){
             if (params[1].matches("\\d+") && params[2].equals("item") && params[3].matches("\\d")){
                 ItemService.deleteItem(exchange,params[1],params[3]);
-            }else {
+            }else if (params[1].matches("\\d+") && params[2].equals("menu")) {
+                MenuService.deleteMenu(exchange, params[1], params[3]);
+            }
+            else {
                 Sender.sendTextResponse(exchange, 400, "Bad Request");
             }
 

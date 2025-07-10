@@ -13,5 +13,6 @@ public interface ItemDAO {
     public boolean itemExistsByName(String name, int restaurantId);
     public Item findItemByIdAndRestaurantId(int itemId, int restaurantId) ;
     public boolean itemExistsByIdAndRestaurantId(int itemId, int restaurantId) ;
+    public boolean itemExistsInMenu(String menuTitle, Long itemId, int restaurantId) ;
 
     }
