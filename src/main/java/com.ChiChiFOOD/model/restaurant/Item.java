@@ -38,13 +38,22 @@ public class Item {
 //    }
 //
 //    private String restaurantId;
+@ManyToMany(mappedBy = "items")
+private List<Menu> menus = new ArrayList<>();
+
+    public List<Menu> getMenus() {
+        return menus;
+    }
+
+    public void setMenus(List<Menu> menus) {
+        this.menus = menus;
+    }
+
 
     // ارتباط به رستوران (ManyToOne)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
-
-    // گتر و سترها
 
     public int getId() {
         return id;

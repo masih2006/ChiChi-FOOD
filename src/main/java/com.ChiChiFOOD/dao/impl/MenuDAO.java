@@ -14,5 +14,9 @@ public interface  MenuDAO {
     public void update(Menu item) ;
     public void delete(Menu item) ;
     public List<Menu> findByMenuId(Long menuId) ;
+    public boolean menuExistByTitle(String title, int restaurantId) ;
+    public boolean itemExistsInMenu(String title, int itemId, int restaurantId) ;
+    public Menu findByTitle(String title, int restaurantId) ;
+
 }
 

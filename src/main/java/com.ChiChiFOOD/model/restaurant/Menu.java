@@ -18,8 +18,14 @@ public class Menu {
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
 
-    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Menu> items;
+    @ManyToMany
+    @JoinTable(
+            name = "menu_item",
+            joinColumns = @JoinColumn(name = "menu_id"),
+            inverseJoinColumns = @JoinColumn(name = "item_id")
+    )
+    private List<Item> items;
+
 
     public String getTitle() {
         return title;
@@ -33,10 +39,6 @@ public class Menu {
         return restaurant;
     }
 
-    public List<Menu> getItems() {
-        return items;
-    }
-
     public void setTitle(String title) {
         this.title = title;
     }
@@ -45,11 +47,16 @@ public class Menu {
         this.id = id;
     }
 
-    public void setItems(List<Menu> items) {
-        this.items = items;
-    }
 
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
     }
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
 }

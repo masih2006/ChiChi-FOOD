@@ -1,6 +1,8 @@
 package com.ChiChiFOOD.dao.impl;
 
+import com.ChiChiFOOD.model.restaurant.Item;
 import com.ChiChiFOOD.model.restaurant.Menu;
+import com.ChiChiFOOD.utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -26,15 +28,11 @@ public class MenuDAOImpl implements MenuDAO {
     }
 
     public void update(Menu item) {
-        Transaction tx = session.beginTransaction();
         session.update(item);
-        tx.commit();
     }
 
     public void delete(Menu item) {
-        Transaction tx = session.beginTransaction();
         session.remove(item);
-        tx.commit();
     }
     /// may have problem
     public List<Menu> findByMenuId(Long menuId) {
@@ -42,4 +40,38 @@ public class MenuDAOImpl implements MenuDAO {
                 .setParameter("menuId", menuId)
                 .list();
     }
+    public boolean menuExistByTitle(String title, int restaurantId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Long count = session.createQuery(
+                        "SELECT COUNT(m) FROM Menu m WHERE m.title = :title AND m.restaurant.id = :restaurantId", Long.class)
+                .setParameter("title", title)
+                .setParameter("restaurantId", restaurantId)
+                .uniqueResult();
+        session.close();
+        return count != null && count > 0;
+    }
+    public Menu findByTitle(String title, int restaurantId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Menu menu = session.createQuery(
+                        "SELECT m FROM Menu m LEFT JOIN FETCH m.items WHERE m.title = :title AND m.restaurant.id = :restaurantId",
+                        Menu.class)
+                .setParameter("title", title)
+                .setParameter("restaurantId", restaurantId)
+                .uniqueResult();
+        session.close();
+        return menu;
+    }
+
+    public boolean itemExistsInMenu(String title, int itemId, int restaurantId) {
+            Menu menu = findByTitle(title, restaurantId);
+            for (Item i : menu.getItems()) {
+                if (i.getId() == itemId) {
+                    return true;
+                }
+            }
+            return false;
+    }
 }
+
+
+

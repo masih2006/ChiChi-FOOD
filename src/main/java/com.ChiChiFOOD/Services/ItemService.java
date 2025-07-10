@@ -56,10 +56,21 @@ public class ItemService {
             sendTextResponse(exchange, 403, "Forbidden request");
             return;
         }
-        if (isItemExists(name)) {
-            sendTextResponse(exchange, 409, "conflict occurred.");
+        /////////// in haro ba ejazat man ezafe karadam
+        Session DAOsession = HibernateUtil.getSessionFactory().openSession();
+        ItemDAO itemDAO = new ItemDAOImpl(DAOsession);
+        if (itemDAO.itemExistsByName(name, Integer.parseInt(restaurantId))) {
+            sendTextResponse(exchange, 409, "conflict occurred");
+        }
+        DAOsession.close();
+        Session DAOsession2 = HibernateUtil.getSessionFactory().openSession();
+        RestaurantDAO restaurantDAO = new RestaurantDAOImpl(DAOsession2);
+        // here we check request sender is owner of restaurant or no ?
+        if (restaurantDAO.getMyRestaurantId(exchange.getAttribute("userId").toString()) != Integer.parseInt(restaurantId) ) {
+            sendTextResponse(exchange, 403, "Forbidden request");
             return;
         }
+        ///  ta inja
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction tx = session.beginTransaction();
             try {

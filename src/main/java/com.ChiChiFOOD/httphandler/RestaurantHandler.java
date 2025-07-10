@@ -72,13 +72,13 @@ public class RestaurantHandler implements HttpHandler {
         }else if (params.length == 3 ) {
             if (params[2].equals("item")) {
 
-            }else if (params[2].equals("menu")) {
-
             }
         } else if (params.length == 4) {
             if (params[1].matches("\\d+") && params[2].equals("item") && params[3].matches("\\d")) {
                 ItemService.updateItem(exchange,jsonRequest, params[1], params[3]);
-            }else {
+            }else if (params[1].matches("\\d+") && params[2].equals("menu")) {
+                MenuService.addItemToMenu(exchange, jsonRequest,params[1], params[3]);
+            } else {
                 Sender.sendTextResponse(exchange, 400, "Bad Request");
             }
         } else {

@@ -47,7 +47,6 @@ public class RegisterHandler implements HttpHandler {
         bankInfo.setBankName(bankInfoJson.get("bank_name").getAsString());
         bankInfo.setAccountNumber(bankInfoJson.get("account_number").getAsString());
 
-        // اگر رشته فقط space یا خالی بود، null بشه
         if (name != null && name.trim().isEmpty()) name = null;
         if (phone != null && phone.trim().isEmpty()) phone = null;
         if (email != null && email.trim().isEmpty()) email = null;
