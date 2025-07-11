@@ -1,10 +1,12 @@
 package com.ChiChiFOOD.dao.impl;
 
 import com.ChiChiFOOD.model.Restaurant;
+import com.ChiChiFOOD.model.restaurant.Item;
 import com.ChiChiFOOD.utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantDAOImpl implements RestaurantDAO {
@@ -38,6 +40,7 @@ public class RestaurantDAOImpl implements RestaurantDAO {
         query.setParameter("sellerId", sellerId);
         return query.uniqueResult() > 0;
     }
+
     public int getMyRestaurantId(String sellerId) {
         String hql = "SELECT r.id FROM Restaurant r WHERE r.seller.id = :sellerId";
         return session.createQuery(hql, Integer.class)
@@ -58,6 +61,13 @@ public class RestaurantDAOImpl implements RestaurantDAO {
         query.setParameter("keyword", "%" + keyword.toLowerCase() + "%");
         return query.list();
     }
+
+    public List<Restaurant> findAll() {
+        String hql = "FROM Restaurant";
+        Query<Restaurant> query = session.createQuery(hql, Restaurant.class);
+        return query.list();
+    }
+
     public  boolean restaurantExistsByName(String name) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Long count = session.createQuery("SELECT COUNT(r) FROM Restaurant r WHERE r.name = :name", Long.class)
@@ -66,6 +76,7 @@ public class RestaurantDAOImpl implements RestaurantDAO {
         session.close();
         return count != null && count > 0;
     }
+
     public boolean restaurantExistsByPhone(String phone) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Long count = session.createQuery("SELECT COUNT(r) FROM Restaurant r WHERE r.phone = :phone", Long.class)
@@ -74,6 +85,7 @@ public class RestaurantDAOImpl implements RestaurantDAO {
         session.close();
         return count != null && count > 0;
     }
+
     public  boolean restaurantExistsById(String id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Long count = session.createQuery("SELECT COUNT(r) FROM Restaurant r WHERE r.id = :id", Long.class)
@@ -82,4 +94,13 @@ public class RestaurantDAOImpl implements RestaurantDAO {
         session.close();
         return count != null && count > 0;
     }
+
+    //maybe incorrect
+    public List<Item> restaurantItems(Restaurant restaurant){
+            String hql = "FROM Item WHERE restaurant = :restaurant";
+            Query<Item> query = session.createQuery(hql, Item.class);
+            query.setParameter("restaurant", restaurant);
+            return query.list();
+    }
+
 }

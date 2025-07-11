@@ -5,28 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ea091f45-cdaa-4f68-95ab-9898c0188e81" name="Changes" comment="fuck me!!!!">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/Services/MenuService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/MenuDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/MenuDAOImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/Services/VendorService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/VendorHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/Services/ItemService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/Services/ItemService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/Services/RestaurantService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/Services/RestaurantService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/ItemDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/ItemDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/ItemDAOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/ItemDAOImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/RestaurantDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/RestaurantDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/RestaurantDAOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/RestaurantDAOImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/AppServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/AppServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/ProfileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/ProfileHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/RegisterHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/RegisterHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/RestaurantHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/RestaurantHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/Restaurant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/Restaurant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/Seller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/Seller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/restaurant/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/restaurant/Item.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/restaurant/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/restaurant/Menu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +62,7 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "Merging masih",
+    "git-widget-placeholder": "masih",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -155,6 +139,7 @@
       <workItem from="1748446600738" duration="8240000" />
       <workItem from="1748515465632" duration="6666000" />
       <workItem from="1748762170609" duration="8019000" />
+      <workItem from="1752254063318" duration="8650000" />
     </task>
     <task id="LOCAL-00001" summary="bankkkkkkk">
       <option name="closed" value="true" />
@@ -220,7 +205,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748539082823</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="fuck me!!!!">
+      <option name="closed" value="true" />
+      <created>1752254182777</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1752254182777</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -246,7 +239,8 @@
     <MESSAGE value="profile done &#10;:)" />
     <MESSAGE value="profile done :))" />
     <MESSAGE value="Item done?maybe" />
-    <option name="LAST_COMMIT_MESSAGE" value="Item done?maybe" />
+    <MESSAGE value="fuck me!!!!" />
+    <option name="LAST_COMMIT_MESSAGE" value="fuck me!!!!" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
