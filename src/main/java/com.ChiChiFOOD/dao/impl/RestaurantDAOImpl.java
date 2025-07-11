@@ -1,6 +1,7 @@
 package com.ChiChiFOOD.dao.impl;
 
 import com.ChiChiFOOD.model.Restaurant;
+import com.ChiChiFOOD.utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
@@ -31,18 +32,24 @@ public class RestaurantDAOImpl implements RestaurantDAO {
         return session.get(Restaurant.class, id);
     }
 
-    public List<Restaurant> getRestaurantsBySellerId(String sellerId) {
-        return session.createQuery("FROM Restaurant WHERE sellerId = :sellerId", Restaurant.class)
+    public boolean existsBySellerId(int sellerId) {
+        String hql = "SELECT COUNT(r) FROM Restaurant r WHERE r.seller.id = :sellerId";
+        Query<Long> query = session.createQuery(hql, Long.class);
+        query.setParameter("sellerId", sellerId);
+        return query.uniqueResult() > 0;
+    }
+    public int getMyRestaurantId(String sellerId) {
+        String hql = "SELECT r.id FROM Restaurant r WHERE r.seller.id = :sellerId";
+        return session.createQuery(hql, Integer.class)
                 .setParameter("sellerId", sellerId)
-                .getResultList();
+                .uniqueResult();
     }
 
-    public boolean existsByNameOrPhone(String name, String phone) {
-        String hql = "FROM Restaurant WHERE name = :name OR phone = :phone";
-        Query<Restaurant> query = session.createQuery(hql, Restaurant.class);
-        query.setParameter("name", name);
-        query.setParameter("phone", phone);
-        return !query.list().isEmpty();
+    public List<Restaurant> getRestaurantsBySellerId(String sellerId) {
+        String hql = "FROM Restaurant r WHERE r.seller.id = :sellerId";
+        return session.createQuery(hql, Restaurant.class)
+                .setParameter("sellerId", sellerId)
+                .getResultList();
     }
 
     public List<Restaurant> searchByName(String keyword) {
@@ -50,5 +57,29 @@ public class RestaurantDAOImpl implements RestaurantDAO {
         Query<Restaurant> query = session.createQuery(hql, Restaurant.class);
         query.setParameter("keyword", "%" + keyword.toLowerCase() + "%");
         return query.list();
+    }
+    public  boolean restaurantExistsByName(String name) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Long count = session.createQuery("SELECT COUNT(r) FROM Restaurant r WHERE r.name = :name", Long.class)
+                .setParameter("name", name)
+                .uniqueResult();
+        session.close();
+        return count != null && count > 0;
+    }
+    public boolean restaurantExistsByPhone(String phone) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Long count = session.createQuery("SELECT COUNT(r) FROM Restaurant r WHERE r.phone = :phone", Long.class)
+                .setParameter("phone", phone)
+                .uniqueResult();
+        session.close();
+        return count != null && count > 0;
+    }
+    public  boolean restaurantExistsById(String id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Long count = session.createQuery("SELECT COUNT(r) FROM Restaurant r WHERE r.id = :id", Long.class)
+                .setParameter("id", id)
+                .uniqueResult();
+        session.close();
+        return count != null && count > 0;
     }
 }

@@ -11,7 +11,6 @@ public class AppServer {
     public void start(int port) throws IOException {
         server = HttpServer.create(new InetSocketAddress(port), 0);
 
-        // in baiad dorost she
         server.createContext("/auth/register", new RegisterHandler());
         server.createContext("/auth/login", new LoginHandler());
         server.createContext("/auth/logout", new AuthFilterHandler(new LogoutHandler()));

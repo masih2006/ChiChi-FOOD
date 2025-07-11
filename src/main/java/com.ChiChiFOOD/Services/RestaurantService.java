@@ -2,7 +2,10 @@ package com.ChiChiFOOD.Services;
 
 import com.ChiChiFOOD.dao.impl.RestaurantDAO;
 import com.ChiChiFOOD.dao.impl.RestaurantDAOImpl;
+import com.ChiChiFOOD.dao.impl.UserDAO;
+import com.ChiChiFOOD.dao.impl.UserDAOImpl;
 import com.ChiChiFOOD.model.Restaurant;
+import com.ChiChiFOOD.model.User;
 import com.ChiChiFOOD.utils.HibernateUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -20,7 +23,8 @@ import static com.ChiChiFOOD.httphandler.Sender.sendJsonResponse;
 import static com.ChiChiFOOD.httphandler.Sender.sendTextResponse;
 
 public class RestaurantService {
-
+    static Session DaoSession = HibernateUtil.getSessionFactory().openSession();
+    static RestaurantDAO restaurantDAO = new RestaurantDAOImpl(DaoSession);
     public static void registerRestaurant(HttpExchange exchange, JsonObject jsonRequest) throws IOException {
         String name;
         String address;
@@ -43,24 +47,31 @@ public class RestaurantService {
             sendTextResponse(exchange, 400, "Missing required fields: name, address or phone");
             return;
         }
-        System.out.println("3");
+        //System.out.println("3");
         if (!exchange.getAttribute("role").equals("seller")) {
             sendTextResponse(exchange, 403, "Forbidden request");
             return;
         }
-
-        if (restaurantExistsByName(name) || restaurantExistsByPhone(phone)) {
+        if (restaurantDAO.existsBySellerId(Integer.parseInt(exchange.getAttribute("userId").toString()))){
+            sendTextResponse(exchange, 409, "1 seller 1 restaurant !!!!");
+            return;
+        }
+        if (restaurantDAO.restaurantExistsByName(name) || restaurantDAO.restaurantExistsByPhone(phone)) {
             sendTextResponse(exchange, 409, "conflict occurred.");
             return;
         }
-        System.out.println("2");
+        //System.out.println("2");
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction tx = session.beginTransaction();
             try{
                 RestaurantDAOImpl restaurantDaoImpl = new RestaurantDAOImpl(session);
-                Restaurant restaurant = new Restaurant(exchange.getAttribute("userId").toString(),name, phone, address, logoBase64, fee, additionalFee);
+                Session session1 = HibernateUtil.getSessionFactory().openSession();
+                UserDAO userDAO = new UserDAOImpl(session1);
+                User tempUser = userDAO.findById(Integer.parseInt(exchange.getAttribute("userId").toString()));
+                Restaurant restaurant = new Restaurant(tempUser,name, phone, address, logoBase64, fee, additionalFee);
                 restaurantDaoImpl.save(restaurant);
-                sendTextResponse(exchange, 200, "Restaurant registered successfully");
+                tx.commit();
+                sendTextResponse(exchange, 200, "Restaurant registered successfully! Wait for admin confirmation");
                 return;
             }catch (Exception e) {
                 e.printStackTrace();
@@ -75,7 +86,7 @@ public class RestaurantService {
         if (!exchange.getAttribute("role").equals("seller")) {
             sendTextResponse(exchange, 403, "Forbidden request");
         }
-        if (!restaurantExistsBySellerId(SellerId)){
+        if (!restaurantDAO.existsBySellerId(Integer.parseInt(SellerId))){
             sendTextResponse(exchange, 404, "Resource not found");
         }
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -104,7 +115,7 @@ public class RestaurantService {
         if (!exchange.getAttribute("role").equals("seller")) {
             sendTextResponse(exchange, 403, "Forbidden request");
         }
-        if (!restaurantExistsById(restaurantId)) {
+        if (!restaurantDAO.restaurantExistsById(restaurantId)) {
             sendTextResponse(exchange, 404, "Resource not found");
             return;
         }try  (Session session = HibernateUtil.getSessionFactory().openSession()){
@@ -128,41 +139,4 @@ public class RestaurantService {
             }
         }
     }
-
-    public static boolean restaurantExistsByName(String name) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Long count = session.createQuery("SELECT COUNT(r) FROM Restaurant r WHERE r.name = :name", Long.class)
-                .setParameter("name", name)
-                .uniqueResult();
-        session.close();
-        return count != null && count > 0;
-    }
-
-    public static boolean restaurantExistsByPhone(String phone) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Long count = session.createQuery("SELECT COUNT(r) FROM Restaurant r WHERE r.phone = :phone", Long.class)
-                .setParameter("phone", phone)
-                .uniqueResult();
-        session.close();
-        return count != null && count > 0;
-    }
-
-    public static boolean restaurantExistsBySellerId (String SellerId) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Long count = session.createQuery("SELECT COUNT(r) FROM Restaurant r WHERE r.sellerId = :SellerId", Long.class)
-                .setParameter("SellerId", SellerId)
-                .uniqueResult();
-        session.close();
-        return count != null && count > 0;
-    }
-
-    public static boolean restaurantExistsById(String id) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Long count = session.createQuery("SELECT COUNT(r) FROM Restaurant r WHERE r.id = :id", Long.class)
-                .setParameter("id", id)
-                .uniqueResult();
-        session.close();
-        return count != null && count > 0;
-    }
-
 }

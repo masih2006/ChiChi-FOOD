@@ -1,16 +1,13 @@
 package com.ChiChiFOOD.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @DiscriminatorValue("Seller")
 public class Seller extends User {
 
-    @Column(unique=false, nullable=true)
-    private String ResturantName;
+    @OneToOne(mappedBy = "seller", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true)
+    private Restaurant restaurant;
 
 
     public Seller() {
@@ -20,11 +17,11 @@ public class Seller extends User {
 
 
     public String getResturantName() {
-        return ResturantName;
+        return restaurant.getName();
     }
 
     public void setResturantName(String resturantName) {
-        ResturantName = resturantName;
+        restaurant.setName(resturantName);
     }
 }
 // resturant , food , cart ,
