@@ -1,5 +1,4 @@
 package com.ChiChiFOOD.dao.impl;
 
-public interface CourierDAO {
-
+public class CouponDAOImpl {
 }
