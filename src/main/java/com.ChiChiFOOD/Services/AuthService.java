@@ -35,6 +35,9 @@ public class AuthService {
             case COURIER:
                 user = new Courier();
                 break;
+            case ADMIN:
+                user = new Admin();
+                break;
             default:
                 System.out.println("Role invalid.");
                 return false;
@@ -47,7 +50,7 @@ public class AuthService {
         user.setAddress(address);
         user.setProfileImageBase64(profileImageBase64);
         user.setBank(bank);
-        SESSION.persist(user);
+        SESSION.save(user);
         System.out.println("Register success.");
         return true;
     }

@@ -4,10 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea091f45-cdaa-4f68-95ab-9898c0188e81" name="Changes" comment="restaurant bug fix">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/Admin.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/Coupon.java" afterDir="false" />
+    <list default="true" id="ea091f45-cdaa-4f68-95ab-9898c0188e81" name="Changes" comment="starting admin and Coupons">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/Services/AdminService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/CourierDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/CourierDAOiml.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/AdminHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/Services/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/Services/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/Services/RestaurantService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/Services/RestaurantService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/UserDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/UserDAOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/UserDAOImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/AppServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/AppServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/RestaurantItemHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/Admin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/Admin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/Coupon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/Coupon.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/utils/JwtUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/utils/JwtUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,32 +64,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.App.executor": "Run",
-    "Application.BuyerTest.executor": "Run",
-    "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.App.executor&quot;: &quot;Run&quot;,
+    &quot;Application.BuyerTest.executor&quot;: &quot;Run&quot;,
+    &quot;Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.ChiChiFOOD.model" />
@@ -84,6 +97,19 @@
     </key>
   </component>
   <component name="RunManager">
+    <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.ChiChiFOOD.App" />
+      <module name="ChichiFOOD" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.ChiChiFOOD.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.ChiChiFOOD.App" />
       <module name="ChichiFOOD" />
@@ -133,6 +159,7 @@
       <workItem from="1748434328101" duration="7232000" />
       <workItem from="1748446600738" duration="8240000" />
       <workItem from="1748515465632" duration="6666000" />
+      <workItem from="1752307150386" duration="4240000" />
     </task>
     <task id="LOCAL-00001" summary="bankkkkkkk">
       <option name="closed" value="true" />
@@ -198,7 +225,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748539082823</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="starting admin and Coupons">
+      <option name="closed" value="true" />
+      <created>1752293725658</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1752293725658</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -223,7 +258,8 @@
     <MESSAGE value="building resturan ..." />
     <MESSAGE value="profile done &#10;:)" />
     <MESSAGE value="profile done :))" />
-    <option name="LAST_COMMIT_MESSAGE" value="profile done :))" />
+    <MESSAGE value="starting admin and Coupons" />
+    <option name="LAST_COMMIT_MESSAGE" value="starting admin and Coupons" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

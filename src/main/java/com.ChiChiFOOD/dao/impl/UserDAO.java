@@ -10,4 +10,5 @@ public interface UserDAO {
     void update(User user);
     void delete(User user);
     User findByPhoneAndPassword(String phone, String password);
+    public List<User> getAllUsers();
 }

@@ -22,9 +22,9 @@ public class JwtUtil {
         }else if (user instanceof Courier){
             role = "courier";
         }
-//        else if (user instanceof Admin){
-//            role = "admin";
-//        }
+     else if (user instanceof Admin){
+          role = "admin";
+      }
         return JWT.create()
                 .withSubject(String.valueOf(user.getId()))
                 .withClaim("role", role)
