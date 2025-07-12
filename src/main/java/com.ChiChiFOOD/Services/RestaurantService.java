@@ -106,6 +106,7 @@ public class RestaurantService {
             }
             String responseJson = new Gson().toJson(responseList);
             sendJsonResponse(exchange, 200, responseJson);
+            return;
         }
 
     }

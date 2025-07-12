@@ -46,4 +46,10 @@ public class UserDAOImpl implements UserDAO {
                 .setParameter("password", password)
                 .uniqueResult();
     }
+    public List<User> getAllUsers() {
+        String hql = "FROM User";
+        return session.createQuery(hql, User.class)
+                .getResultList();
+    }
+
 }
