@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea091f45-cdaa-4f68-95ab-9898c0188e81" name="Changes" comment="fuck me!!!!">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/Services/VendorService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/VendorHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/RestaurantDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/RestaurantDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/RestaurantDAOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/RestaurantDAOImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/AppServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/AppServer.java" afterDir="false" />
-    </list>
+    <list default="true" id="ea091f45-cdaa-4f68-95ab-9898c0188e81" name="Changes" comment="vendor" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -139,7 +132,7 @@
       <workItem from="1748446600738" duration="8240000" />
       <workItem from="1748515465632" duration="6666000" />
       <workItem from="1748762170609" duration="8019000" />
-      <workItem from="1752254063318" duration="8650000" />
+      <workItem from="1752254063318" duration="8812000" />
     </task>
     <task id="LOCAL-00001" summary="bankkkkkkk">
       <option name="closed" value="true" />
@@ -213,7 +206,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752254182777</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="vendor">
+      <option name="closed" value="true" />
+      <created>1752262849013</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1752262849013</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -240,7 +241,8 @@
     <MESSAGE value="profile done :))" />
     <MESSAGE value="Item done?maybe" />
     <MESSAGE value="fuck me!!!!" />
-    <option name="LAST_COMMIT_MESSAGE" value="fuck me!!!!" />
+    <MESSAGE value="vendor" />
+    <option name="LAST_COMMIT_MESSAGE" value="vendor" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
