@@ -3,7 +3,9 @@ package com.ChiChiFOOD.model.restaurant;
 import com.ChiChiFOOD.model.Restaurant;
 import jakarta.persistence.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 public class Item {
@@ -102,5 +104,13 @@ private List<Menu> menus = new ArrayList<>();
     }
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
+    }
+    public Map<String, Object> toJson() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", this.id);
+        map.put("name", this.name);
+        map.put("price", this.price);
+        map.put("description", this.description);
+        return map;
     }
 }

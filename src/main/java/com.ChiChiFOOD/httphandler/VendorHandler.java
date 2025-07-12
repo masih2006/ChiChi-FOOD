@@ -1,8 +1,5 @@
 package com.ChiChiFOOD.httphandler;
 
-import com.ChiChiFOOD.Services.ItemService;
-import com.ChiChiFOOD.Services.MenuService;
-import com.ChiChiFOOD.Services.RestaurantService;
 import com.ChiChiFOOD.Services.VendorService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -44,7 +41,7 @@ public class VendorHandler implements HttpHandler {
     }
     public void postHandler(HttpExchange exchange, String[] params, JsonObject jsonRequest, String path) throws IOException {
         if(path.equalsIgnoreCase("/vendors")) {
-            VendorService.restaurantList(exchange, jsonRequest);
+            VendorService.restaurantsList(exchange, jsonRequest);
         } else {
             Sender.sendTextResponse(exchange, 400, "Bad Request");
             return;
@@ -52,6 +49,10 @@ public class VendorHandler implements HttpHandler {
     }
 
     public void getHandler(HttpExchange exchange, String[] params) throws IOException {
-
+        if (params.length == 2 && params[1].matches("\\d+")){
+            VendorService.restaurantMenus(exchange);
+        }
+        else
+            Sender.sendTextResponse(exchange, 400, "Bad Request");
     }
 }
