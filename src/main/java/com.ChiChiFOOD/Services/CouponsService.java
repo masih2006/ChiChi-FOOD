@@ -126,4 +126,168 @@ public class CouponsService {
             return;
         }
     }
+
+    public static void deleteCoupon(HttpExchange exchange, JsonObject jsonObject, String id) throws IOException {
+        if (!exchange.getAttribute("role").toString().equalsIgnoreCase("admin")) {
+            sendTextResponse(exchange, 403, "forbidden");
+            return;
+        }
+        if (id == null || id.isEmpty()) {
+            sendTextResponse(exchange, 400, "Missing required fields");
+            return;
+        }
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        CouponDAO couponDAO = new CouponDAOImpl(session);
+        if (!couponDAO.doesCouponIdExist(Long.parseLong(id))) {
+            sendTextResponse(exchange, 404, "Resource not found");
+            return;
+        }
+        Transaction tx =session.beginTransaction();
+        try {
+            Coupon coupon = couponDAO.getCouponById(Long.parseLong(id));
+            couponDAO.delete(coupon);
+            sendTextResponse(exchange, 400, "done");
+            tx.commit();
+            return;
+        }catch (Exception e){
+            sendTextResponse(exchange, 500, "Internal Server Error");
+            tx.rollback();
+            return;
+        }
+    }
+
+    public static void updateCoupon(HttpExchange exchange, JsonObject jsonObject, String id) throws IOException {
+        if (!exchange.getAttribute("role").toString().equalsIgnoreCase("admin")) {
+            sendTextResponse(exchange, 403, "forbidden");
+            return;
+        }
+        if (id == null || id.isEmpty()) {
+            sendTextResponse(exchange, 400, "Missing required fields");
+            return;
+        }
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            CouponDAO couponDAO = new CouponDAOImpl(session);
+            if (!couponDAO.doesCouponIdExist(Long.parseLong(id))) {
+                sendTextResponse(exchange, 404, "Resource not found");
+                return;
+            }
+            Coupon coupon = couponDAO.getCouponById(Long.parseLong(id));
+
+            if (jsonObject.has("coupon_code")) {
+                coupon.setCode(jsonObject.get("coupon_code").getAsString());
+            }
+
+            if (jsonObject.has("type")) {
+                try {
+                    coupon.setType(jsonObject.get("type").getAsString());
+                } catch (IllegalArgumentException e) {
+                    sendTextResponse(exchange, 400, "Invalid discount type");
+                    return;
+                }
+            }
+
+            if (jsonObject.has("scope")) {
+                try {
+                    coupon.setScope(jsonObject.get("scope").getAsString());
+                } catch (IllegalArgumentException e) {
+                    sendTextResponse(exchange, 400, "Invalid coupon scope");
+                    return;
+                }
+            }
+
+            if (jsonObject.has("value")) {
+                coupon.setValue(jsonObject.get("value").getAsInt());
+            }
+
+            if (jsonObject.has("min_price")) {
+                coupon.setMinPrice(jsonObject.get("min_price").getAsInt());
+            }
+
+            if (jsonObject.has("user_count")) {
+                coupon.setUserCount(jsonObject.get("user_count").getAsInt());
+            }
+
+            if (jsonObject.has("start_date")) {
+                try {
+                    String startDateStr = jsonObject.get("start_date").getAsString();
+                    coupon.setStartDate(LocalDate.parse(startDateStr));
+                } catch (Exception e) {
+                    sendTextResponse(exchange, 400, "Invalid start date format");
+                    return;
+                }
+            }
+
+            if (jsonObject.has("end_date")) {
+                try {
+                    String endDateStr = jsonObject.get("end_date").getAsString();
+                    coupon.setEndDate(LocalDate.parse(endDateStr));
+                } catch (Exception e) {
+                    sendTextResponse(exchange, 400, "Invalid end date format");
+                    return;
+                }
+            }
+
+            if (jsonObject.has("restaurant_id")) {
+                coupon.setRestaurantId(jsonObject.get("restaurant_id").getAsString());
+            }
+
+            if (jsonObject.has("item_id")) {
+                coupon.setItemId(jsonObject.get("item_id").getAsString());
+            }
+
+            couponDAO.update(coupon);
+            tx.commit();
+            sendTextResponse(exchange, 200, "done");
+
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            sendTextResponse(exchange, 500, "Internal Server Error");
+        } finally {
+            session.close();
+        }
+    }
+
+    public static void getCoupon(HttpExchange exchange, String id) throws IOException {
+        if (!exchange.getAttribute("role").toString().equalsIgnoreCase("admin")) {
+            sendTextResponse(exchange, 403, "forbidden");
+            return;
+        }
+        if (id == null || id.isEmpty()) {
+            sendTextResponse(exchange, 400, "Missing required fields");
+            return;
+        }
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        CouponDAO couponDAO = new CouponDAOImpl(session);
+        if (!couponDAO.doesCouponIdExist(Long.parseLong(id))) {
+            sendTextResponse(exchange, 404, "Resource not found");
+            session.close();
+            return;
+        }
+
+        Coupon coupon = couponDAO.getCouponById(Long.parseLong(id));
+        try {
+            JsonObject responseJson = new JsonObject();
+            responseJson.addProperty("id", coupon.getId());
+            responseJson.addProperty("coupon_code", coupon.getCode());
+            responseJson.addProperty("type", coupon.getType().name().toLowerCase());
+            responseJson.addProperty("value", coupon.getValue());
+            responseJson.addProperty("min_price", coupon.getMinPrice());
+            responseJson.addProperty("user_count", coupon.getUserCount());
+            responseJson.addProperty("start_date", coupon.getStartDate().toString());
+            responseJson.addProperty("end_date", coupon.getEndDate().toString());
+            sendJsonResponse(exchange, 200, responseJson.toString());
+        }catch (Exception e){
+            sendTextResponse(exchange, 500, "Internal Server Error");
+            return;
+        }finally {
+            session.close();
+        }
+
+    }
+
 }
+

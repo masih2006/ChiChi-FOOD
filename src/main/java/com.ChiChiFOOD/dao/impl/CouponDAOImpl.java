@@ -21,16 +21,12 @@ public class CouponDAOImpl implements CouponDAO {
 
     @Override
     public void update(Coupon coupon) {
-        Transaction transaction = session.beginTransaction();
         session.merge(coupon);
-        transaction.commit();
     }
 
     @Override
     public void delete(Coupon coupon) {
-        Transaction transaction = session.beginTransaction();
         session.remove(coupon);
-        transaction.commit();
     }
 
     @Override
@@ -46,5 +42,24 @@ public class CouponDAOImpl implements CouponDAO {
         String hql = "FROM Coupon";
         return session.createQuery(hql, Coupon.class).getResultList();
     }
+    public boolean doesCouponIdExist(Long id) {
+        String hql = "SELECT COUNT(c) FROM Coupon c WHERE c.id = :id";
+        Long count = session.createQuery(hql, Long.class)
+                .setParameter("id", id)
+                .uniqueResult();
+        return count != null && count > 0;
+    }
+
+    public Coupon getCouponByCode(String code) {
+        String hql = "FROM Coupon c WHERE c.code = :code";
+        return session.createQuery(hql, Coupon.class)
+                .setParameter("code", code)
+                .uniqueResult();
+    }
+    public Coupon getCouponById(Long id) {
+        return session.get(Coupon.class, id);
+    }
+
+
 
 }

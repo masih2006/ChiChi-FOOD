@@ -10,5 +10,8 @@ public interface CouponDAO {
     public void delete(Coupon coupon);
     public boolean doesCouponCodeExist(String code);
     List<Coupon> getAllCoupons();
+    public boolean doesCouponIdExist(Long id) ;
+    public Coupon getCouponByCode(String code) ;
+    public Coupon getCouponById(Long id) ;
 
-}
+    }

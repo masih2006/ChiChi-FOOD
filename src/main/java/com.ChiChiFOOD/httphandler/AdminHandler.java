@@ -36,9 +36,9 @@ public class AdminHandler implements HttpHandler {
         }else if (method.equalsIgnoreCase("post")){
            postHandler(exchange, params, jsonRequest, path);
         }else if (method.equalsIgnoreCase("put")){
-         //   putHandler(exchange, params, jsonRequest);
+            putHandler(exchange, params, jsonRequest);
         }else if (method.equalsIgnoreCase("delete")){
-        //    deleteHandler(exchange, params);
+           deleteHandler(exchange, params);
         }else if (method.equalsIgnoreCase("patch")){
            // patchHandler(exchange, params);
         }else{
@@ -54,6 +54,10 @@ public class AdminHandler implements HttpHandler {
             else if (params [1].equals("coupons")){
                 CouponsService.getAllCoupons(exchange, jsonRequest);
             }
+        }else if (params.length == 3){
+            if (params [1].equals("coupons")){
+                CouponsService.getCoupon(exchange, params[2]);
+            }
         }
    }
    private void postHandler(HttpExchange exchange, String[] params, JsonObject jsonRequest, String path) throws IOException {
@@ -63,12 +67,20 @@ public class AdminHandler implements HttpHandler {
         }
     }
    }
-//    private void putHandler(HttpExchange exchange, String[] params, JsonObject jsonRequest, String path) {
-//
-//    }
-//    private void deleteHandler(HttpExchange exchange, String[] params) {
-//
-//    }
+    private void putHandler(HttpExchange exchange, String[] params, JsonObject jsonRequest) throws IOException {
+        if (params.length == 3){
+            if (params [1].equals("coupons")){
+                CouponsService.updateCoupon(exchange,jsonRequest,params[2]);
+            }
+        }
+    }
+    private void deleteHandler(HttpExchange exchange, String[] params) throws IOException {
+        if (params.length == 3){
+            if (params [1].equals("coupons")){
+                CouponsService.deleteCoupon(exchange, new JsonObject(), params[2]);
+            }
+        }
+    }
 //    private void patchHandler(HttpExchange exchange, String[] params, JsonObject jsonRequest) {
 //
 //    }

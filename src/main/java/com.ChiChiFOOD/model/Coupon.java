@@ -125,5 +125,8 @@ public class Coupon {
     public void setItemId(String itemId) {
         this.itemId = itemId;
     }
+    public void setScope(String scopeStr) {
+        this.scope = CouponScope.valueOf(scopeStr.toUpperCase());
+    }
 }
 
