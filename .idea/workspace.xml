@@ -4,10 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea091f45-cdaa-4f68-95ab-9898c0188e81" name="Changes" comment="starting admin and Coupons">
+    <list default="true" id="ea091f45-cdaa-4f68-95ab-9898c0188e81" name="Changes" comment="coupon">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/Services/CouponsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/CourierDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/CouponDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/CourierDAOiml.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/CouponDAOImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/CouponDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/CouponDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/CouponDAOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/CouponDAOImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/AdminHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/AdminHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/Coupon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/Coupon.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -147,6 +152,8 @@
       <workItem from="1748446600738" duration="8240000" />
       <workItem from="1748515465632" duration="6666000" />
       <workItem from="1752307150386" duration="4240000" />
+      <workItem from="1752336796256" duration="2434000" />
+      <workItem from="1752419355845" duration="3169000" />
     </task>
     <task id="LOCAL-00001" summary="bankkkkkkk">
       <option name="closed" value="true" />
@@ -220,7 +227,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752293725658</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="only some rename">
+      <option name="closed" value="true" />
+      <created>1752326920727</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1752326920727</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -246,7 +261,9 @@
     <MESSAGE value="profile done &#10;:)" />
     <MESSAGE value="profile done :))" />
     <MESSAGE value="starting admin and Coupons" />
-    <option name="LAST_COMMIT_MESSAGE" value="starting admin and Coupons" />
+    <MESSAGE value="only some rename" />
+    <MESSAGE value="coupon" />
+    <option name="LAST_COMMIT_MESSAGE" value="coupon" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

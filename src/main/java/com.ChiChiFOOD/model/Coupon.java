@@ -46,7 +46,6 @@ public class Coupon {
         this.scope = CouponScope.GENERAL;
     }
 
-
     public Long getId() {
         return id;
     }
@@ -109,6 +108,22 @@ public class Coupon {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    public void setRestaurantId(String restaurantId) {
+        this.restaurantId = restaurantId;
+    }
+
+    public void setScope(CouponScope scope) {
+        this.scope = scope;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
     }
 }
 

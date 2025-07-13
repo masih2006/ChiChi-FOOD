@@ -1,6 +1,7 @@
 package com.ChiChiFOOD.httphandler;
 
 import com.ChiChiFOOD.Services.AdminService;
+import com.ChiChiFOOD.Services.CouponsService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.sun.net.httpserver.HttpExchange;
@@ -33,7 +34,7 @@ public class AdminHandler implements HttpHandler {
         if (method.equalsIgnoreCase("GET")) {
             getHandler(exchange, params, jsonRequest);
         }else if (method.equalsIgnoreCase("post")){
-          //  postHandler(exchange, params, jsonRequest, path);
+           postHandler(exchange, params, jsonRequest, path);
         }else if (method.equalsIgnoreCase("put")){
          //   putHandler(exchange, params, jsonRequest);
         }else if (method.equalsIgnoreCase("delete")){
@@ -50,11 +51,18 @@ public class AdminHandler implements HttpHandler {
             if (params [1].equals("users")){
                 AdminService.getAllUsers(exchange, jsonRequest);
             }
+            else if (params [1].equals("coupons")){
+                CouponsService.getAllCoupons(exchange, jsonRequest);
+            }
         }
    }
-//    private void postHandler(HttpExchange exchange, String[] params, JsonObject jsonRequest, String path) {
-//
-//    }
+   private void postHandler(HttpExchange exchange, String[] params, JsonObject jsonRequest, String path) throws IOException {
+    if (params.length == 2){
+        if (params [1].equals("coupons")){
+            CouponsService.createCoupon(exchange, jsonRequest);
+        }
+    }
+   }
 //    private void putHandler(HttpExchange exchange, String[] params, JsonObject jsonRequest, String path) {
 //
 //    }
