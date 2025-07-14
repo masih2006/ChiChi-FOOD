@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 @Entity
 @DiscriminatorValue("Buyer")
 public class Buyer extends User {
-    public Buyer() { super(); }
-
+    public Buyer() { super();
+    setUserConfirmed();
+    }
 }

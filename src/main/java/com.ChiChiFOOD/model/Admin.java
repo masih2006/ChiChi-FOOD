@@ -8,5 +8,6 @@ import jakarta.persistence.DiscriminatorValue;
 public class Admin extends User {
     public Admin() {
         super();
+        setUserConfirmed();
     }
 }

@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.ChiChiFOOD.httphandler.Sender.sendJsonResponse;
+import static com.ChiChiFOOD.httphandler.Sender.sendTextResponse;
 
 public class AdminService {
     public static void getAllUsers(HttpExchange exchange, JsonObject jsonObject) throws IOException {
@@ -48,4 +49,38 @@ public class AdminService {
             return;
         }
     }
+
+    public static void confirmUser(HttpExchange exchange, JsonObject jsonObject, String id) throws IOException {
+        boolean confirmCode;
+        if (jsonObject.has("status")) {
+            if (jsonObject.get("status").equals("approved")) {
+                confirmCode = true;
+            }else {
+                confirmCode = false;
+            }
+        }else {
+            sendTextResponse(exchange, 400, "invalid field status");
+            return;
+        }
+        if (!exchange.getAttribute("role").toString().equalsIgnoreCase("admin")) {
+            sendTextResponse(exchange, 403, "forbidden");
+            return;
+        }
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        UserDAO userDAO = new UserDAOImpl(session);
+        User user = userDAO.findById(Integer.parseInt(id));
+        if (user == null) {
+            sendTextResponse(exchange, 404, "Resource not found");
+            return;
+        }
+        if (confirmCode) {
+            user.setUserConfirmed();
+        }else {
+            user.setUserNotConfirmed();
+        }
+        userDAO.update(user);
+        sendTextResponse(exchange,200, "status updated");
+        return;
+    }
+
 }

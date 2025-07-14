@@ -40,7 +40,7 @@ public class AdminHandler implements HttpHandler {
         }else if (method.equalsIgnoreCase("delete")){
            deleteHandler(exchange, params);
         }else if (method.equalsIgnoreCase("patch")){
-           // patchHandler(exchange, params);
+            patchHandler(exchange, params, jsonRequest);
         }else{
             Sender.sendTextResponse(exchange, 405, "Method Not Allowed");
             return;
@@ -81,8 +81,12 @@ public class AdminHandler implements HttpHandler {
             }
         }
     }
-//    private void patchHandler(HttpExchange exchange, String[] params, JsonObject jsonRequest) {
-//
-//    }
+    private void patchHandler(HttpExchange exchange, String[] params, JsonObject jsonRequest) throws IOException {
+        if (params.length == 4){
+            if (params [1].equals("users") && params [3].equals("status")){
+                AdminService.confirmUser(exchange,jsonRequest,params[2]);
+            }
+        }
+    }
 }
 

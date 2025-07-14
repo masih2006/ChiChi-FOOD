@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "Role") // این می‌سازه ستون DTYPE و مقدارش رو از نام کلاس مشخص می‌کنه
+@DiscriminatorColumn(name = "Role")
 public abstract class User {
     @Expose
     @Id
@@ -23,10 +23,9 @@ public abstract class User {
     @Expose
     @Column(unique = true, nullable = false)
     private String email;
-
-
-    //    @Transient
-//    private String role;
+    @Expose
+    @Column(unique = true, nullable = false)
+    private int isUserConfirmed;
     @Expose
     @Column(nullable = true)
     private String address;
@@ -139,5 +138,14 @@ public abstract class User {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-    // Getters and Setters
+
+    public void setUserConfirmed(){
+        isUserConfirmed = 1;
+    }
+    public void setUserNotConfirmed(){
+        isUserConfirmed = 0;
+    }
+    public int getIsUserConfirmed() {
+        return isUserConfirmed;
+    }
 }

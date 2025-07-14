@@ -48,6 +48,7 @@ public class RestaurantService {
             return;
         }
         //System.out.println("3");
+
         if (!exchange.getAttribute("role").equals("seller")) {
             sendTextResponse(exchange, 403, "Forbidden request");
             return;

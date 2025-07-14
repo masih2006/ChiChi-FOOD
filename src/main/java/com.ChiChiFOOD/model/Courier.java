@@ -10,6 +10,7 @@ import jakarta.persistence.Table;
 public class Courier extends User {
     public Courier() {
         super();
+        setUserNotConfirmed();
     }
 
 }
