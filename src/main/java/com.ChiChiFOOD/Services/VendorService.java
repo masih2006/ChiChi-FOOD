@@ -128,4 +128,10 @@ public class VendorService {
             sendTextResponse(exchange, 500, "Internal server error");
         }
     }
+
+    public static void addRestaurantToFavorites(HttpExchange exchange) throws IOException {
+
+    }
+
+
 }
