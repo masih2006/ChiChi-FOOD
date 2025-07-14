@@ -129,9 +129,7 @@ public class VendorService {
         }
     }
 
-    public static void addRestaurantToFavorites(HttpExchange exchange) throws IOException {
 
-    }
 
 
 }
