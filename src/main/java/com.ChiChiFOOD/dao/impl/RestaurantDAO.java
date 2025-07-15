@@ -21,5 +21,5 @@ public interface RestaurantDAO {
     public  boolean restaurantExistsById(String id);
     public  boolean restaurantExistsByName(String name);
     public int getMyRestaurantId(String sellerId) ;
-    public List<Item> restaurantItems(Restaurant restaurant);
+    public List<Item> getRestaurantItems(Restaurant restaurant);
 }

@@ -109,8 +109,12 @@ private List<Menu> menus = new ArrayList<>();
         Map<String, Object> map = new HashMap<>();
         map.put("id", this.id);
         map.put("name", this.name);
-        map.put("price", this.price);
+        map.put("imageBase64", this.imageBase64);
         map.put("description", this.description);
+        map.put("vendor_id", this.restaurant.getId());
+        map.put("price", this.price);
+        map.put("supply", this.supply);
+        map.put("keywords", this.keywords);
         return map;
     }
 }

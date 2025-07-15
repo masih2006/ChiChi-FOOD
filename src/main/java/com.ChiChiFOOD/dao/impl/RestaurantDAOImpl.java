@@ -96,7 +96,7 @@ public class RestaurantDAOImpl implements RestaurantDAO {
     }
 
     //maybe incorrect
-    public List<Item> restaurantItems(Restaurant restaurant){
+    public List<Item> getRestaurantItems(Restaurant restaurant){
             String hql = "FROM Item WHERE restaurant = :restaurant";
             Query<Item> query = session.createQuery(hql, Item.class);
             query.setParameter("restaurant", restaurant);

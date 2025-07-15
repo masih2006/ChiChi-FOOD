@@ -1,21 +1,24 @@
 package com.ChiChiFOOD.Services;
 
 import com.ChiChiFOOD.dao.impl.*;
+import com.ChiChiFOOD.httphandler.Sender;
 import com.ChiChiFOOD.model.Restaurant;
 import com.ChiChiFOOD.model.restaurant.Item;
 import com.ChiChiFOOD.model.restaurant.Menu;
 import com.ChiChiFOOD.utils.HibernateUtil;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sun.net.httpserver.HttpExchange;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
+import static com.ChiChiFOOD.Services.RestaurantService.restaurantDAO;
+import static com.ChiChiFOOD.httphandler.Sender.sendJsonResponse;
 import static com.ChiChiFOOD.httphandler.Sender.sendTextResponse;
 
 public class ItemService {
@@ -248,6 +251,93 @@ public class ItemService {
                 .uniqueResult();
         session.close();
         return count != null && count > 0;
+    }
+
+    public static void searchItems(HttpExchange httpExchange, JsonObject jsonRequest) throws IOException {
+        try {
+            String search = jsonRequest.has("search") ? jsonRequest.get("search").getAsString().toLowerCase() : null;
+            Integer price = jsonRequest.has("price") ? jsonRequest.get("price").getAsInt() : null;
+
+            List<String> keywords = new ArrayList<>();
+            if (jsonRequest.has("keywords") && jsonRequest.get("keywords").isJsonArray()) {
+                JsonArray jsonArray = jsonRequest.getAsJsonArray("keywords");
+                keywords = new ArrayList<>();
+                for (JsonElement element : jsonArray) {
+                    keywords.add(element.getAsString());
+                }
+            } else {
+                keywords = null;
+            }
+
+            List<Item> matchedItems = new ArrayList<>();
+
+            for (Restaurant restaurant : restaurantDAO.findAll()) {
+                for (Item item : restaurantDAO.getRestaurantItems(restaurant)) {
+                    boolean matches = true;
+
+                    if (search != null && !item.getName().toLowerCase().contains(search)) {
+                        matches = false;
+                    }
+
+                    if (price != null && item.getPrice() != price) {
+                        matches = false;
+                    }
+
+                    if (!keywords.isEmpty()) {
+                        List<String> itemKeywordsLower = item.getKeywords().stream()
+                                .map(String::toLowerCase)
+                                .toList();
+                        if (!itemKeywordsLower.containsAll(keywords)) {
+                            matches = false;
+                        }
+                    }
+
+                    if (matches) {
+                        matchedItems.add(item);
+                    }
+                }
+            }
+
+            Gson gson = new Gson();
+            JsonArray responseArray = new JsonArray();
+
+            for (Item item : matchedItems) {
+                JsonObject jsonObject = gson.toJsonTree(item.toJson()).getAsJsonObject();
+                responseArray.add(jsonObject);
+            }
+
+            sendJsonResponse(httpExchange, 200, responseArray.toString());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            sendTextResponse(httpExchange, 500, "Internal server error");
+        }
+    }
+
+    public static void oneItem(HttpExchange httpExchange, String itemID) throws IOException {
+        try {
+            if (itemID == null || itemID.isEmpty()) {
+                Sender.sendTextResponse(httpExchange, 400, "Invalid item ID");
+                return;
+            }
+
+            for (Restaurant restaurant : restaurantDAO.findAll()) {
+                for (Item item : restaurant.getFoodItems()) {
+                    if (String.valueOf(item.getId()).equals(itemID)) {
+                        Gson gson = new Gson();
+                        String json = gson.toJson(item.toJson());
+                        Sender.sendJsonResponse(httpExchange, 200, json);
+                        return;
+                    }
+                }
+            }
+
+            Sender.sendTextResponse(httpExchange, 404, "Item not found");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Sender.sendTextResponse(httpExchange, 500, "Internal server error");
+        }
     }
 }
 

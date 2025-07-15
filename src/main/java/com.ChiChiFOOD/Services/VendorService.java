@@ -43,7 +43,7 @@ public class VendorService {
             return;
         }
 
-        List<Restaurant> restaurants = restaurantDAO.searchByName(search); // مثل before
+        List<Restaurant> restaurants = restaurantDAO.searchByName(search);
 
         if (restaurants.isEmpty()) {
             sendTextResponse(exchange, 404, "No restaurant found with the given name");

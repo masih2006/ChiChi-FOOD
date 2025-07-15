@@ -18,6 +18,8 @@ public class AppServer {
         server.createContext("/restaurants", new AuthFilterHandler(new RestaurantHandler()));
         server.createContext("/vendors", new AuthFilterHandler(new VendorHandler()));
         server.createContext("/admin", new AuthFilterHandler(new AdminHandler()));
+        server.createContext("/items", new AuthFilterHandler(new ItemHandler()));
+        server.createContext("/orders", new AuthFilterHandler(new OrderHandler()));
 
         server.setExecutor(null); // use default executor
         server.start();
