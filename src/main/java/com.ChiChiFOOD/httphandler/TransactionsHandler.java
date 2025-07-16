@@ -1,6 +1,7 @@
 package com.ChiChiFOOD.httphandler;
 
-import com.ChiChiFOOD.Services.OrderService;
+import com.ChiChiFOOD.Services.TransactionsService;
+import com.ChiChiFOOD.Services.VendorService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.sun.net.httpserver.HttpExchange;
@@ -12,7 +13,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
-public class OrderHandler implements HttpHandler {
+public class TransactionsHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         String path = exchange.getRequestURI().getPath();
         String[] params = Arrays.stream(path.split("/"))
@@ -29,33 +30,19 @@ public class OrderHandler implements HttpHandler {
             Sender.sendTextResponse(exchange, 400, "Invalid JSON");
             return;
         }
+
         if (method.equalsIgnoreCase("GET")) {
-            getHandler(exchange,params);
-        }else if (method.equalsIgnoreCase("post")){
-            postHandler(exchange, params, jsonRequest, path);
-        }else{
+            getHandler(exchange, params);
+        } else {
             Sender.sendTextResponse(exchange, 405, "Method Not Allowed");
             return;
         }
     }
-
-    public void postHandler(HttpExchange exchange, String[] params, JsonObject jsonRequest, String path) throws IOException {
-        if(path.equalsIgnoreCase("/items")) {
-            OrderService.submitOrder(exchange, jsonRequest);
-        } else {
-            Sender.sendTextResponse(exchange, 400, "Bad Request");
-        }
-    }
     public void getHandler(HttpExchange exchange, String[] params) throws IOException {
-        if (params.length == 2 && params[0].matches("orders") && params[1].matches("\\d+")) {
-            OrderService.specificOrder(exchange, params[1]);
-        } else if (params.length == 2 && params[0].matches("orders") && params[1].matches("history")) {
-            OrderService.orderHistory(exchange);
-        } else {
-            Sender.sendTextResponse(exchange, 400, "Bad Request");
-            return;
+        if (params[1].matches("transactions")){
+            TransactionsService.listTransactions(exchange);
         }
+        else
+            Sender.sendTextResponse(exchange, 400, "Bad Request");
     }
-
-
 }

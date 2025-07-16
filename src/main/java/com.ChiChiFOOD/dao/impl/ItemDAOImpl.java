@@ -32,7 +32,7 @@ public class ItemDAOImpl implements ItemDAO {
     }
 
 
-    public Item findById(Long id) {
+    public Item findById(int id) {
         return session.get(Item.class, id);
     }
 

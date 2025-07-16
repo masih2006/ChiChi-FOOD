@@ -9,7 +9,7 @@ public interface ItemDAO {
     public void save(Item item);
     public void update(Item item);
     public void delete(Item item);
-    public Item findById(Long id);
+    public Item findById(int id);
     public boolean itemExistsByName(String name, int restaurantId);
     public Item findItemByIdAndRestaurantId(int itemId, int restaurantId) ;
     public boolean itemExistsByIdAndRestaurantId(int itemId, int restaurantId) ;

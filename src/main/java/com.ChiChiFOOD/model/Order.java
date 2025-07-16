@@ -10,14 +10,16 @@ public class Order {
     private int       couponID;
     private    List<Integer> itemIDs;
     private    int    rawPrice;
-    private       int  taxFee;
+    private int  taxFee;
     private int           additionalFee;
     private int        courierFee;
-    private   int     payPrice;
-    private      int  courierID;
-    private  String        status;
-    private    String       created_at;
-    private           String updated_at;
+    private int     payPrice;
+    private int  courierID;
+    private OrderStatus         status;
+    private String created_at;
+    private String updated_at;
+
+
 
     public String getUpdated_at() {
         return updated_at;
@@ -35,11 +37,11 @@ public class Order {
         this.created_at = created_at;
     }
 
-    public String getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(OrderStatus status) {
         this.status = status;
     }
 
