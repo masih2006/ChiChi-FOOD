@@ -51,7 +51,7 @@ public class DeliveryHandler implements HttpHandler {
 
     public void patchHandler(HttpExchange exchange, String [] params) throws IOException {
         if (params.length == 3 && params[2].equals("orders")) {
-            DeliveryService.();
+            DeliveryService.(exchange);
         }else {
             Sender.sendTextResponse(exchange, 400, "Bad Request");
             return;
