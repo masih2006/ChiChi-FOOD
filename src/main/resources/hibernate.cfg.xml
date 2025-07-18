@@ -27,6 +27,8 @@
         <mapping class="com.ChiChiFOOD.model.Admin"/>
         <mapping class="com.ChiChiFOOD.model.Coupon"/>
         <mapping class="com.ChiChiFOOD.model.Courier"/>
+        <mapping class="com.ChiChiFOOD.model.Order"/>
+        <mapping class="com.ChiChiFOOD.model.Transaction"/>
         <mapping class="com.ChiChiFOOD.model.Restaurant"/>
         <mapping class="com.ChiChiFOOD.model.restaurant.Item"/>
         <mapping class="com.ChiChiFOOD.model.restaurant.Menu"/>

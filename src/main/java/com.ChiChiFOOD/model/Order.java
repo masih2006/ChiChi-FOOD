@@ -1,24 +1,60 @@
 package com.ChiChiFOOD.model;
 
+import jakarta.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name = "orders")
 public class Order {
-    private  int id;
-    private String       deliveryAddress;
-    private         int customerID;
-    private int        vendorID;
-    private int       couponID;
-    private    List<Integer> itemIDs;
-    private    int    rawPrice;
-    private int  taxFee;
-    private int           additionalFee;
-    private int        courierFee;
-    private int     payPrice;
-    private int  courierID;
-    private OrderStatus         status;
-    private String created_at;
-    private String updated_at;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name = "delivery_address", nullable = false)
+    private String deliveryAddress;
+
+    @Column(name = "customer_id", nullable = false)
+    private int customerID;
+
+    @Column(name = "vendor_id", nullable = false)
+    private int vendorID;
+
+    @Column(name = "coupon_id")
+    private int couponID;
+
+    @ElementCollection
+    @CollectionTable(name = "order_items", joinColumns = @JoinColumn(name = "order_id"))
+    @Column(name = "item_id")
+    private List<Integer> itemIDs;
+
+    @Column(name = "raw_price", nullable = false)
+    private int rawPrice;
+
+    @Column(name = "tax_fee", nullable = false)
+    private int taxFee;
+
+    @Column(name = "additional_fee")
+    private int additionalFee;
+
+    @Column(name = "courier_fee")
+    private int courierFee;
+
+    @Column(name = "pay_price")
+    private int payPrice;
+
+    @Column(name = "courier_id")
+    private int courierID;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private OrderStatus status;
+
+    @Column(name = "created_at")
+    private String created_at;
+
+    @Column(name = "updated_at")
+    private String updated_at;
 
 
     public String getUpdated_at() {
@@ -139,5 +175,4 @@ public class Order {
 
     public void setId(int id) {
         this.id = id;
-    }
-}
+    }}

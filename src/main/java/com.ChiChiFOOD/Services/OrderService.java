@@ -95,7 +95,6 @@ public class OrderService {
         int id;
 
         try {
-            // تبدیل orderID به عدد صحیح
             id = Integer.parseInt(orderID);
         } catch (NumberFormatException e) {
             sendTextResponse(exchange, 400, "Invalid order ID format");
@@ -103,15 +102,12 @@ public class OrderService {
         }
 
         try {
-            // گرفتن سفارش از دیتابیس
             Order order = orderDAO.findById(id);
-
             if (order == null) {
                 sendTextResponse(exchange, 404, "Order not found");
                 return;
             }
 
-            // ساخت JSON خروجی با تمام فیلدها
             JsonObject response = new JsonObject();
             response.addProperty("id", order.getId());
             response.addProperty("delivery_address", order.getDeliveryAddress());

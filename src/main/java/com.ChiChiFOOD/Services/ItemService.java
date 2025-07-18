@@ -112,7 +112,7 @@ public class ItemService {
             Transaction tx = session.beginTransaction();
             try {
                 ItemDAO itemDao = new ItemDAOImpl(session);
-                Item item = itemDao.findById(Long.parseLong(itemId));
+                Item item = itemDao.findById(Integer.parseInt(itemId));
                 if (jsonRequest.has("name")) item.setName(jsonRequest.get("name").getAsString());
                 if (jsonRequest.has("imageBase64")) item.setImageBase64(jsonRequest.get("imageBase64").getAsString());
                 if (jsonRequest.has("description")) item.setDescription(jsonRequest.get("description").getAsString());
@@ -158,7 +158,7 @@ public class ItemService {
             Transaction tx = session.beginTransaction();
             try {
                 ItemDAO itemDao = new ItemDAOImpl(session);
-                Item item = itemDao.findById(Long.parseLong(itemId));
+                Item item = itemDao.findById(Integer.parseInt(itemId));
                 int restId = Integer.parseInt(restaurantId);
                 System.out.println(item.getRestaurant().getId());
                 System.out.println(restId);
@@ -219,15 +219,12 @@ public class ItemService {
 
         Transaction tx = session.beginTransaction();
         try {
-            // همه چی با یک session لود میشه
             Menu menu = menuDAO.findByTitle(title, Integer.parseInt(restaurantId));
-            Item item = itemDAO.findById(Long.parseLong(itemId));
+            Item item = itemDAO.findById(Integer.parseInt(itemId));
 
-            // حذف آیتم از منو
             menu.getItems().removeIf(i -> i.getId() == item.getId());
             item.getMenus().removeIf(m -> m.getId().equals(menu.getId()));
 
-            // نیازی به update نیست چون session دنبال می‌کنه
             session.merge(menu);
             session.merge(item);
 

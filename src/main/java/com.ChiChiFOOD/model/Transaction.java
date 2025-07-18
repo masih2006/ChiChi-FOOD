@@ -1,12 +1,28 @@
 package com.ChiChiFOOD.model;
 
-public class Transaction {
-    private int id;
-    private int orderID;
-    private int userID;
-    //روش پرداخت
-    private PaymentMethod method;
-    private TransactionStatus status;
+import jakarta.persistence.*;
+
+    @Entity
+    @Table(name = "transactions")
+    public class Transaction {
+
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private int id;
+
+        @Column(name = "order_id")
+        private int orderID;
+
+        @Column(name = "user_id")
+        private int userID;
+
+        @Enumerated(EnumType.STRING)
+        @Column(name = "payment_method")
+        private PaymentMethod method;
+
+        @Enumerated(EnumType.STRING)
+        @Column(name = "status")
+        private TransactionStatus status;
 
     public int getId() {
         return id;
