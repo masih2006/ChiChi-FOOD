@@ -23,6 +23,8 @@ public class AppServer {
         server.createContext("/items", new AuthFilterHandler(new ItemHandler()));
         server.createContext("/orders", new AuthFilterHandler(new OrderHandler()));
         server.createContext("/transactions", new AuthFilterHandler(new TransactionsHandler()));
+        server.createContext("/wallet", new AuthFilterHandler(new TransactionsHandler()));
+        server.createContext("/payment", new AuthFilterHandler(new TransactionsHandler()));
         //server.createContext("/deliveries", new AuthFilterHandler(new DeliveryHandler()));
 
         server.setExecutor(null); // use default executor

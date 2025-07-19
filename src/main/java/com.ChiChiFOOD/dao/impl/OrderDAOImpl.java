@@ -17,6 +17,12 @@ public class OrderDAOImpl implements OrderDAO {
 public void save(Order order) {
         session.save(order);
     }
+
+    @Override
+    public void update(Order order) {
+        session.update(order);
+    }
+
     @Override
     public List<Order> findAll(){
         String hql = "FROM Order";
