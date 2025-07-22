@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea091f45-cdaa-4f68-95ab-9898c0188e81" name="Changes" comment="mmm...">
+    <list default="true" id="ea091f45-cdaa-4f68-95ab-9898c0188e81" name="Changes" comment="fronting">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/Services/RestaurantService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/Services/RestaurantService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/AuthFilterHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/AuthFilterHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/LoginHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/LoginHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -162,7 +159,8 @@
       <workItem from="1753157839697" duration="3196000" />
       <workItem from="1753162402859" duration="6000" />
       <workItem from="1753196511580" duration="1119000" />
-      <workItem from="1753198317234" duration="5502000" />
+      <workItem from="1753198317234" duration="5535000" />
+      <workItem from="1753207197055" duration="56000" />
     </task>
     <task id="LOCAL-00001" summary="bankkkkkkk">
       <option name="closed" value="true" />
@@ -284,18 +282,47 @@
       <option name="project" value="LOCAL" />
       <updated>1752863480799</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="fronting">
+      <option name="closed" value="true" />
+      <created>1753207146440</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1753207146440</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="User">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="*" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -316,7 +343,8 @@
     <MESSAGE value="user confirmation" />
     <MESSAGE value="start favorite" />
     <MESSAGE value="mmm..." />
-    <option name="LAST_COMMIT_MESSAGE" value="mmm..." />
+    <MESSAGE value="fronting" />
+    <option name="LAST_COMMIT_MESSAGE" value="fronting" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
