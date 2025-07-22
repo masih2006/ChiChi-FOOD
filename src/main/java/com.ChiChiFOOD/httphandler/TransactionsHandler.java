@@ -1,7 +1,6 @@
 package com.ChiChiFOOD.httphandler;
 
-import com.ChiChiFOOD.Services.TransactionsService;
-import com.ChiChiFOOD.Services.VendorService;
+import com.ChiChiFOOD.Services.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.sun.net.httpserver.HttpExchange;
@@ -33,6 +32,8 @@ public class TransactionsHandler implements HttpHandler {
 
         if (method.equalsIgnoreCase("GET")) {
             getHandler(exchange, params);
+        } else if (method.equalsIgnoreCase("post")) {
+            postHandler(exchange, params, jsonRequest, path);
         } else {
             Sender.sendTextResponse(exchange, 405, "Method Not Allowed");
             return;
@@ -44,5 +45,15 @@ public class TransactionsHandler implements HttpHandler {
         }
         else
             Sender.sendTextResponse(exchange, 400, "Bad Request");
+    }
+    private void postHandler(HttpExchange exchange, String [] params,JsonObject jsonRequest,String path ) throws IOException {
+        if(path.equalsIgnoreCase("/wallet") && params[1].matches("top-up")) {
+            TransactionsService.pay(exchange, jsonRequest);
+        }else if (path.equalsIgnoreCase("/payment") && params[1].matches("online")){
+            TransactionsService.wallet(exchange, jsonRequest);
+        } else {
+            Sender.sendTextResponse(exchange, 400, "Bad Request");
+            return;
+        }
     }
 }
