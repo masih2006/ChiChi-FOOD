@@ -48,7 +48,7 @@ public class LoginHandler implements HttpHandler {
                 JsonObject responseJson = new JsonObject();
                 responseJson.addProperty("token", token);
                 responseJson.addProperty("message", "Login successful");
-
+                responseJson.addProperty("role", user.getRole());
                 Sender.sendJsonResponse(exchange, 200, responseJson.toString());
             } else {
                 Sender.sendTextResponse(exchange, 401, "Invalid email/phone or password");

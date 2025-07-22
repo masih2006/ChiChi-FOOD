@@ -29,7 +29,7 @@ public class AuthFilterHandler implements HttpHandler {
 
         try {
             DecodedJWT jwt = JwtUtil.verifyToken(token);
-            exchange.setAttribute("userId", jwt.getSubject());  // ذخیره userId برای هندلر بعدی
+            exchange.setAttribute("userId", jwt.getSubject());
             exchange.setAttribute("role", jwt.getClaim("role").asString());
             next.handle(exchange);
         } catch (Exception e) {

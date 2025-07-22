@@ -86,9 +86,11 @@ public class RestaurantService {
         String SellerId  = exchange.getAttribute("userId").toString();
         if (!exchange.getAttribute("role").equals("seller")) {
             sendTextResponse(exchange, 403, "Forbidden request");
+            return;
         }
         if (!restaurantDAO.existsBySellerId(Integer.parseInt(SellerId))){
             sendTextResponse(exchange, 404, "Resource not found");
+            return;
         }
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             RestaurantDAOImpl restaurantDaoImpl = new RestaurantDAOImpl(session);
@@ -103,10 +105,11 @@ public class RestaurantService {
                 restaurantResponse.put("logoBase64", restaurant.getLogoBase64());
                 restaurantResponse.put("tax_fee", restaurant.getTaxFee());
                 restaurantResponse.put("additional_fee", restaurant.getAdditionalFee());
+                restaurantResponse.put("isRestaurantConfirmed", restaurant.isRestaurantConfirmed());
                 responseList.add(restaurantResponse);
             }
             String responseJson = new Gson().toJson(responseList);
-            sendJsonResponse(exchange, 200, responseJson);
+            sendTextResponse(exchange, 200, responseJson);
             return;
         }
 
