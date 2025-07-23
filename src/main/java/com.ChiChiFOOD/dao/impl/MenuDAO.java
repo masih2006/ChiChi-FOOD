@@ -1,5 +1,6 @@
 package com.ChiChiFOOD.dao.impl;
 
+import com.ChiChiFOOD.model.Restaurant;
 import com.ChiChiFOOD.model.restaurant.Menu;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -17,6 +18,5 @@ public interface  MenuDAO {
     public boolean menuExistByTitle(String title, int restaurantId) ;
     public boolean itemExistsInMenu(String title, int itemId, int restaurantId) ;
     public Menu findByTitle(String title, int restaurantId) ;
-
-}
+    }
 

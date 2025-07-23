@@ -2,6 +2,7 @@ package com.ChiChiFOOD.dao.impl;
 
 import com.ChiChiFOOD.model.Restaurant;
 import com.ChiChiFOOD.model.restaurant.Item;
+import com.ChiChiFOOD.model.restaurant.Menu;
 import com.ChiChiFOOD.utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -102,5 +103,12 @@ public class RestaurantDAOImpl implements RestaurantDAO {
             query.setParameter("restaurant", restaurant);
             return query.list();
     }
+    public List<Menu> getMenusByRestaurant(Restaurant restaurant) {
+        String hql = "FROM Menu WHERE restaurant = :restaurant";
+        Query<Menu> query = session.createQuery(hql, Menu.class);
+        query.setParameter("restaurant", restaurant);
+        return query.list();
+    }
+
 
 }

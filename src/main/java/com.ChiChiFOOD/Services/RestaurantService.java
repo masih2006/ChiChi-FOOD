@@ -6,6 +6,8 @@ import com.ChiChiFOOD.dao.impl.UserDAO;
 import com.ChiChiFOOD.dao.impl.UserDAOImpl;
 import com.ChiChiFOOD.model.Restaurant;
 import com.ChiChiFOOD.model.User;
+import com.ChiChiFOOD.model.restaurant.Item;
+import com.ChiChiFOOD.model.restaurant.Menu;
 import com.ChiChiFOOD.utils.HibernateUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -143,5 +145,41 @@ public class RestaurantService {
                 sendTextResponse(exchange, 500, "Internal server error");
             }
         }
+    }
+
+    public static void getAllItems(HttpExchange exchange,String restaurantId) throws IOException {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        RestaurantDAO restaurantDao = new RestaurantDAOImpl(session);
+        List <Item> items = restaurantDao.getRestaurantItems(restaurantDao.findById(Long.parseLong(restaurantId)));
+        List<Map<String, Object>> responseList = new ArrayList<>();
+        for (Item item : items) {
+            Map<String, Object> itemResponse = new LinkedHashMap<>();
+            itemResponse.put("id", item.getId());
+            itemResponse.put("name", item.getName());
+            itemResponse.put("imageBase64",item.getImageBase64() );
+            itemResponse.put("price", item.getPrice());
+            itemResponse.put("supply", item.getSupply());
+            responseList.add(itemResponse);
+        }
+        String responseJson = new Gson().toJson(responseList);
+        sendTextResponse(exchange, 200, responseJson);
+        session.close();
+        return;
+    }
+    public static void getAllMenus(HttpExchange exchange,String restaurantId) throws IOException {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        RestaurantDAO restaurantDao = new RestaurantDAOImpl(session);
+        List <Menu> menus = restaurantDao.getMenusByRestaurant(restaurantDao.findById(Long.parseLong(restaurantId)));
+        List<Map<String, Object>> responseList = new ArrayList<>();
+        for (Menu menu : menus) {
+            Map<String, Object> menuResponse = new LinkedHashMap<>();
+            menuResponse.put("id", menu.getId().toString());
+            menuResponse.put("title",menu.getTitle());
+            responseList.add(menuResponse);
+        }
+        String responseJson = new Gson().toJson(responseList);
+        sendTextResponse(exchange, 200, responseJson);
+        session.close();
+        return;
     }
 }

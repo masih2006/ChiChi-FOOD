@@ -2,6 +2,7 @@ package com.ChiChiFOOD.dao.impl;
 
 import com.ChiChiFOOD.model.Restaurant;
 import com.ChiChiFOOD.model.restaurant.Item;
+import com.ChiChiFOOD.model.restaurant.Menu;
 import com.ChiChiFOOD.utils.HibernateUtil;
 import org.hibernate.Session;
 
@@ -22,4 +23,6 @@ public interface RestaurantDAO {
     public  boolean restaurantExistsByName(String name);
     public int getMyRestaurantId(String sellerId) ;
     public List<Item> getRestaurantItems(Restaurant restaurant);
+    public List<Menu> getMenusByRestaurant(Restaurant restaurant);
+
 }

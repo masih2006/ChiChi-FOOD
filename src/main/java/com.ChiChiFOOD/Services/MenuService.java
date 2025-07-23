@@ -182,4 +182,9 @@ public class MenuService {
             MenuSession.close();
         }
     }
+
+    public static void getEverything (HttpExchange exchange, String RestaurantId) throws IOException {
+
+    }
+
 }

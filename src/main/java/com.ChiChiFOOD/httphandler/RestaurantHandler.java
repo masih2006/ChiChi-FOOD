@@ -46,10 +46,13 @@ public class RestaurantHandler implements HttpHandler {
         }
     }
     private void getHandler(HttpExchange exchange, String [] params) throws IOException {
-        System.out.println(Arrays.toString(params));
         if (params.length == 2 && params[1].equals("mine")) {
             RestaurantService.getRestaurants(exchange);
-        }else if (params.length == 3 && params[2].equals("orders")) {
+        }else if (params.length == 2 && params[1].equals("getItems")){
+            RestaurantService.getAllItems(exchange,params[2]);
+        }else if (params.length == 2 && params[1].equals("getMenus")){
+            RestaurantService.getAllMenus(exchange,params[2]);
+        } else if (params.length == 3 && params[2].equals("orders")) {
 
         }else {
             Sender.sendTextResponse(exchange, 400, "Bad Request");
