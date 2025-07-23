@@ -24,18 +24,21 @@ public class VendorService {
     static Session DaoSession = HibernateUtil.getSessionFactory().openSession();
     static RestaurantDAO restaurantDAO = new RestaurantDAOImpl(DaoSession);
     public static void restaurantsList(HttpExchange exchange, JsonObject jsonRequest) throws IOException {
-        String search;
-        ArrayList<String> keywords;
+        String search = null;
+        List<String> keywords = null;
+
+        // استخراج search و keywords
         try {
-            search = jsonRequest.has("search") ? jsonRequest.get("search").getAsString() : null;
+            if (jsonRequest.has("search") && !jsonRequest.get("search").isJsonNull()) {
+                search = jsonRequest.get("search").getAsString();
+            }
+
             if (jsonRequest.has("keywords") && jsonRequest.get("keywords").isJsonArray()) {
                 JsonArray jsonArray = jsonRequest.getAsJsonArray("keywords");
                 keywords = new ArrayList<>();
                 for (JsonElement element : jsonArray) {
                     keywords.add(element.getAsString());
                 }
-            } else {
-                keywords = null;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -43,6 +46,7 @@ public class VendorService {
             return;
         }
 
+        // جستجوی رستوران
         List<Restaurant> restaurants = restaurantDAO.searchByName(search);
 
         if (restaurants.isEmpty()) {
@@ -52,8 +56,20 @@ public class VendorService {
 
         Restaurant restaurant = restaurants.get(0);
 
-        boolean hasMatchingFood = restaurant.getFoodItems().stream()
-                .anyMatch(item -> item.getKeywords().containsAll(keywords));
+        // اگر کلیدواژه‌ای وجود نداره، رستوران رو بدون فیلتر غذاها برگردون
+        if (keywords == null || keywords.isEmpty()) {
+            Gson gson = new Gson();
+            String jsonResponse = gson.toJson(restaurant);
+            sendJsonResponse(exchange, 200, jsonResponse);
+            return;
+        }
+
+        // بررسی وجود غذاهای دارای کلیدواژه
+        List<String> finalKeywords = keywords;boolean hasMatchingFood = restaurant.getFoodItems().stream()
+                .anyMatch(item -> {
+                    List<String> itemKeywords = item.getKeywords();
+                    return itemKeywords != null && itemKeywords.containsAll(finalKeywords);
+                });
 
         if (!hasMatchingFood) {
             sendTextResponse(exchange, 404, "No food matched the keywords in this restaurant");
