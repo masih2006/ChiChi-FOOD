@@ -86,6 +86,10 @@ public class AdminHandler implements HttpHandler {
             if (params [1].equals("users") && params [3].equals("status")){
                 AdminService.confirmUser(exchange,jsonRequest,params[2]);
             }
+        }else if (params.length == 3){
+            if (params [1].equals("confirm") ){
+                AdminService.confirmUser(exchange,jsonRequest,params[2]);
+            }
         }
     }
 }

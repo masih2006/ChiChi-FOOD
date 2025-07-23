@@ -1,14 +1,18 @@
 package com.ChiChiFOOD.Services;
 
+import com.ChiChiFOOD.dao.impl.RestaurantDAO;
+import com.ChiChiFOOD.dao.impl.RestaurantDAOImpl;
 import com.ChiChiFOOD.dao.impl.UserDAO;
 import com.ChiChiFOOD.dao.impl.UserDAOImpl;
 import com.ChiChiFOOD.httphandler.Sender;
+import com.ChiChiFOOD.model.Restaurant;
 import com.ChiChiFOOD.model.User;
 import com.ChiChiFOOD.utils.HibernateUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.sun.net.httpserver.HttpExchange;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -81,6 +85,33 @@ public class AdminService {
         userDAO.update(user);
         sendTextResponse(exchange,200, "status updated");
         return;
+    }
+    public static void confirmRestaurant(HttpExchange exchange, JsonObject jsonObject, String id) throws IOException {
+        if (!exchange.getAttribute("role").toString().equalsIgnoreCase("admin")) {
+            sendTextResponse(exchange, 403, "forbidden");
+            return;
+        }
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        RestaurantDAO restaurantDAO = new RestaurantDAOImpl(session);
+        if (!restaurantDAO.restaurantExistsById(id)){
+            sendTextResponse(exchange, 404, "Resource not found");
+            return;
+        }
+        Restaurant restaurant = restaurantDAO.findById(Long.parseLong(id));
+        restaurant.setRestaurantConfirmed(true);
+        Transaction tx = session.beginTransaction();
+        try {
+            restaurantDAO.update(restaurant);
+            tx.commit();
+            sendTextResponse(exchange, 200, "status updated");
+            session.close();
+            return;
+        }catch (Exception e){
+            tx.rollback();
+            sendTextResponse(exchange, 500, "internal error");
+            session.close();
+            return;
+        }
     }
 
 }
