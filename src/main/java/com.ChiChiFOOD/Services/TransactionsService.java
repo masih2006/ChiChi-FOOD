@@ -159,8 +159,8 @@ public class TransactionsService {
                 }
 
                 // 4. افزایش موجودی کیف پول
-                int currentBalance = user.getWalletBalance();
-                user.setWalletBalance(currentBalance + amount);
+//                int currentBalance = user.getWalletBalance();
+//                user.setWalletBalance(currentBalance + amount);
 
                 session.update(user);
                 tx.commit();
