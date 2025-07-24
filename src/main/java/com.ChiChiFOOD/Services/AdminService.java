@@ -91,6 +91,7 @@ public class AdminService {
             sendTextResponse(exchange, 403, "forbidden");
             return;
         }
+        System.out.println("baba");
         Session session = HibernateUtil.getSessionFactory().openSession();
         RestaurantDAO restaurantDAO = new RestaurantDAOImpl(session);
         if (!restaurantDAO.restaurantExistsById(id)){

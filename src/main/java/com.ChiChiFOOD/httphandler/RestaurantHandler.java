@@ -48,9 +48,9 @@ public class RestaurantHandler implements HttpHandler {
     private void getHandler(HttpExchange exchange, String [] params) throws IOException {
         if (params.length == 2 && params[1].equals("mine")) {
             RestaurantService.getRestaurants(exchange);
-        }else if (params.length == 2 && params[1].equals("getItems")){
+        }else if (params.length == 3 && params[1].equals("getItems")){
             RestaurantService.getAllItems(exchange,params[2]);
-        }else if (params.length == 2 && params[1].equals("getMenus")){
+        }else if (params.length == 3 && params[1].equals("getMenus")){
             RestaurantService.getAllMenus(exchange,params[2]);
         } else if (params.length == 3 && params[2].equals("orders")) {
 
@@ -91,7 +91,7 @@ public class RestaurantHandler implements HttpHandler {
         if (params.length == 5 && params [2].equals("menu")) {
             ItemService.deleteItemFromMenu(exchange, params[1], params[3], params[4]);
         }else if (params.length == 4){
-            if (params[1].matches("\\d+") && params[2].equals("item") && params[3].matches("\\d")){
+            if (params[2].equals("item")){
                 ItemService.deleteItem(exchange,params[1],params[3]);
             }else if (params[1].matches("\\d+") && params[2].equals("menu")) {
                 MenuService.deleteMenu(exchange, params[1], params[3]);

@@ -150,6 +150,10 @@ public class RestaurantService {
     public static void getAllItems(HttpExchange exchange,String restaurantId) throws IOException {
         Session session = HibernateUtil.getSessionFactory().openSession();
         RestaurantDAO restaurantDao = new RestaurantDAOImpl(session);
+        if (!restaurantDao.restaurantExistsById(restaurantId)) {
+            sendTextResponse(exchange, 404, "Resource not found");
+            return;
+        }
         List <Item> items = restaurantDao.getRestaurantItems(restaurantDao.findById(Long.parseLong(restaurantId)));
         List<Map<String, Object>> responseList = new ArrayList<>();
         for (Item item : items) {
@@ -162,6 +166,7 @@ public class RestaurantService {
             responseList.add(itemResponse);
         }
         String responseJson = new Gson().toJson(responseList);
+        System.out.println(responseJson);
         sendTextResponse(exchange, 200, responseJson);
         session.close();
         return;
@@ -169,6 +174,10 @@ public class RestaurantService {
     public static void getAllMenus(HttpExchange exchange,String restaurantId) throws IOException {
         Session session = HibernateUtil.getSessionFactory().openSession();
         RestaurantDAO restaurantDao = new RestaurantDAOImpl(session);
+        if (!restaurantDao.restaurantExistsById(restaurantId)) {
+            sendTextResponse(exchange, 404, "Resource not found");
+            return;
+        }
         List <Menu> menus = restaurantDao.getMenusByRestaurant(restaurantDao.findById(Long.parseLong(restaurantId)));
         List<Map<String, Object>> responseList = new ArrayList<>();
         for (Menu menu : menus) {
