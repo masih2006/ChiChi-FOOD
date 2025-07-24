@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.ChiChiFOOD.httphandler.Sender.sendJsonResponse;
 import static com.ChiChiFOOD.httphandler.Sender.sendTextResponse;
@@ -171,24 +172,45 @@ public class RestaurantService {
         session.close();
         return;
     }
-    public static void getAllMenus(HttpExchange exchange,String restaurantId) throws IOException {
+    public static void getAllMenus(HttpExchange exchange, String restaurantId) throws IOException {
         Session session = HibernateUtil.getSessionFactory().openSession();
         RestaurantDAO restaurantDao = new RestaurantDAOImpl(session);
+
         if (!restaurantDao.restaurantExistsById(restaurantId)) {
             sendTextResponse(exchange, 404, "Resource not found");
             return;
         }
-        List <Menu> menus = restaurantDao.getMenusByRestaurant(restaurantDao.findById(Long.parseLong(restaurantId)));
+
+        List<Menu> menus = restaurantDao.getMenusByRestaurant(restaurantDao.findById(Long.parseLong(restaurantId)));
         List<Map<String, Object>> responseList = new ArrayList<>();
+
         for (Menu menu : menus) {
             Map<String, Object> menuResponse = new LinkedHashMap<>();
             menuResponse.put("id", menu.getId().toString());
-            menuResponse.put("title",menu.getTitle());
+            menuResponse.put("title", menu.getTitle());
+
+            // تبدیل دستی آیتم‌ها به Map ساده
+            List<Map<String, Object>> itemList = new ArrayList<>();
+            for (Item item : menu.getItems()) {
+                Map<String, Object> itemMap = new LinkedHashMap<>();
+                itemMap.put("id", item.getId());
+                itemMap.put("name", item.getName());
+                itemMap.put("description", item.getDescription());
+                itemMap.put("price", item.getPrice());
+                itemMap.put("supply", item.getSupply());
+                itemMap.put("imageBase64", item.getImageBase64());
+                itemList.add(itemMap);
+            }
+
+            menuResponse.put("items", itemList); // اضافه به منو
             responseList.add(menuResponse);
         }
+
+        System.out.println(responseList);
+
         String responseJson = new Gson().toJson(responseList);
         sendTextResponse(exchange, 200, responseJson);
         session.close();
-        return;
     }
+
 }
