@@ -11,13 +11,13 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "delivery_address", nullable = false)
+    @Column(name = "delivery_address")
     private String deliveryAddress;
 
-    @Column(name = "customer_id", nullable = false)
+    @Column(name = "customer_id")
     private int customerID;
 
-    @Column(name = "vendor_id", nullable = false)
+    @Column(name = "vendor_id")
     private int vendorID;
 
     @Column(name = "coupon_id")
@@ -28,10 +28,10 @@ public class Order {
     @Column(name = "item_id")
     private List<Integer> itemIDs;
 
-    @Column(name = "raw_price", nullable = false)
+    @Column(name = "raw_price")
     private int rawPrice;
 
-    @Column(name = "tax_fee", nullable = false)
+    @Column(name = "tax_fee")
     private int taxFee;
 
     @Column(name = "additional_fee")

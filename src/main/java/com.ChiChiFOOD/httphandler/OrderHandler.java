@@ -40,7 +40,7 @@ public class OrderHandler implements HttpHandler {
     }
 
     public void postHandler(HttpExchange exchange, String[] params, JsonObject jsonRequest, String path) throws IOException {
-        if(path.equalsIgnoreCase("/items")) {
+        if(path.equalsIgnoreCase("/orders")) {
             OrderService.submitOrder(exchange, jsonRequest);
         } else {
             Sender.sendTextResponse(exchange, 400, "Bad Request");
@@ -51,7 +51,10 @@ public class OrderHandler implements HttpHandler {
             OrderService.specificOrder(exchange, params[1]);
         } else if (params.length == 2 && params[0].matches("orders") && params[1].matches("history")) {
             OrderService.orderHistory(exchange);
-        } else {
+        }else if (params.length == 3 && params[0].matches("orders") && params[1].matches("getallorders")) {
+            OrderService.getAllOrders(exchange,params[2]);
+        }
+        else {
             Sender.sendTextResponse(exchange, 400, "Bad Request");
             return;
         }

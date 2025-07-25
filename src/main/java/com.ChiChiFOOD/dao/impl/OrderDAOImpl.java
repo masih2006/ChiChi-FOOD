@@ -33,4 +33,14 @@ public void save(Order order) {
     public Order findById(int id){
         return session.get(Order.class, id);
     }
+
+    @Override
+    public List<Order> getOrdersByRestaurant(String vendorID) {
+        String hql = "FROM Order WHERE vendorID = :vendorID";
+        Query<Order> query = session.createQuery(hql, Order.class);
+        query.setParameter("vendorID", vendorID);
+        return query.list();
+    }
+
+
 }

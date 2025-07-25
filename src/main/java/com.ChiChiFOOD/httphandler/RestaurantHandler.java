@@ -39,7 +39,7 @@ public class RestaurantHandler implements HttpHandler {
         }else if (method.equalsIgnoreCase("delete")){
             deleteHandler(exchange, params);
         }else if (method.equalsIgnoreCase("patch")){
-            patchHandler(exchange, params);
+            patchHandler(exchange, jsonRequest, params);
         }else{
             Sender.sendTextResponse(exchange, 405, "Method Not Allowed");
             return;
@@ -59,9 +59,9 @@ public class RestaurantHandler implements HttpHandler {
             return;
         }
     }
-    private void patchHandler(HttpExchange exchange, String [] params) throws IOException {
-        if (params.length == 3 && params[2].equals("orders")) {
-
+    private void patchHandler(HttpExchange exchange,JsonObject jsonObject, String [] params) throws IOException {
+        if (params.length == 3 && params[1].equals("orders")) {
+            RestaurantService.changeStatusOfOrder(exchange,jsonObject, params[2]);
         }else {
             Sender.sendTextResponse(exchange, 400, "Bad Request");
             return;

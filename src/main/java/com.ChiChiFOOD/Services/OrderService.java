@@ -2,15 +2,19 @@ package com.ChiChiFOOD.Services;
 
 import com.ChiChiFOOD.dao.impl.*;
 import com.ChiChiFOOD.model.Order;
+import com.ChiChiFOOD.model.OrderStatus;
 import com.ChiChiFOOD.model.restaurant.Item;
 import com.ChiChiFOOD.utils.HibernateUtil;
 import com.google.gson.*;
 import com.sun.net.httpserver.HttpExchange;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.ChiChiFOOD.httphandler.Sender.sendJsonResponse;
 import static com.ChiChiFOOD.httphandler.Sender.sendTextResponse;
@@ -56,16 +60,16 @@ public class OrderService {
             sendTextResponse(exchange, 400, "Invalid JSON format or data types");
             return;
         }
-
+        Transaction transaction = DaoSession.beginTransaction();
         try {
+            System.out.println("== itemIDs to save: " + itemIDs);
             Order order = new Order();
             order.setDeliveryAddress(deliveryAddress);
             order.setVendorID(vendorId);
             order.setCouponID(couponId);
             order.setItemIDs(itemIDs);
-
+            order.setStatus(OrderStatus.SUBMITTED);
             orderDAO.save(order);
-
             List<Item> fullItems = new ArrayList<>();
             for (Integer id : itemIDs) {
                 Item item = itemDAO.findById(id);
@@ -80,12 +84,25 @@ public class OrderService {
             if (couponId != null) response.addProperty("couponID", couponId);
 
             Gson gson = new Gson();
-            JsonArray jsonItems = gson.toJsonTree(fullItems).getAsJsonArray();
-            response.add("items", jsonItems);
+            JsonArray itemArray = new JsonArray();
+            for (Item item : fullItems) {
+                JsonObject itemJson = new JsonObject();
+                itemJson.addProperty("id", item.getId());
+                itemJson.addProperty("name", item.getName());
+                itemJson.addProperty("description", item.getDescription());
+                itemJson.addProperty("price", item.getPrice());
+                itemJson.addProperty("supply", item.getSupply());
+                itemJson.addProperty("imageBase64", item.getImageBase64());
+                itemArray.add(itemJson);
+            }
+            response.add("items", itemArray);
+
 
             sendJsonResponse(exchange, 200, response.toString());
-
+            transaction.commit();
+            return;
         } catch (Exception e) {
+            transaction.rollback();
             e.printStackTrace();
             sendTextResponse(exchange, 500, "Internal server error while submitting order");
         }
@@ -137,8 +154,70 @@ public class OrderService {
         }
     }
 
+    public static void getAllOrders(HttpExchange exchange, String restaurantID) throws IOException {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            RestaurantDAO restaurantDAO = new RestaurantDAOImpl(session);
+            ItemDAO itemDAO = new ItemDAOImpl(session);
+            OrderDAO orderDAO = new OrderDAOImpl(session);
+
+            if (!restaurantDAO.restaurantExistsById(restaurantID)) {
+                sendTextResponse(exchange, 404, "Restaurant does not exist");
+                return;
+            }
+
+            List<Order> orders = orderDAO.getOrdersByRestaurant(restaurantID);
+            List<Map<String, Object>> responseList = new ArrayList<>();
+
+            for (Order order : orders) {
+                System.out.println("== Retrieved itemIDs: " + order.getItemIDs());
+                Map<String, Object> orderResponse = new LinkedHashMap<>();
+                orderResponse.put("id", order.getId());
+                orderResponse.put("deliveryAddress", order.getDeliveryAddress());
+                orderResponse.put("customerID", order.getCustomerID());
+                orderResponse.put("vendorID", order.getVendorID());
+                orderResponse.put("couponID", order.getCouponID());
+                orderResponse.put("rawPrice", order.getRawPrice());
+                orderResponse.put("taxFee", order.getTaxFee());
+                orderResponse.put("additionalFee", order.getAdditionalFee());
+                orderResponse.put("courierFee", order.getCourierFee());
+                orderResponse.put("payPrice", order.getPayPrice());
+                orderResponse.put("courierID", order.getCourierID());
+                orderResponse.put("status", order.getStatus().toString());
+                orderResponse.put("createdAt", order.getCreated_at());
+                orderResponse.put("updatedAt", order.getUpdated_at());
+
+                List<Map<String, Object>> itemList = new ArrayList<>();
+                for (Integer itemId : order.getItemIDs()) {
+                    Item item = itemDAO.findById(itemId);
+                    if (item != null) {
+                        Map<String, Object> itemMap = new LinkedHashMap<>();
+                        itemMap.put("id", item.getId());
+                        itemMap.put("name", item.getName());
+                        itemMap.put("description", item.getDescription());
+                        itemMap.put("price", item.getPrice());
+                        itemMap.put("supply", item.getSupply());
+                        itemMap.put("imageBase64", item.getImageBase64());
+                        itemList.add(itemMap);
+                    }
+                }
+
+                orderResponse.put("items", itemList);
+                responseList.add(orderResponse);
+            }
+
+            Gson gson = new Gson();
+            sendJsonResponse(exchange, 200, gson.toJson(responseList));
+        } catch (Exception e) {
+            e.printStackTrace();
+            sendTextResponse(exchange, 500, "Internal server error while retrieving orders");
+        }
+    }
+
     public static void orderHistory(HttpExchange exchange) throws IOException {
 
+
+
     }
+
 }
 

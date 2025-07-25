@@ -1,9 +1,8 @@
 package com.ChiChiFOOD.Services;
 
-import com.ChiChiFOOD.dao.impl.RestaurantDAO;
-import com.ChiChiFOOD.dao.impl.RestaurantDAOImpl;
-import com.ChiChiFOOD.dao.impl.UserDAO;
-import com.ChiChiFOOD.dao.impl.UserDAOImpl;
+import com.ChiChiFOOD.dao.impl.*;
+import com.ChiChiFOOD.model.Order;
+import com.ChiChiFOOD.model.OrderStatus;
 import com.ChiChiFOOD.model.Restaurant;
 import com.ChiChiFOOD.model.User;
 import com.ChiChiFOOD.model.restaurant.Item;
@@ -172,6 +171,7 @@ public class RestaurantService {
         session.close();
         return;
     }
+
     public static void getAllMenus(HttpExchange exchange, String restaurantId) throws IOException {
         Session session = HibernateUtil.getSessionFactory().openSession();
         RestaurantDAO restaurantDao = new RestaurantDAOImpl(session);
@@ -213,4 +213,37 @@ public class RestaurantService {
         session.close();
     }
 
+    public static void changeStatusOfOrder(HttpExchange exchange,JsonObject jsonObject, String orderID) throws IOException {
+       String orderStatus;
+       try {
+            orderStatus = jsonObject.get("status").getAsString();
+           System.out.println(orderStatus);
+       }catch (Exception e) {
+        sendTextResponse(exchange, 400, "invalid order status");
+        return;
+       }
+       try (Session session = HibernateUtil.getSessionFactory().openSession()){
+           Transaction tx = session.beginTransaction();
+           try{
+               OrderDAO orderDao = new OrderDAOImpl(session);
+               Order order = orderDao.findById(Integer.parseInt(orderID));
+               if (order == null) {
+                   sendTextResponse(exchange, 404, "Order not found");
+                   return;
+               }
+               order.setStatus(OrderStatus.fromString(orderStatus));
+               orderDao.update(order);
+               sendTextResponse(exchange, 200, "Order updated successfully");
+               tx.commit();
+               return;
+           }catch (Exception e) {
+               tx.rollback();
+               e.printStackTrace();
+               sendTextResponse(exchange, 500, "Internal server error");
+               return;
+           }
+       }
+
+
+    }
 }
