@@ -63,7 +63,7 @@ public abstract class User {
 
     public User() {
         this.bank = new Bank();
-
+        isUserConfirmed = 0;
     }
 
 

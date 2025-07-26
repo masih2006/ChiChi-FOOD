@@ -15,6 +15,7 @@ public interface RestaurantDAO {
     public void delete(Restaurant restaurant);
     public Restaurant findById(Long id);
     public List<Restaurant> getRestaurantsBySellerId(String sellerId);
+    public List<Restaurant> getAllRestaurants();
     public boolean existsBySellerId(int sellerId);
     public List<Restaurant> searchByName(String keyword);
     public List<Restaurant> findAll();

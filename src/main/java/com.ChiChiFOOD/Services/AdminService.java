@@ -42,6 +42,7 @@ public class AdminService {
                 userResponse.put("role", user.getRole()); // این از getClass().getSimpleName() میاد
                 userResponse.put("address", user.getAddress());
                 userResponse.put("profileImageBase64", user.getProfileImageBase64());
+                userResponse.put("isUserConfirmed", user.getIsUserConfirmed());
                 Map<String, Object> bankInfo = new LinkedHashMap<>();
                 bankInfo.put("bank_name", user.getBankName());
                 bankInfo.put("account_number", user.getAccountNumber());
@@ -57,7 +58,7 @@ public class AdminService {
     public static void confirmUser(HttpExchange exchange, JsonObject jsonObject, String id) throws IOException {
         boolean confirmCode;
         if (jsonObject.has("status")) {
-            if (jsonObject.get("status").equals("approved")) {
+            if (jsonObject.get("status").getAsString().equals("approved")) {
                 confirmCode = true;
             }else {
                 confirmCode = false;
@@ -71,6 +72,7 @@ public class AdminService {
             return;
         }
         Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
         UserDAO userDAO = new UserDAOImpl(session);
         User user = userDAO.findById(Integer.parseInt(id));
         if (user == null) {
@@ -83,15 +85,28 @@ public class AdminService {
             user.setUserNotConfirmed();
         }
         userDAO.update(user);
+        tx.commit();
+        session.close();
         sendTextResponse(exchange,200, "status updated");
         return;
     }
+
     public static void confirmRestaurant(HttpExchange exchange, JsonObject jsonObject, String id) throws IOException {
+        boolean confirmCode;
+        if (jsonObject.has("status")) {
+            if (jsonObject.get("status").getAsString().equals("approved")) {
+                confirmCode = true;
+            }else {
+                confirmCode = false;
+            }
+        }else {
+            sendTextResponse(exchange, 400, "invalid field status");
+            return;
+        }
         if (!exchange.getAttribute("role").toString().equalsIgnoreCase("admin")) {
             sendTextResponse(exchange, 403, "forbidden");
             return;
         }
-        System.out.println("baba");
         Session session = HibernateUtil.getSessionFactory().openSession();
         RestaurantDAO restaurantDAO = new RestaurantDAOImpl(session);
         if (!restaurantDAO.restaurantExistsById(id)){
@@ -99,7 +114,7 @@ public class AdminService {
             return;
         }
         Restaurant restaurant = restaurantDAO.findById(Long.parseLong(id));
-        restaurant.setRestaurantConfirmed(true);
+        restaurant.setRestaurantConfirmed(confirmCode);
         Transaction tx = session.beginTransaction();
         try {
             restaurantDAO.update(restaurant);
@@ -115,4 +130,28 @@ public class AdminService {
         }
     }
 
+    public static void getAllRestaurants(HttpExchange exchange) throws IOException {
+        if (!exchange.getAttribute("role").toString().equalsIgnoreCase("admin")) {
+            Sender.sendTextResponse(exchange,403, "forbidden");
+            return;
+        }
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            RestaurantDAO restaurantDAO = new RestaurantDAOImpl(session);
+            List<Restaurant> restaurants = restaurantDAO.getAllRestaurants();
+            List<Map<String, Object>> responseList = new ArrayList<>();
+            for (Restaurant restaurant : restaurants) {
+                Map<String, Object> restaurantResponse = new LinkedHashMap<>();
+                restaurantResponse.put("id", restaurant.getId());
+                restaurantResponse.put("full_name", restaurant.getName());
+                restaurantResponse.put("phone", restaurant.getPhone());
+                restaurantResponse.put("address", restaurant.getAddress());
+                restaurantResponse.put("isRestaurantConfirmed", restaurant.isRestaurantConfirmed());
+                responseList.add(restaurantResponse);
+            }
+            String responseJson = new Gson().toJson(responseList);
+            System.out.println(responseJson);
+            sendJsonResponse(exchange, 200, responseJson);
+            return;
+        }
+    }
 }

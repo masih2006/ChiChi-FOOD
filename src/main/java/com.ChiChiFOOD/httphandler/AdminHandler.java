@@ -50,6 +50,8 @@ public class AdminHandler implements HttpHandler {
         if (params.length == 2){
             if (params [1].equals("users")){
                 AdminService.getAllUsers(exchange, jsonRequest);
+            }else if(params [1].equals("getAllRestaurants")){
+                AdminService.getAllRestaurants(exchange);
             }
             else if (params [1].equals("coupons")){
                 CouponsService.getAllCoupons(exchange, jsonRequest);
@@ -86,8 +88,8 @@ public class AdminHandler implements HttpHandler {
             if (params [1].equals("users") && params [3].equals("status")){
                 AdminService.confirmUser(exchange,jsonRequest,params[2]);
             }
-            if (params[1].equals("restaurants") && params [2].equals("confirm") ){
-                AdminService.confirmRestaurant(exchange,jsonRequest,params[3]);
+            if (params[1].equals("restaurants") && params [3].equals("status") ){
+                AdminService.confirmRestaurant(exchange,jsonRequest,params[2]);
             }
         }
     }
