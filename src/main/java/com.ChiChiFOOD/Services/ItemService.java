@@ -294,7 +294,10 @@ public class ItemService {
                     }
                 }
             }
-
+            if (matchedItems.isEmpty()) {
+                sendTextResponse(httpExchange, 404, "resource not found");
+                return;
+            }
             Gson gson = new Gson();
             JsonArray responseArray = new JsonArray();
 
@@ -302,8 +305,9 @@ public class ItemService {
                 JsonObject jsonObject = gson.toJsonTree(item.toJson()).getAsJsonObject();
                 responseArray.add(jsonObject);
             }
-
-            sendJsonResponse(httpExchange, 200, responseArray.toString());
+            JsonObject responseObject = new JsonObject();
+            responseObject.add("items", responseArray);
+            sendJsonResponse(httpExchange, 200, responseObject.toString());
 
         } catch (Exception e) {
             e.printStackTrace();
