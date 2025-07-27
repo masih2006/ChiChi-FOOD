@@ -25,5 +25,5 @@ public interface RestaurantDAO {
     public int getMyRestaurantId(String sellerId) ;
     public List<Item> getRestaurantItems(Restaurant restaurant);
     public List<Menu> getMenusByRestaurant(Restaurant restaurant);
-
+    public String getRestaurantName(int id);
 }

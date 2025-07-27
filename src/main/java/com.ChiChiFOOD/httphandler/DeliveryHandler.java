@@ -32,7 +32,7 @@ public class DeliveryHandler implements HttpHandler {
         }
 
         if (method.equalsIgnoreCase("GET")) {
-            getHandler(exchange,params);
+            getHandler(exchange,params, path);
         }else if (method.equalsIgnoreCase("patch")){
             patchHandler(exchange, params, jsonRequest);
         }else{
@@ -41,7 +41,7 @@ public class DeliveryHandler implements HttpHandler {
         }
     }
 
-    public void getHandler(HttpExchange exchange, String[] params) throws IOException {
+    public void getHandler(HttpExchange exchange, String[] params, String Path) throws IOException {
         if (params.length == 2 && params[1].matches("available")){
             DeliveryService.findCourier(exchange);
         }else if (params.length == 2 && params[1].matches("history")){

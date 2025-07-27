@@ -109,6 +109,13 @@ public class RestaurantDAOImpl implements RestaurantDAO {
         query.setParameter("restaurant", restaurant);
         return query.list();
     }
+    public String getRestaurantName(int id) {
+        String hql = "SELECT r.name FROM Restaurant r WHERE r.id = :id";
+        Query<String> query = session.createQuery(hql, String.class);
+        query.setParameter("id", id);
+        return query.uniqueResult();
+    }
+
 
     @Override
     public List<Restaurant> getAllRestaurants() {

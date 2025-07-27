@@ -1,9 +1,10 @@
 package com.ChiChiFOOD.Services;
 
-import com.ChiChiFOOD.dao.impl.OrderDAO;
-import com.ChiChiFOOD.dao.impl.OrderDAOImpl;
+import com.ChiChiFOOD.dao.impl.*;
 import com.ChiChiFOOD.model.Order;
 import com.ChiChiFOOD.model.OrderStatus;
+import com.ChiChiFOOD.model.Restaurant;
+import com.ChiChiFOOD.model.User;
 import com.ChiChiFOOD.utils.HibernateUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -13,16 +14,25 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.ChiChiFOOD.httphandler.Sender.sendJsonResponse;
 import static com.ChiChiFOOD.httphandler.Sender.sendTextResponse;
 
 public class DeliveryService {
-    static Session DaoSession = HibernateUtil.getSessionFactory().openSession();
-    static OrderDAO orderDAO = new OrderDAOImpl(DaoSession);
+
     public static void findCourier(HttpExchange exchange) throws IOException {
+        Session DaoSession = HibernateUtil.getSessionFactory().openSession();
+        OrderDAO orderDAO = new OrderDAOImpl(DaoSession);
+        RestaurantDAO restaurantDAO = new RestaurantDAOImpl(DaoSession);
+
         try {
             List<Order> allOrders = orderDAO.findAll();
 
@@ -39,6 +49,7 @@ public class DeliveryService {
                 obj.addProperty("delivery_address", order.getDeliveryAddress());
                 obj.addProperty("customer_id", order.getCustomerID());
                 obj.addProperty("vendor_id", order.getVendorID());
+                obj.addProperty("vendor_name",restaurantDAO.getRestaurantName(order.getVendorID()));
                 obj.addProperty("coupon_id", order.getCouponID());
 
                 JsonArray itemArray = gson.toJsonTree(order.getItemIDs()).getAsJsonArray();
@@ -66,7 +77,66 @@ public class DeliveryService {
     }
     public static void deliveryHistory(HttpExchange exchange) throws IOException {
 
+        String query = exchange.getRequestURI().getRawQuery();
+        String search = null;
+
+        if (query != null && !query.trim().isEmpty()) {
+            for (String param : query.split("&")) {
+                String[] pair = param.split("=", 2);
+                if (pair.length == 2 && pair[0].equals("search")) {
+                    search = URLDecoder.decode(pair[1], StandardCharsets.UTF_8);
+                    break;
+                }
+            }
+        }
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+            OrderDAO orderDAO = new OrderDAOImpl(session);
+            UserDAO userDAO = new UserDAOImpl(session);
+            RestaurantDAO restaurantDAO = new RestaurantDAOImpl(session);
+            User user = userDAO.findById(Integer.parseInt(exchange.getAttribute("userId").toString()));
+            int courierId = user.getId();
+            List<Order> allOrders = orderDAO.findAll();
+            String finalSearch = search;
+            List<Order> filteredOrders = allOrders.stream()
+                    .filter(order ->  order.getCourierID() == courierId)
+                    .filter(order -> {
+                        if (finalSearch == null || finalSearch.isEmpty()) return true;
+                        int restaurantID = order.getVendorID();
+                        String restaurantName = restaurantDAO.getRestaurantName(restaurantID);
+                        return restaurantName.contains(finalSearch.toLowerCase());
+                    }).filter(order -> order.getStatus() == OrderStatus.COMPLETED)
+                    .collect(Collectors.toList());
+
+            Gson gson = new Gson();
+            List<Map<String, Object>> responseList = new ArrayList<>();
+
+            for (Order order : filteredOrders) {
+                Map<String, Object> orderJson = new HashMap<>();
+                orderJson.put("id", order.getId());
+                orderJson.put("deliveryAddress", order.getDeliveryAddress());
+
+                int restaurantID = order.getVendorID();
+                String restaurantName = restaurantDAO.getRestaurantName(restaurantID);
+                orderJson.put("restaurantName", restaurantName);
+
+                orderJson.put("courierFee", order.getCourierFee());
+
+                responseList.add(orderJson);
+            }
+
+            String jsonResponse = gson.toJson(responseList);
+            sendJsonResponse(exchange, 200, jsonResponse);
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            sendTextResponse(exchange, 500, "Internal server error while retrieving delivery requests");
+            return;
+        }
+
+
     }
+
+
     public static void changeStatus(HttpExchange exchange, JsonObject jsonObject, String orderID) throws IOException {
         String orderStatus;
         String courierID;
