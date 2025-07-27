@@ -25,20 +25,10 @@ public class VendorService {
     static RestaurantDAO restaurantDAO = new RestaurantDAOImpl(DaoSession);
     public static void restaurantsList(HttpExchange exchange, JsonObject jsonRequest) throws IOException {
         String search = null;
-        List<String> keywords = null;
 
-        // استخراج search و keywords
         try {
             if (jsonRequest.has("search") && !jsonRequest.get("search").isJsonNull()) {
                 search = jsonRequest.get("search").getAsString();
-            }
-
-            if (jsonRequest.has("keywords") && jsonRequest.get("keywords").isJsonArray()) {
-                JsonArray jsonArray = jsonRequest.getAsJsonArray("keywords");
-                keywords = new ArrayList<>();
-                for (JsonElement element : jsonArray) {
-                    keywords.add(element.getAsString());
-                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -46,7 +36,6 @@ public class VendorService {
             return;
         }
 
-        // جستجوی رستوران
         List<Restaurant> restaurants = restaurantDAO.searchByName(search);
 
         if (restaurants.isEmpty()) {
@@ -54,32 +43,27 @@ public class VendorService {
             return;
         }
 
-        Restaurant restaurant = restaurants.get(0);
+        List<Map<String, Object>> restaurantJsonList = new ArrayList<>();
 
-        // اگر کلیدواژه‌ای وجود نداره، رستوران رو بدون فیلتر غذاها برگردون
-        if (keywords == null || keywords.isEmpty()) {
-            Gson gson = new Gson();
-            String jsonResponse = gson.toJson(restaurant);
-            sendJsonResponse(exchange, 200, jsonResponse);
-            return;
-        }
+        for (Restaurant restaurant : restaurants) {
+            Map<String, Object> restaurantJson = new HashMap<>();
+            restaurantJson.put("id", restaurant.getId());
+            restaurantJson.put("name", restaurant.getName());
+            restaurantJson.put("address", restaurant.getAddress());
+            restaurantJson.put("phone", restaurant.getPhone());
+            restaurantJson.put("logoBase64", restaurant.getLogoBase64() != null ? restaurant.getLogoBase64() : "");
+            restaurantJson.put("tax_fee", restaurant.getTaxFee() != null ? restaurant.getTaxFee() : 0);
+            restaurantJson.put("additional_fee", restaurant.getAdditionalFee() != null ? restaurant.getAdditionalFee() : 0);
 
-        // بررسی وجود غذاهای دارای کلیدواژه
-        List<String> finalKeywords = keywords;boolean hasMatchingFood = restaurant.getFoodItems().stream()
-                .anyMatch(item -> {
-                    List<String> itemKeywords = item.getKeywords();
-                    return itemKeywords != null && itemKeywords.containsAll(finalKeywords);
-                });
-
-        if (!hasMatchingFood) {
-            sendTextResponse(exchange, 404, "No food matched the keywords in this restaurant");
-            return;
+            restaurantJsonList.add(restaurantJson);
         }
 
         Gson gson = new Gson();
-        String jsonResponse = gson.toJson(restaurant);
+        String jsonResponse = gson.toJson(restaurantJsonList);
         sendJsonResponse(exchange, 200, jsonResponse);
     }
+
+
 
     public static void restaurantMenus(HttpExchange exchange) throws IOException {
 
@@ -137,6 +121,7 @@ public class VendorService {
             response.put("menu_titles", menuTitles);
 
             String responseJson = new Gson().toJson(response);
+            System.out.println(responseJson);
             sendJsonResponse(exchange, 200, responseJson);
 
         } catch (Exception e) {

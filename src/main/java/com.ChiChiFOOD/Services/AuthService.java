@@ -50,7 +50,8 @@ public class AuthService {
         user.setAddress(address);
         user.setProfileImageBase64(profileImageBase64);
         user.setBank(bank);
-        SESSION.save(user);
+        UserDAO userDAO = new UserDAOImpl(SESSION);
+        userDAO.save(user);
         System.out.println("Register success.");
         return true;
     }

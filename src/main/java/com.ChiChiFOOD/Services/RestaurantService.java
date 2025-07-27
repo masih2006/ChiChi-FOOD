@@ -217,7 +217,6 @@ public class RestaurantService {
        String orderStatus;
        try {
             orderStatus = jsonObject.get("status").getAsString();
-           System.out.println(orderStatus);
        }catch (Exception e) {
         sendTextResponse(exchange, 400, "invalid order status");
         return;

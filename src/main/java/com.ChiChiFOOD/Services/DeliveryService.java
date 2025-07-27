@@ -10,6 +10,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.sun.net.httpserver.HttpExchange;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,7 +24,7 @@ public class DeliveryService {
     static OrderDAO orderDAO = new OrderDAOImpl(DaoSession);
     public static void findCourier(HttpExchange exchange) throws IOException {
         try {
-            List<Order> allOrders = orderDAO.findAll(); // همه سفارش‌ها از دیتابیس
+            List<Order> allOrders = orderDAO.findAll();
 
             List<Order> availableOrders = allOrders.stream()
                     .filter(order -> order.getStatus() == OrderStatus.FINDING_COURIER)
@@ -55,7 +56,7 @@ public class DeliveryService {
 
                 ordersArray.add(obj);
             }
-
+            System.out.println(ordersArray.toString());
             sendJsonResponse(exchange, 200, ordersArray.toString());
 
         } catch (Exception e) {
@@ -66,7 +67,40 @@ public class DeliveryService {
     public static void deliveryHistory(HttpExchange exchange) throws IOException {
 
     }
-    public static void changeStatus(HttpExchange exchange, String ordrtID) throws IOException {}
+    public static void changeStatus(HttpExchange exchange, JsonObject jsonObject, String orderID) throws IOException {
+        String orderStatus;
+        String courierID;
+        try {
+            orderStatus = jsonObject.get("status").getAsString();
+            courierID = jsonObject.has("courier_id") ? jsonObject.get("courier_id").getAsString() : "0";
+        }catch (Exception e) {
+            sendTextResponse(exchange, 400, "invalid order status");
+            return;
+        }
+        try (Session session = HibernateUtil.getSessionFactory().openSession()){
+            Transaction tx = session.beginTransaction();
+            try{
+                OrderDAO orderDao = new OrderDAOImpl(session);
+                Order order = orderDao.findById(Integer.parseInt(orderID));
+                if (order == null) {
+                    sendTextResponse(exchange, 404, "Order not found");
+                    return;
+                }
+                order.setStatus(OrderStatus.fromString(orderStatus));
+                order.setCourierID(Integer.parseInt(courierID));
+                orderDao.update(order);
+                sendTextResponse(exchange, 200, "Order updated successfully");
+                tx.commit();
+                return;
+            }catch (Exception e) {
+                tx.rollback();
+                e.printStackTrace();
+                sendTextResponse(exchange, 500, "Internal server error");
+                return;
+            }
+        }
+
+    }
 
 
 }

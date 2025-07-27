@@ -14,6 +14,7 @@ import org.hibernate.Transaction;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -64,8 +65,10 @@ public class CouponsService {
             coupon.setValue(value);
             coupon.setMinPrice(minPrice);
             coupon.setUserCount(userCount);
-            coupon.setStartDate(LocalDate.parse(startDateStr));
-            coupon.setEndDate(LocalDate.parse(endDateStr));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy"); // یا "dd/MM/yyyy"
+            coupon.setStartDate(LocalDate.parse(startDateStr, formatter));
+            coupon.setEndDate(LocalDate.parse(endDateStr, formatter));
+
 
             if (restaurantId != null)
                 coupon.setRestaurantId(restaurantId);
@@ -90,7 +93,7 @@ public class CouponsService {
         Transaction tx =session.beginTransaction();
         try{
             couponDAO.save(coupon);
-            sendTextResponse(exchange, 400, "done");
+            sendTextResponse(exchange, 200, "done");
             tx.commit();
             return;
         }catch (Exception e){
@@ -237,13 +240,12 @@ public class CouponsService {
             if (jsonObject.has("item_id")) {
                 coupon.setItemId(jsonObject.get("item_id").getAsString());
             }
-
             couponDAO.update(coupon);
             tx.commit();
             sendTextResponse(exchange, 200, "done");
 
         } catch (Exception e) {
-            if (tx != null) tx.rollback();
+            tx.rollback();
             sendTextResponse(exchange, 500, "Internal Server Error");
         } finally {
             session.close();

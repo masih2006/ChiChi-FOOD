@@ -95,7 +95,6 @@ public class RegisterHandler implements HttpHandler {
             if (success) {
                 tx.commit();
 
-                // مرحله لاگین: استفاده از همون AuthService
                 User loggedInUser = authService.loginUser(phone, password);
                 if (loggedInUser != null) {
                     String token = JwtUtil.generateToken(loggedInUser);
@@ -104,16 +103,16 @@ public class RegisterHandler implements HttpHandler {
                     responseJson.addProperty("token", token);
                     responseJson.addProperty("message", "Registration and login successful");
 
-                    Sender.sendResponse(exchange, 200, responseJson.toString());
+                    Sender.sendTextResponse(exchange, 200, responseJson.toString());
                 } else {
-                    Sender.sendResponse(exchange, 500, "Login after registration failed");
+                    Sender.sendTextResponse(exchange, 500, "Login after registration failed");
                 }
             } else {
                 tx.rollback();
-                Sender.sendResponse(exchange, 409, "User with this phone already exists");
+                Sender.sendTextResponse(exchange, 409, "User with this phone already exists");
             }
         } catch (Exception e) {
-            Sender.sendResponse(exchange, 500, "Internal server error");
+            Sender.sendTextResponse(exchange, 500, "Internal server error");
             e.printStackTrace();
         }
     }

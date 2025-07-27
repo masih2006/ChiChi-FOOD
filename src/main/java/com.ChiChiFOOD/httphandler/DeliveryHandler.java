@@ -34,7 +34,7 @@ public class DeliveryHandler implements HttpHandler {
         if (method.equalsIgnoreCase("GET")) {
             getHandler(exchange,params);
         }else if (method.equalsIgnoreCase("patch")){
-            patchHandler(exchange, params);
+            patchHandler(exchange, params, jsonRequest);
         }else{
             Sender.sendTextResponse(exchange, 405, "Method Not Allowed");
             return;
@@ -51,9 +51,9 @@ public class DeliveryHandler implements HttpHandler {
             Sender.sendTextResponse(exchange, 400, "Bad Request");
     }
 
-    public void patchHandler(HttpExchange exchange, String [] params) throws IOException {
+    public void patchHandler(HttpExchange exchange, String [] params, JsonObject jsonRequest) throws IOException {
         if (params.length == 2 && params[1].matches("\\d+")) {
-            DeliveryService.changeStatus(exchange, params[1]);
+            DeliveryService.changeStatus(exchange, jsonRequest, params[1]);
         }else {
             Sender.sendTextResponse(exchange, 400, "Bad Request");
             return;
