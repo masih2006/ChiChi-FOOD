@@ -32,7 +32,6 @@ public class Restaurant {
     @JoinColumn(name = "sellerId", nullable = false, unique = true)
     private User seller;
 
-
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Item> items = new ArrayList<>();
 

@@ -53,6 +53,8 @@ public class OrderHandler implements HttpHandler {
             OrderService.orderHistory(exchange);
         }else if (params.length == 3 && params[0].matches("orders") && params[1].matches("getallorders")) {
             OrderService.getAllOrders(exchange,params[2]);
+        }else if (params.length == 3 && params[0].matches("orders") && params[1].matches("getalluserorders")) {
+            OrderService.getAllUserOrder(exchange,params[2]);
         }
         else {
             Sender.sendTextResponse(exchange, 400, "Bad Request");

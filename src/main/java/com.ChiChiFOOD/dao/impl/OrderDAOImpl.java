@@ -35,6 +35,15 @@ public void save(Order order) {
     }
 
     @Override
+    public List<Order> getAllUserOrder(String customerID){
+        String hql = "FROM Order WHERE customerID = :customerID";
+        Query<Order> query = session.createQuery(hql, Order.class);
+        query.setParameter("customerID", customerID);
+        return query.list();
+    }
+
+
+    @Override
     public List<Order> getOrdersByRestaurant(String vendorID) {
         String hql = "FROM Order WHERE vendorID = :vendorID";
         Query<Order> query = session.createQuery(hql, Order.class);

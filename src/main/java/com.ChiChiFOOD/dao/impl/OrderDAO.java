@@ -11,6 +11,7 @@ public interface OrderDAO {
     public void update(Order order);
     public List<Order> findAll();
     public Order findById(int id);
+    public List<Order> getAllUserOrder(String customerID);
     public List<Order> getOrdersByRestaurant(String vendorID);
 
 }
