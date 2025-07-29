@@ -21,6 +21,9 @@ public abstract class User {
     @Column(unique = true, nullable = false)
     private String phone;
     @Expose
+    @Column(unique = false, nullable = true)
+    private int walletBalance;
+    @Expose
     @Column(unique = true, nullable = false)
     private String email;
     @Expose
@@ -37,10 +40,6 @@ public abstract class User {
     public String getRole() {
         return this.getClass().getSimpleName();
     }
-
-//    public void setRole(String role) {
-//        this.role = role;
-//    }
 
 
     @Expose
@@ -147,5 +146,12 @@ public abstract class User {
     }
     public int getIsUserConfirmed() {
         return isUserConfirmed;
+    }
+
+    public void setWalletBalance(int walletBalance) {
+        this.walletBalance = walletBalance;
+    }
+    public int getWalletBalance() {
+        return walletBalance;
     }
 }

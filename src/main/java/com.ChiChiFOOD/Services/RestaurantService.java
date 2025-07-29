@@ -49,8 +49,6 @@ public class RestaurantService {
             sendTextResponse(exchange, 400, "Missing required fields: name, address or phone");
             return;
         }
-        //System.out.println("3");
-
         if (!exchange.getAttribute("role").equals("seller")) {
             sendTextResponse(exchange, 403, "Forbidden request");
             return;
@@ -132,10 +130,21 @@ public class RestaurantService {
                 Restaurant restaurant = restaurantDao.findById(Long.parseLong(restaurantId));
                 if (jsonRequest.has("name")) restaurant.setName(jsonRequest.get("name").getAsString());
                 if (jsonRequest.has("tax_fee")) restaurant.setTaxFee(jsonRequest.get("tax_fee").getAsInt());
+                if (jsonRequest.has("tax_type")) {
+                    try {
+                        String taxTypeStr = jsonRequest.get("tax_type").getAsString().toUpperCase();
+                        Restaurant.TaxType taxType = Restaurant.TaxType.valueOf(taxTypeStr);
+                        restaurant.setTaxType(taxType);
+                    } catch (IllegalArgumentException e) {
+                        sendTextResponse(exchange, 400, "Invalid tax_type value. Must be 'FIXED' or 'PERCENTAGE'");
+                        return;
+                    }
+                }
                 if (jsonRequest.has("phone")) restaurant.setPhone(jsonRequest.get("phone").getAsString());
                 if (jsonRequest.has("address")) restaurant.setAddress(jsonRequest.get("address").getAsString());
                 if (jsonRequest.has("logoBase64")) restaurant.setLogoBase64(jsonRequest.get("logoBase64").getAsString());
                 if (jsonRequest.has("additional_fee")) restaurant.setAdditionalFee(jsonRequest.get("additional_fee").getAsInt());
+                if (jsonRequest.has("packagingFee")) restaurant.setPackagingFee(jsonRequest.get("packagingFee").getAsInt());
                 restaurantDao.update(restaurant);
                 sendTextResponse(exchange, 200, "Restaurant updated successfully");
                 tx.commit();
