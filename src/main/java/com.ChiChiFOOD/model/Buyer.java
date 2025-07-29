@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 @DiscriminatorValue("Buyer")
-public class Buyer extends User {
+public class    Buyer extends User {
 
     @ManyToMany
     @JoinTable(

@@ -22,6 +22,7 @@
         <mapping class="com.ChiChiFOOD.httphandler.AppServer"/>
         <mapping class="com.ChiChiFOOD.httphandler.RegisterHandler"/>
         <mapping class="com.ChiChiFOOD.model.Buyer"/>
+        <mapping class="com.ChiChiFOOD.model.Rating"/>
         <mapping class="com.ChiChiFOOD.model.User"/>
         <mapping class="com.ChiChiFOOD.model.Seller"/>
         <mapping class="com.ChiChiFOOD.model.Admin"/>

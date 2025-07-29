@@ -58,6 +58,7 @@ public class ProfileHandler implements HttpHandler {
                 userResponse.put("profileImageBase64", user.getProfileImageBase64());
                 userResponse.put("bankName",user.getBankName());
                 userResponse.put("AccountNumber",user.getAccountNumber());
+                userResponse.put("isUserConfirmed",user.getIsUserConfirmed());
                 String json = gson.toJson(userResponse);
                 sendJsonResponse(exchange, 200, json);
                 session.close();

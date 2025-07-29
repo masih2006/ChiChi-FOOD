@@ -1,11 +1,15 @@
 package com.ChiChiFOOD.model.restaurant;
 
+import com.ChiChiFOOD.model.Rating;
 import com.ChiChiFOOD.model.Restaurant;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.List;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
 
 @Entity
 public class Item {
@@ -31,15 +35,24 @@ public class Item {
     @ElementCollection
     private List<String> keywords = new ArrayList<>();
 
-//    public String getRestaurantId() {
-//        return restaurantId;
-//    }
-//
-//    public void setRestaurantId(String restaurantId) {
-//        this.restaurantId = restaurantId;
-//    }
-//
-//    private String restaurantId;
+    @ManyToMany(mappedBy = "items")
+    private List<Rating> ratings = new ArrayList<>();
+
+    public void addRating(Rating rating) {
+        if (!ratings.contains(rating)) {
+            ratings.add(rating);
+            rating.getItems().add(this);
+        }
+    }
+
+    public List<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(List<Rating> ratings) {
+        this.ratings = ratings;
+    }
+
 @ManyToMany(mappedBy = "items")
 private List<Menu> menus = new ArrayList<>();
 

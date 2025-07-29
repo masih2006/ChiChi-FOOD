@@ -19,7 +19,7 @@ public class AppServer {
         server.createContext("/vendors", new AuthFilterHandler(new VendorHandler()));
         server.createContext("/admin", new AuthFilterHandler(new AdminHandler()));
         server.createContext("/favorites", new AuthFilterHandler(new ActionHandler()));
-        server.createContext("/ratings", new AuthFilterHandler(new ActionHandler()));
+        server.createContext("/ratings", new AuthFilterHandler(new RatingHandler()));
         server.createContext("/items", new AuthFilterHandler(new ItemHandler()));
         server.createContext("/orders", new AuthFilterHandler(new OrderHandler()));
         server.createContext("/transactions", new AuthFilterHandler(new TransactionsHandler()));

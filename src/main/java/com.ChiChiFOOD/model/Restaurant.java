@@ -13,6 +13,26 @@ public class Restaurant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    public enum TaxType {
+        PERCENTAGE,
+        FIXED
+    }
+
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Rating> ratings = new ArrayList<>();
+
+    public List<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(List<Rating> ratings) {
+        this.ratings = ratings;
+    }
+    public void addRating(Rating rating) {
+        ratings.add(rating);
+    }
+
+
     @Column(nullable = false, unique = true)
     private String name;
 
@@ -25,6 +45,12 @@ public class Restaurant {
     private String logoBase64;
     private Integer taxFee;
     private Integer additionalFee;
+    private Integer packagingFee;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, columnDefinition = "VARCHAR(20) DEFAULT 'PERCENTAGE'")
+    private TaxType taxType = TaxType.PERCENTAGE;
+
 
     private boolean isRestaurantConfirmed = false;
 
@@ -58,8 +84,28 @@ public class Restaurant {
         this.taxFee = taxFee;
         this.additionalFee = additionalFee;
     }
+    public Restaurant(User seller, String name, String phone, String address, String logoBase64, Integer taxFee, Integer additionalFee, Integer packagingFee, TaxType taxType) {
+        this(seller, name, phone, address, logoBase64, taxFee, additionalFee);
+        this.packagingFee = packagingFee;
+        this.taxType = taxType;
+    }
 
-    // ---------- Getters & Setters ----------
+
+    public Integer getPackagingFee() {
+        return packagingFee;
+    }
+
+    public void setPackagingFee(Integer packagingFee) {
+        this.packagingFee = packagingFee;
+    }
+
+    public TaxType getTaxType() {
+        return taxType;
+    }
+
+    public void setTaxType(TaxType taxType) {
+        this.taxType = taxType;
+    }
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
