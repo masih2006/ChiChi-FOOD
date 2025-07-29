@@ -21,13 +21,13 @@ public abstract class User {
     @Column(unique = true, nullable = false)
     private String phone;
     @Expose
-    @Column(unique = false, nullable = true)
-    private int walletBalance;
+    @Column(nullable = false)
+    private int walletBalance = 0;
     @Expose
     @Column(unique = true, nullable = false)
     private String email;
     @Expose
-    @Column(unique = true, nullable = false)
+    @Column( nullable = false)
     private int isUserConfirmed;
     @Expose
     @Column(nullable = true)
@@ -63,6 +63,13 @@ public abstract class User {
     public User() {
         this.bank = new Bank();
         isUserConfirmed = 0;
+    }
+    public int getWalletBalance() {
+        return walletBalance;
+    }
+
+    public void setWalletBalance(int walletBalance) {
+        this.walletBalance = walletBalance;
     }
 
 
@@ -148,10 +155,5 @@ public abstract class User {
         return isUserConfirmed;
     }
 
-    public void setWalletBalance(int walletBalance) {
-        this.walletBalance = walletBalance;
-    }
-    public int getWalletBalance() {
-        return walletBalance;
-    }
+
 }

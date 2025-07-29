@@ -4,20 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea091f45-cdaa-4f68-95ab-9898c0188e81" name="Changes" comment="delivery">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/Services/RatingService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/RatingDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/dao/impl/RatingDAOImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/Rating.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="ea091f45-cdaa-4f68-95ab-9898c0188e81" name="Changes" comment="wallet">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/AppServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/AppServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/ProfileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/ProfileHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/RatingHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/httphandler/RatingHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/Buyer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/Buyer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/Restaurant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/Restaurant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/restaurant/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/restaurant/Item.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/Transaction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.ChiChiFOOD/model/User.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -174,7 +164,7 @@
       <workItem from="1753504667051" duration="5875000" />
       <workItem from="1753679628936" duration="1554000" />
       <workItem from="1753800257949" duration="4979000" />
-      <workItem from="1753809054878" duration="927000" />
+      <workItem from="1753809054878" duration="5036000" />
     </task>
     <task id="LOCAL-00001" summary="bankkkkkkk">
       <option name="closed" value="true" />
@@ -336,7 +326,23 @@
       <option name="project" value="LOCAL" />
       <updated>1753641242279</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="i think rating done!">
+      <option name="closed" value="true" />
+      <created>1753810009954</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1753810009954</updated>
+    </task>
+    <task id="LOCAL-00022" summary="wallet">
+      <option name="closed" value="true" />
+      <created>1753813880381</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1753813880381</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -371,7 +377,9 @@
     <MESSAGE value="95 percent of Restaurant Done!!!" />
     <MESSAGE value="bug fixed" />
     <MESSAGE value="delivery" />
-    <option name="LAST_COMMIT_MESSAGE" value="delivery" />
+    <MESSAGE value="i think rating done!" />
+    <MESSAGE value="wallet" />
+    <option name="LAST_COMMIT_MESSAGE" value="wallet" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -16,6 +16,17 @@ import jakarta.persistence.*;
         @Column(name = "user_id")
         private int userID;
 
+        @Column(name = "money")
+        private int money;
+
+        public int getMoney() {
+            return money;
+        }
+        public void setMoney(int money) {
+            this.money = money;
+        }
+
+
         @Enumerated(EnumType.STRING)
         @Column(name = "payment_method")
         private PaymentMethod method;
