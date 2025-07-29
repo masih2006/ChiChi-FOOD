@@ -11,10 +11,9 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 import static com.ChiChiFOOD.httphandler.Sender.sendJsonResponse;
 import static com.ChiChiFOOD.httphandler.Sender.sendTextResponse;
@@ -24,12 +23,23 @@ public class OrderService {
     static OrderDAO orderDAO = new OrderDAOImpl(DaoSession);
     static ItemDAO itemDAO = new ItemDAOImpl(DaoSession);
 
+    public static String getCurrentTime(){
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return now.format(formatter);
+    }
     public static void submitOrder(HttpExchange exchange, JsonObject jsonRequest) throws IOException {
         String deliveryAddress;
         int vendorId;
+        int customerId;
+        int courierFee;
+        int rawPrice = 0;
+        int randomStep = (int) (Math.random() * 16);
+        courierFee = 15000 + randomStep * 1000;
+
         Integer couponId = null;
         List<Integer> itemIDs = new ArrayList<>();
-
+        customerId = Integer.parseInt(exchange.getAttribute("userId").toString());
         try {
             if (!jsonRequest.has("delivery_address") || !jsonRequest.has("vendor_id") || !jsonRequest.has("items")) {
                 sendTextResponse(exchange, 400, "Missing required fields");
@@ -53,6 +63,7 @@ public class OrderService {
                 }
 
                 int itemId = itemObj.get("item_id").getAsInt();
+                    rawPrice += itemDAO.findPriceById(itemId) * itemObj.get("quantity").getAsInt();
                 itemIDs.add(itemId);
             }
         } catch (Exception e) {
@@ -67,7 +78,12 @@ public class OrderService {
             order.setDeliveryAddress(deliveryAddress);
             order.setVendorID(vendorId);
             order.setCouponID(couponId);
+            order.setCustomerID(customerId);
             order.setItemIDs(itemIDs);
+            order.setCourierFee(courierFee);
+            order.setRawPrice(rawPrice);
+            order.setCreated_at(getCurrentTime());
+            order.setUpdated_at(getCurrentTime());
             order.setStatus(OrderStatus.SUBMITTED);
             orderDAO.save(order);
             List<Item> fullItems = new ArrayList<>();
@@ -110,6 +126,9 @@ public class OrderService {
 
     public static void specificOrder(HttpExchange exchange, String orderID) throws IOException {
         int id;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        RestaurantDAO restaurantDAO = new RestaurantDAOImpl(session);
+
 
         try {
             id = Integer.parseInt(orderID);
@@ -130,6 +149,8 @@ public class OrderService {
             response.addProperty("delivery_address", order.getDeliveryAddress());
             response.addProperty("customer_id", order.getCustomerID());
             response.addProperty("vendor_id", order.getVendorID());
+            response.addProperty("vendorName", restaurantDAO.getRestaurantName(order.getVendorID()));
+
             response.addProperty("coupon_id", order.getCouponID());
 
             Gson gson = new Gson();
@@ -146,6 +167,22 @@ public class OrderService {
             response.addProperty("created_at", order.getCreated_at());
             response.addProperty("updated_at", order.getUpdated_at());
 
+            JsonArray itemsArray = new JsonArray();
+            for (Integer itemId : order.getItemIDs()) {
+                Item item = itemDAO.findById(itemId);
+                if (item != null) {
+                    JsonObject itemJson = new JsonObject();
+                    itemJson.addProperty("id", item.getId());
+                    itemJson.addProperty("name", item.getName());
+                    itemJson.addProperty("description", item.getDescription());
+                    itemJson.addProperty("price", item.getPrice());
+                    itemJson.addProperty("supply", item.getSupply());
+                    itemJson.addProperty("imageBase64", item.getImageBase64());
+                    itemsArray.add(itemJson);
+                }
+            }
+            response.add("items", itemsArray);
+            System.out.println(response.toString());
             sendJsonResponse(exchange, 200, response.toString());
 
         } catch (Exception e) {
@@ -213,26 +250,29 @@ public class OrderService {
         }
     }
 
-    public static void getAllUserOrder(HttpExchange exchange, String userID) throws IOException {
+    public static void getAllUserOrder(HttpExchange exchange) throws IOException {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             RestaurantDAO restaurantDAO = new RestaurantDAOImpl(session);
             UserDAO userDAO = new UserDAOImpl(session);
             ItemDAO itemDAO = new ItemDAOImpl(session);
             OrderDAO orderDAO = new OrderDAOImpl(session);
 
-
-
+            String userID = exchange.getAttribute("userId").toString();
             List<Order> orders = orderDAO.getAllUserOrder(userID);
             List<Map<String, Object>> responseList = new ArrayList<>();
+            System.out.println("done" + userID);
 
             for (Order order : orders) {
 
+
+                System.out.println(order.getStatus().toString());
                 System.out.println("== Retrieved itemIDs: " + order.getItemIDs());
                 Map<String, Object> orderResponse = new LinkedHashMap<>();
                 orderResponse.put("id", order.getId());
                 orderResponse.put("deliveryAddress", order.getDeliveryAddress());
                 orderResponse.put("customerID", order.getCustomerID());
                 orderResponse.put("vendorID", order.getVendorID());
+                orderResponse.put("vendorName", restaurantDAO.getRestaurantName(order.getVendorID()));
                 orderResponse.put("couponID", order.getCouponID());
                 orderResponse.put("rawPrice", order.getRawPrice());
                 orderResponse.put("taxFee", order.getTaxFee());
@@ -263,6 +303,7 @@ public class OrderService {
             }
 
             Gson gson = new Gson();
+            System.out.println(responseList.toString());
             sendJsonResponse(exchange, 200, gson.toJson(responseList));
         } catch (Exception e) {
             e.printStackTrace();

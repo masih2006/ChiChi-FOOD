@@ -30,8 +30,19 @@ public class ItemDAOImpl implements ItemDAO {
         session.merge(item);
         session.remove(item);
     }
+@Override
+    public int findPriceById(int itemId){
+    Session session = HibernateUtil.getSessionFactory().openSession();
+        Integer price = session.createQuery(
+                        "SELECT i.price FROM Item i WHERE i.id = :itemId", Integer.class)
+                .setParameter("itemId", itemId)
+                .uniqueResult();
+        session.close();
+    return price;
+}
 
 
+    @Override
     public Item findById(int id) {
         return session.get(Item.class, id);
     }

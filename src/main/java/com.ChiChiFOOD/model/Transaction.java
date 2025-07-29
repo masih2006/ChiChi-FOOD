@@ -13,6 +13,7 @@ import jakarta.persistence.*;
         @Column(name = "order_id")
         private int orderID;
 
+
         @Column(name = "user_id")
         private int userID;
 
