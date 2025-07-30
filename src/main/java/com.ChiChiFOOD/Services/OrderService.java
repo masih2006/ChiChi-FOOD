@@ -22,6 +22,8 @@ public class OrderService {
     static Session DaoSession = HibernateUtil.getSessionFactory().openSession();
     static OrderDAO orderDAO = new OrderDAOImpl(DaoSession);
     static ItemDAO itemDAO = new ItemDAOImpl(DaoSession);
+    static UserDAO userDAO = new UserDAOImpl(DaoSession);
+    static RestaurantDAO restaurantDAO = new RestaurantDAOImpl(DaoSession);
 
     public static String getCurrentTime(){
         LocalDateTime now = LocalDateTime.now();
@@ -35,6 +37,8 @@ public class OrderService {
         int courierFee;
         int rawPrice = 0;
         int randomStep = (int) (Math.random() * 16);
+        int payPrice = 0;
+        int additionalFee = 0;
         courierFee = 15000 + randomStep * 1000;
 
         Integer couponId = null;
@@ -73,6 +77,9 @@ public class OrderService {
         }
         Transaction transaction = DaoSession.beginTransaction();
         try {
+            if (restaurantDAO.findById(Long.parseLong(vendorId + "")).getTaxType().equals("")){
+                payPrice = payPrice;
+            }
             System.out.println("== itemIDs to save: " + itemIDs);
             Order order = new Order();
             order.setDeliveryAddress(deliveryAddress);
@@ -82,6 +89,8 @@ public class OrderService {
             order.setItemIDs(itemIDs);
             order.setCourierFee(courierFee);
             order.setRawPrice(rawPrice);
+            order.setPayPrice(payPrice);
+            order.setAdditionalFee(additionalFee);
             order.setCreated_at(getCurrentTime());
             order.setUpdated_at(getCurrentTime());
             order.setStatus(OrderStatus.SUBMITTED);
@@ -97,6 +106,10 @@ public class OrderService {
             JsonObject response = new JsonObject();
             response.addProperty("deliveryAddress", deliveryAddress);
             response.addProperty("vendorID", vendorId);
+            response.addProperty("id", order.getId());
+            response.addProperty("pay_price", order.getPayPrice());
+            response.addProperty("wallet_ballance", userDAO.findById(customerId).getWalletBalance());
+            System.out.println(order.getId() +" "+ order.getPayPrice());
             if (couponId != null) response.addProperty("couponID", couponId);
 
             Gson gson = new Gson();

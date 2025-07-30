@@ -21,6 +21,7 @@ public class TransactionsService {
     static Session DaoSession = HibernateUtil.getSessionFactory().openSession();
     static TransactionDAO transactionDAO = new TransactionDAOImpl(DaoSession);
     static OrderDAO orderDAO = new OrderDAOImpl(DaoSession);
+    static UserDAO userDAO = new UserDAOImpl(DaoSession);
 
     public static void listTransactions(HttpExchange exchange) throws IOException {
         List<Transaction> transactions;
@@ -94,12 +95,16 @@ public class TransactionsService {
                     tx.rollback();
                     return;
                 }
-
+                if (method.toString().equalsIgnoreCase("wallet")) {
+                    int temp = userDAO.findById(userId).getWalletBalance();
+                    userDAO.findById(userId).setWalletBalance(temp-orderDAO.findById(orderId).getPayPrice());
+                }
                 Transaction transaction = new Transaction();
                 transaction.setOrderID(orderId);
                 transaction.setUserID(userId);
                 transaction.setMethod(method);
                 transaction.setStatus(TransactionStatus.SUCCESS);
+                transaction.setMoney(orderDAO.findById(orderId).getPayPrice());
                 transactionDao.save(transaction);
 
                 order.setStatus(OrderStatus.WAITING_VENDOR);
@@ -112,6 +117,7 @@ public class TransactionsService {
                 response.addProperty("id", transaction.getId());
                 response.addProperty("order_id", transaction.getOrderID());
                 response.addProperty("user_id", transaction.getUserID());
+                response.addProperty("money", transaction.getMoney());
                 response.addProperty("method", transaction.getMethod().getValue());
                 response.addProperty("status", transaction.getStatus().name().toLowerCase());
 
@@ -158,9 +164,8 @@ public class TransactionsService {
                     return;
                 }
 
-                // 4. افزایش موجودی کیف پول
-//                int currentBalance = user.getWalletBalance();
-//                user.setWalletBalance(currentBalance + amount);
+                int currentBalance = user.getWalletBalance();
+                user.setWalletBalance(currentBalance + amount);
 
                 session.update(user);
                 tx.commit();

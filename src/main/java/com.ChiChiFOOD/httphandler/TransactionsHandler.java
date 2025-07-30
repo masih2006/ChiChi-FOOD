@@ -40,7 +40,7 @@ public class TransactionsHandler implements HttpHandler {
         }
     }
     public void getHandler(HttpExchange exchange, String[] params) throws IOException {
-        if (params[1].matches("transactions")){
+        if (params[0].matches("transactions")){
             TransactionsService.listTransactions(exchange);
         }
         else
