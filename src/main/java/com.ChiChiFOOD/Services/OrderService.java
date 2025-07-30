@@ -77,8 +77,10 @@ public class OrderService {
         }
         Transaction transaction = DaoSession.beginTransaction();
         try {
-            if (restaurantDAO.findById(Long.parseLong(vendorId + "")).getTaxType().equals("")){
-                payPrice = payPrice;
+            if (restaurantDAO.findById(Long.parseLong(vendorId + "")).getTaxType().equals("PERCENTAGE")){
+                payPrice = rawPrice * restaurantDAO.findById(Long.parseLong(vendorId + "")).getTaxFee() / 100 + courierFee + rawPrice + restaurantDAO.findById(Long.parseLong(vendorId + "")).getAdditionalFee();
+            }else if (restaurantDAO.findById(Long.parseLong(vendorId + "")).getTaxType().equals("FIXED")){
+                payPrice = rawPrice + courierFee + restaurantDAO.findById(Long.parseLong(vendorId + "")).getTaxFee() + restaurantDAO.findById(Long.parseLong(vendorId + "")).getAdditionalFee();
             }
             System.out.println("== itemIDs to save: " + itemIDs);
             Order order = new Order();
@@ -340,6 +342,7 @@ public class OrderService {
                 sendTextResponse(exchange, 404 , "invalid json");
                 return;
             }
+            order.setUpdated_at(getCurrentTime());
             order.setStatus(OrderStatus.valueOf(status));
             orderDAO.update(order);
             transaction.commit();

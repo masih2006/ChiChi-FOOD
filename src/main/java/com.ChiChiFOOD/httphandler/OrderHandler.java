@@ -33,8 +33,8 @@ public class OrderHandler implements HttpHandler {
             getHandler(exchange,params);
         }else if (method.equalsIgnoreCase("post")) {
             postHandler(exchange, params, jsonRequest, path);
-        }else if (method.equalsIgnoreCase("patch")){
-            patchHandler(exchange, params , jsonRequest);
+        }else if (method.equalsIgnoreCase("put")){
+            putHandler(exchange, params , jsonRequest);
         }else{
             Sender.sendTextResponse(exchange, 405, "Method Not Allowed");
             return;
@@ -63,9 +63,13 @@ public class OrderHandler implements HttpHandler {
             return;
         }
     }
-    public void patchHandler(HttpExchange exchange, String[] params, JsonObject jsonRequest) throws IOException {
+    public void putHandler(HttpExchange exchange, String[] params, JsonObject jsonRequest) throws IOException {
         if (params.length == 3 && params[1].matches("status")) {
             OrderService.changeStatus(exchange, jsonRequest, params[2]);
+        }
+        else {
+            Sender.sendTextResponse(exchange, 400, "Bad Request");
+            return;
         }
     }
 

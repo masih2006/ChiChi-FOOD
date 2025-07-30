@@ -54,8 +54,9 @@ public class VendorService {
             restaurantJson.put("logoBase64", restaurant.getLogoBase64() != null ? restaurant.getLogoBase64() : "");
             restaurantJson.put("tax_fee", restaurant.getTaxFee() != null ? restaurant.getTaxFee() : 0);
             restaurantJson.put("additional_fee", restaurant.getAdditionalFee() != null ? restaurant.getAdditionalFee() : 0);
-
+            restaurantJson.put("ratings", restaurant.getRatings());
             restaurantJsonList.add(restaurantJson);
+
         }
 
         Gson gson = new Gson();

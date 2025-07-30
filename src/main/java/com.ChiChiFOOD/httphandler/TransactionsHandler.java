@@ -47,10 +47,10 @@ public class TransactionsHandler implements HttpHandler {
             Sender.sendTextResponse(exchange, 400, "Bad Request");
     }
     private void postHandler(HttpExchange exchange, String [] params,JsonObject jsonRequest,String path ) throws IOException {
-        if(path.equalsIgnoreCase("/wallet") && params[1].matches("top-up")) {
-            TransactionsService.pay(exchange, jsonRequest);
-        }else if (path.equalsIgnoreCase("/payment") && params[1].matches("online")){
+        if(path.equalsIgnoreCase("/wallet/top-up") && params[1].matches("top-up")) {
             TransactionsService.wallet(exchange, jsonRequest);
+        }else if (path.equalsIgnoreCase("/payment/online") && params[1].matches("online")){
+            TransactionsService.pay(exchange, jsonRequest);
         } else {
             Sender.sendTextResponse(exchange, 400, "Bad Request");
             return;

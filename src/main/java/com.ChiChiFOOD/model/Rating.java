@@ -13,6 +13,7 @@ public class Rating {
     private int id;
 
     private int score;
+
     private String comment;
 
     @ElementCollection
@@ -25,7 +26,7 @@ public class Rating {
     private Restaurant restaurant;
     @ManyToMany
     @JoinTable(
-            name = "rating_item", // ← یا همون item_rating که داری
+            name = "rating_item",
             joinColumns = @JoinColumn(name = "rating_id"),
             inverseJoinColumns = @JoinColumn(name = "item_id")
     )
@@ -45,7 +46,6 @@ public class Rating {
 
     private int orderID;
 
-    // === Getters & Setters ===
 
     public int getId() {
         return id;
