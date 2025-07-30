@@ -324,6 +324,34 @@ public class OrderService {
         }
     }
 
+    public static void changeStatus(HttpExchange exchange, JsonObject jsonObject, String ID) throws IOException {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            OrderDAO orderDAO = new OrderDAOImpl(session);
+            Order order = orderDAO.findById(Integer.valueOf(ID));
+            if (order == null) {
+                sendTextResponse(exchange, 404 , "order not found");
+                return;
+            }
+            String status;
+            if (jsonObject.has("status")) {
+                status = jsonObject.get("status").getAsString();
+            }else {
+                sendTextResponse(exchange, 404 , "invalid json");
+                return;
+            }
+            order.setStatus(OrderStatus.valueOf(status));
+            orderDAO.update(order);
+            transaction.commit();
+            sendTextResponse(exchange, 200, "Order updated successfully");
+            return;
+        }catch (Exception e) {
+            e.printStackTrace();
+            sendTextResponse(exchange, 500, "Internal server error while changing status");
+            return;
+        }
+    }
+
     public static void orderHistory(HttpExchange exchange) throws IOException {
 
 
