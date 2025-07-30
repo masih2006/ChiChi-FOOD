@@ -53,6 +53,7 @@ public class ProfileHandler implements HttpHandler {
                 userResponse.put("name", user.getName());
                 userResponse.put("phone", user.getPhone());
                 userResponse.put("email", user.getEmail());
+                System.out.println(user.getWalletBalance());
                 userResponse.put("walletBalance", user.getWalletBalance());
                 userResponse.put("role", decodedJWT.getClaim("role").asString());
                 userResponse.put("address", user.getAddress());
