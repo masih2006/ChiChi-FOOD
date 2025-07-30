@@ -1,6 +1,7 @@
 package com.ChiChiFOOD.Services;
 
 import com.ChiChiFOOD.dao.impl.*;
+import com.ChiChiFOOD.model.Coupon;
 import com.ChiChiFOOD.model.Order;
 import com.ChiChiFOOD.model.OrderStatus;
 import com.ChiChiFOOD.model.restaurant.Item;
@@ -23,6 +24,7 @@ public class OrderService {
     static OrderDAO orderDAO = new OrderDAOImpl(DaoSession);
     static ItemDAO itemDAO = new ItemDAOImpl(DaoSession);
     static UserDAO userDAO = new UserDAOImpl(DaoSession);
+    static CouponDAO  couponDAO = new CouponDAOImpl(DaoSession);
     static RestaurantDAO restaurantDAO = new RestaurantDAOImpl(DaoSession);
 
     public static String getCurrentTime(){
@@ -38,6 +40,7 @@ public class OrderService {
         int rawPrice = 0;
         int randomStep = (int) (Math.random() * 16);
         int payPrice = 0;
+        boolean doesItHaveCoupon = false;
         int additionalFee = 0;
         courierFee = 15000 + randomStep * 1000;
 
@@ -55,6 +58,11 @@ public class OrderService {
 
             if (jsonRequest.has("coupon_id") && !jsonRequest.get("coupon_id").isJsonNull()) {
                 couponId = jsonRequest.get("coupon_id").getAsInt();
+                doesItHaveCoupon = true;
+            }
+            if (!couponDAO.doesCouponCodeExist(String.valueOf(couponId))) {
+                sendTextResponse(exchange, 400, "Coupon code does not exist");
+                return;
             }
 
             JsonArray jsonItems = jsonRequest.getAsJsonArray("items");
@@ -82,6 +90,21 @@ public class OrderService {
             }else if (restaurantDAO.findById(Long.parseLong(vendorId + "")).getTaxType().equals("FIXED")){
                 payPrice = rawPrice + courierFee + restaurantDAO.findById(Long.parseLong(vendorId + "")).getTaxFee() + restaurantDAO.findById(Long.parseLong(vendorId + "")).getAdditionalFee();
             }
+            Coupon coupon = couponDAO.getCouponByCode(String.valueOf(couponId));
+            if (doesItHaveCoupon && coupon != null && coupon.getType() != null) {
+                switch (coupon.getType()) {
+                    case FIXED:
+                        payPrice = Math.max(0, payPrice - coupon.getValue());
+                        break;
+                    case PERCENTAGE:
+                        double discount = payPrice * (coupon.getValue() / 100.0);
+                        payPrice =(int) Math.max(0, payPrice - discount);
+                        break;
+                }
+            }
+
+
+
             System.out.println("== itemIDs to save: " + itemIDs);
             Order order = new Order();
             order.setDeliveryAddress(deliveryAddress);
