@@ -198,7 +198,6 @@ public class RestaurantService {
             menuResponse.put("id", menu.getId().toString());
             menuResponse.put("title", menu.getTitle());
 
-            // تبدیل دستی آیتم‌ها به Map ساده
             List<Map<String, Object>> itemList = new ArrayList<>();
             for (Item item : menu.getItems()) {
                 Map<String, Object> itemMap = new LinkedHashMap<>();
@@ -211,7 +210,7 @@ public class RestaurantService {
                 itemList.add(itemMap);
             }
 
-            menuResponse.put("items", itemList); // اضافه به منو
+            menuResponse.put("items", itemList);
             responseList.add(menuResponse);
         }
 

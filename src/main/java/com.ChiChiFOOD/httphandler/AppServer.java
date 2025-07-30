@@ -27,7 +27,7 @@ public class AppServer {
         server.createContext("/payment", new AuthFilterHandler(new TransactionsHandler()));
         server.createContext("/deliveries", new AuthFilterHandler(new DeliveryHandler()));
 
-        server.setExecutor(null); // use default executor
+        server.setExecutor(null);
         server.start();
         System.out.println("HTTP server started on port " + port);
     }

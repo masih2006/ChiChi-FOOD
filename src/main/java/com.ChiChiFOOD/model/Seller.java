@@ -25,4 +25,3 @@ public class Seller extends User {
         restaurant.setName(resturantName);
     }
 }
-// resturant , food , cart ,

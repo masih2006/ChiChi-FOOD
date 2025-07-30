@@ -56,23 +56,16 @@ public class RegisterHandler implements HttpHandler {
         if (profileImageBase64 != null && profileImageBase64.trim().isEmpty()) profileImageBase64 = null;
 
         if (bankInfo != null) {
-            // اگر بانک نیم خالی بود → null
             if (bankInfo.getBankName() == null || bankInfo.getBankName().trim().isEmpty()) {
                 bankInfo.setBankName(null);
             }
-
-            // اگر شماره حساب خالی بود → null
             if (bankInfo.getAccountNumber() == null || bankInfo.getAccountNumber().trim().isEmpty()) {
                 bankInfo.setAccountNumber(null);
             }
-
-            // اگر هر دو فیلد نال بودن → کل آبجکت bankInfo رو null کن
             if (bankInfo.getBankName() == null && bankInfo.getAccountNumber() == null) {
                 bankInfo = null;
             }
         }
-
-// فقط name و password الزامی هستن
         if (name == null || phone == null || password == null || roleStr == null || address == null) {
             Sender.sendResponse(exchange, 400, "Missing required fields: full_name and password are required.");
             return;

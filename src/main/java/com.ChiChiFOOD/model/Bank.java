@@ -25,5 +25,4 @@ public class Bank {
     public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
     }
-    // Getters and Setters
 }

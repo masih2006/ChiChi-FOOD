@@ -57,7 +57,7 @@ public class ActionService {
             user.addFavoriteRestaurant(restaurant);
             userDao.update(user);
 
-            tx.commit(); // این مهم‌ترین بخش است
+            tx.commit();
             Sender.sendTextResponse(exchange, 200, "added");
         } catch (Exception e) {
             if (tx != null) tx.rollback();

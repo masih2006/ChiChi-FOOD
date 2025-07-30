@@ -39,7 +39,7 @@ public class AdminService {
                 userResponse.put("full_name", user.getName());
                 userResponse.put("phone", user.getPhone());
                 userResponse.put("email", user.getEmail());
-                userResponse.put("role", user.getRole()); // این از getClass().getSimpleName() میاد
+                userResponse.put("role", user.getRole());
                 userResponse.put("address", user.getAddress());
                 userResponse.put("profileImageBase64", user.getProfileImageBase64());
                 userResponse.put("isUserConfirmed", user.getIsUserConfirmed());

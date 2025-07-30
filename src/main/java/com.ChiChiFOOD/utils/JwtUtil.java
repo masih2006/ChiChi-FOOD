@@ -10,7 +10,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import java.util.Date;
 
 public class JwtUtil {
-    private static final String SECRET = "123"; // در حالت واقعی باید توی فایل .env باشه
+    private static final String SECRET = "123";
     private static final long EXPIRATION_TIME = 3600_000; // ۱ ساعت
 
     public static String generateToken(User user) {

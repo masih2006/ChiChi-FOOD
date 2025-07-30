@@ -64,8 +64,6 @@ private List<Menu> menus = new ArrayList<>();
         this.menus = menus;
     }
 
-
-    // ارتباط به رستوران (ManyToOne)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;

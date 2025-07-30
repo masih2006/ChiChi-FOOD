@@ -23,9 +23,9 @@ public class LogoutHandler implements HttpHandler {
             return;
         }
 
-        String token = authHeader.substring(7); // حذف "Bearer "
+        String token = authHeader.substring(7);
 
-        TokenBlacklist.blacklist(token); // اضافه به لیست سیاه
+        TokenBlacklist.blacklist(token);
 
         Sender.sendResponse(exchange, 200, "Logged out successfully");
     }

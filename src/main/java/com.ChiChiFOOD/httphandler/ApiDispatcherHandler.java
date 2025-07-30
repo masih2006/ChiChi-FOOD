@@ -11,7 +11,6 @@ public class ApiDispatcherHandler implements HttpHandler {
     private final Map<String, HttpHandler> routes = new HashMap<>();
 
     public ApiDispatcherHandler() {
-        // ثبت مسیرها
         routes.put("/auth/register", new RegisterHandler());
 
 //        routes.put("/login", new LoginHandler());

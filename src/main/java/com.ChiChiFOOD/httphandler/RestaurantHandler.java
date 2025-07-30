@@ -69,7 +69,6 @@ public class RestaurantHandler implements HttpHandler {
     }
     private void putHandler(HttpExchange exchange, String [] params, JsonObject jsonRequest) throws IOException {
         if (params.length == 2 && params[1].matches("\\d+")) {
-            // param [1] is the restaurant id
             RestaurantService.updateRestaurant(exchange,jsonRequest, params[1]);
         }else if (params.length == 3 ) {
             if (params[2].equals("item")) {

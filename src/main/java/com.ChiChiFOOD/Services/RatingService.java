@@ -78,11 +78,9 @@ public class RatingService {
             rating1.setImagePaths(pictures);
             ratingDAO.save(rating1);
 
-            // رستوران
             restaurant.addRating(rating1);
             restaurantDAO.update(restaurant);
 
-            // آیتم‌ها
             for (Integer itemID : order.getItemIDs()) {
                 Item item = itemDAO.findById(itemID);
                 if (item == null) {
@@ -90,8 +88,6 @@ public class RatingService {
                     sendTextResponse(exchange, 400, "Item not found: " + itemID);
                     return;
                 }
-
-                // فقط اگر قبلاً اضافه نشده باشه
                 if (!item.getRatings().contains(rating1)) {
                     item.addRating(rating1);
                     itemDAO.update(item);
@@ -125,14 +121,11 @@ public class RatingService {
             response.addProperty("rating", rating.getScore());
             response.addProperty("comment", rating.getComment());
 
-            // افزودن تصاویر به صورت آرایه
             JsonArray imageArray = new JsonArray();
             for (String img : rating.getImagePaths()) {
                 imageArray.add(img);
             }
             response.add("imageBase64", imageArray);
-
-            // اطلاعات کاربر و زمان از Order
             Order order = orderDAO.findById(rating.getOrderID());
             if (order != null) {
                 response.addProperty("user_id", order.getCustomerID());
@@ -203,7 +196,6 @@ public class RatingService {
                 return;
             }
 
-            // به‌روزرسانی مقادیر موجود در JSON
             if (jsonObject.has("rating")) {
                 rating.setScore(jsonObject.get("rating").getAsInt());
             }
@@ -222,8 +214,6 @@ public class RatingService {
 
             session.update(rating);
             tx.commit();
-
-            // پاسخ خروجی به فرمت مشخص‌شده
             Order order = orderDAO.findById(rating.getOrderID());
 
             JsonObject response = new JsonObject();
