@@ -60,10 +60,10 @@ public class OrderService {
                 couponId = jsonRequest.get("coupon_id").getAsInt();
                 doesItHaveCoupon = true;
             }
-            if (!couponDAO.doesCouponCodeExist(String.valueOf(couponId))) {
-                sendTextResponse(exchange, 400, "Coupon code does not exist");
-                return;
-            }
+//            if (!couponDAO.doesCouponCodeExist(String.valueOf(couponId))) {
+//                sendTextResponse(exchange, 400, "Coupon code does not exist");
+//                return;
+//            }
 
             JsonArray jsonItems = jsonRequest.getAsJsonArray("items");
             for (JsonElement element : jsonItems) {
@@ -91,17 +91,19 @@ public class OrderService {
                 payPrice = rawPrice + courierFee + restaurantDAO.findById(Long.parseLong(vendorId + "")).getTaxFee() + restaurantDAO.findById(Long.parseLong(vendorId + "")).getAdditionalFee();
             }
             Coupon coupon = couponDAO.getCouponByCode(String.valueOf(couponId));
-            if (doesItHaveCoupon && coupon != null && coupon.getType() != null) {
-                switch (coupon.getType()) {
-                    case FIXED:
-                        payPrice = Math.max(0, payPrice - coupon.getValue());
-                        break;
-                    case PERCENTAGE:
-                        double discount = payPrice * (coupon.getValue() / 100.0);
-                        payPrice =(int) Math.max(0, payPrice - discount);
-                        break;
+                if (coupon != null) {
+                    switch (coupon.getType()) {
+                        case FIXED:
+                            payPrice = Math.max(0, payPrice - coupon.getValue());
+                            break;
+                        case PERCENTAGE:
+                            double discount = payPrice * (coupon.getValue() / 100.0);
+                            payPrice =(int) Math.max(0, payPrice - discount);
+                            break;
+
+                    }
                 }
-            }
+
 
 
 
