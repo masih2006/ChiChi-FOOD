@@ -64,8 +64,8 @@ public class OrderHandler implements HttpHandler {
         }
     }
     public void patchHandler(HttpExchange exchange, String[] params, JsonObject jsonRequest) throws IOException {
-        if (params.length == 2 && params[1].matches("status")) {
-
+        if (params.length == 3 && params[1].matches("status")) {
+            OrderService.changeStatus(exchange, jsonRequest, params[2]);
         }
     }
 
